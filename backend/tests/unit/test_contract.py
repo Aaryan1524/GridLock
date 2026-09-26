@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 import pytest
@@ -29,6 +30,16 @@ def test_contract_export_is_deterministic(tmp_path: Path) -> None:
     assert first_contents == (second_schema.read_bytes(), second_types.read_bytes())
     assert '"distanceKm"' in first_schema.read_text(encoding="utf-8")
     assert "distanceKm: number;" in first_types.read_text(encoding="utf-8")
+
+
+def test_generated_types_declare_every_referenced_type(tmp_path: Path) -> None:
+    _, types_path = export_contract(tmp_path)
+    types = types_path.read_text(encoding="utf-8")
+    declared = set(re.findall(r"export (?:interface|type) (\w+)", types))
+    referenced = set(re.findall(r":\s*(?:Array<)?([A-Z]\w+)", types)) | {"Payload"}
+
+    assert "export interface Payload {" in types
+    assert referenced - {"Array", "Record"} <= declared
 
 
 def test_unknown_spatial_tier_is_rejected(tmp_path: Path) -> None:

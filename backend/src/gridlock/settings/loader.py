@@ -67,6 +67,9 @@ def load_settings(config_path: str | Path) -> ConfigBundle:
         except ValidationError as error:
             raise ConfigError(f"invalid utility configuration {utility_path}: {error}") from error
 
+    utility_codes = [utility.code for utility in utility_configs]
+    if len(set(utility_codes)) != len(utility_codes):
+        raise ConfigError("utility codes must not contain duplicates")
     utility_ids = tuple(utility.id for utility in utility_configs)
     if len(set(utility_ids)) != len(utility_ids):
         raise ConfigError("utility configuration IDs must not contain duplicates")

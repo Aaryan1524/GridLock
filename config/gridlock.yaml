@@ -35,3 +35,85 @@ osm:
   query_version: v1
 ai:
   enabled: false
+normalization:
+  date_formats: ["%m/%d/%Y", "%m/%d/%y"]
+  # A voltage token: a number or a chain of numbers joined by - or / followed by kV ("230-115kV").
+  voltage_pattern: '(?<![\w.])((?:\d+(?:\.\d+)?\s*[-/]\s*)*\d+(?:\.\d+)?)\s*kV\b'
+  endpoints:
+    # Title prefixes that name a sponsor or program, not a place ("SAV: ", "CC - ", "GRID - ").
+    ignored_prefix_patterns:
+      - '^[A-Z]{2,5}:\s*'
+      - '^(?:CC|GRID)\s*[-–]\s*'
+    # Customer-connection titles often name customer sites rather than substations.
+    review_prefix_patterns:
+      - '^(?:[A-Z]{2,5}:\s*)?CC\s*[-–]'
+    separator_pattern: '\s*[-–]\s*'
+    # The endpoint section of a title ends at the first voltage token or colon.
+    section_end_patterns:
+      - '(?<![\w.])(?:\d+(?:\.\d+)?\s*[-/]\s*)*\d+(?:\.\d+)?\s*kV\b'
+      - ':'
+    # Titles containing these name more than one circuit or site; only the first is used.
+    multi_site_markers: [" & ", "/", ","]
+    # Words that describe work rather than a place; a site name ends at the first one.
+    descriptor_words:
+      - SUBSTATION
+      - SUB
+      - CUSTOMER SUB
+      - SWITCHING STATION
+      - TAP
+      - LINE
+      - LOOP
+      - TIE
+      - TRANSMISSION
+      - REBUILD
+      - RECONDUCTOR
+      - REACTOR
+      - REACTORS
+      - AUTOBANK
+      - AUTOBANKS
+      - AUTO BANK
+      - BANK
+      - CAP BANK
+      - CAPACITOR
+      - TRANSFORMER
+      - NEW BUILD
+      - NEW AUTO
+      - NEW SUB
+      - RELAY
+      - RELAYS
+      - RELAYING
+      - BREAKER
+      - BUS
+      - BUSES
+      - SWITCH
+      - STATCOM
+      - SMART VALVE
+      - SMART VALVES
+      - LOW SIDE
+      - AREA
+      - PROJECT
+      - NETWORK
+      - IMPROVEMENT
+      - IMPROVEMENTS
+      - UPGRADE
+      - UPGRADES
+      - EQUIPMENT
+      - AKA
+      - CC
+    # Leftover bare numbers and punctuation at the end of a site name ("THOMASTON 230").
+    trailing_noise_pattern: '(?:\s+\d[\d/]*|[\s.,;&/]+)+$'
+    # A voltage unit left in a site name means the title did not match the voltage pattern (e.g. "23O KV").
+    residue_pattern: '\bkV\b'
+  project_types:
+    rules:
+      - type: reactor
+        keywords: [REACTOR, REACTORS]
+      - type: substation
+        keywords: [SUBSTATION, SUB, AUTOBANK, AUTOBANKS, AUTO BANK, AUTO TRANSFORMER, TRANSFORMER, BANK,
+                   CAP BANK, CAPACITOR, STATCOM, RELAY, RELAYS, RELAYING, BREAKER, BUS, BUSES, SWITCH,
+                   SWITCHING STATION, SW HOUSE, LINE TRAP]
+      - type: transmission_line
+        keywords: [LINE, REBUILD, REBLD, RECONDUCTOR, TIE, TAP, FOLD-IN, LOOP, CONVERSION]
+    # Used when no keyword matches but the title names two or more endpoints.
+    endpoint_pair_type: transmission_line
+    default_type: other

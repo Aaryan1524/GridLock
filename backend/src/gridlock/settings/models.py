@@ -2,7 +2,12 @@
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, model_validator
+import re
+from typing import Literal
+
+from pydantic import BaseModel, Field, field_validator, model_validator
+
+from gridlock.models.domain import ProjectType
 
 
 class PathsConfig(BaseModel):
@@ -73,6 +78,77 @@ class AiConfig(BaseModel):
     enabled: bool = False
 
 
+def _compiles(patterns: tuple[str, ...]) -> tuple[str, ...]:
+    for pattern in patterns:
+        try:
+            re.compile(pattern)
+        except re.error as error:
+            raise ValueError(f"invalid regular expression {pattern!r}: {error}") from error
+    return patterns
+
+
+class EndpointRulesConfig(BaseModel):
+    """Rules for reading named sites out of a project title."""
+
+    ignored_prefix_patterns: tuple[str, ...] = ()
+    review_prefix_patterns: tuple[str, ...] = ()
+    separator_pattern: str
+    section_end_patterns: tuple[str, ...] = Field(min_length=1)
+    multi_site_markers: tuple[str, ...] = ()
+    descriptor_words: tuple[str, ...] = ()
+    trailing_noise_pattern: str
+    # Text that should never survive into a site name; a match means the title is malformed.
+    residue_pattern: str
+
+    @field_validator("ignored_prefix_patterns", "review_prefix_patterns", "section_end_patterns")
+    @classmethod
+    def patterns_compile(cls, patterns: tuple[str, ...]) -> tuple[str, ...]:
+        return _compiles(patterns)
+
+    @field_validator("separator_pattern", "trailing_noise_pattern", "residue_pattern")
+    @classmethod
+    def pattern_compiles(cls, pattern: str) -> str:
+        _compiles((pattern,))
+        return pattern
+
+
+def _known_project_type(value: str) -> str:
+    known = {item.value for item in ProjectType}
+    if value not in known:
+        raise ValueError(f"unknown project type {value!r}; expected one of {sorted(known)}")
+    return value
+
+
+class ProjectTypeRule(BaseModel):
+    type: str = Field(min_length=1)
+    keywords: tuple[str, ...] = Field(min_length=1)
+
+    _type_is_known = field_validator("type")(_known_project_type)
+
+
+class ProjectTypeConfig(BaseModel):
+    """Ordered keyword rules; the first rule with a matching keyword decides the type."""
+
+    rules: tuple[ProjectTypeRule, ...] = Field(min_length=1)
+    endpoint_pair_type: str
+    default_type: str
+
+    _types_are_known = field_validator("endpoint_pair_type", "default_type")(_known_project_type)
+
+
+class NormalizationConfig(BaseModel):
+    date_formats: tuple[str, ...] = Field(min_length=1)
+    voltage_pattern: str
+    endpoints: EndpointRulesConfig
+    project_types: ProjectTypeConfig
+
+    @field_validator("voltage_pattern")
+    @classmethod
+    def voltage_pattern_compiles(cls, pattern: str) -> str:
+        _compiles((pattern,))
+        return pattern
+
+
 class GridlockConfig(BaseModel):
     paths: PathsConfig
     utilities: tuple[str, ...]
@@ -83,6 +159,7 @@ class GridlockConfig(BaseModel):
     geometry: GeometryConfig
     osm: OsmConfig
     ai: AiConfig
+    normalization: NormalizationConfig
 
     @model_validator(mode="after")
     def utility_file_count_matches_scope(self) -> "GridlockConfig":
@@ -95,10 +172,23 @@ class GridlockConfig(BaseModel):
         return self
 
 
+class StripBlock(BaseModel):
+    """A boilerplate block removed from stored source text, matched from start to end marker."""
+
+    start: str = Field(min_length=1)
+    end: str = Field(min_length=1)
+
+
 class SourceConfig(BaseModel):
     id: str
     parser: str
     path: str
+    # Field labels printed in the source document, keyed by the name each parser asks for.
+    labels: dict[str, str] = Field(default_factory=dict)
+    strip_blocks: tuple[StripBlock, ...] = ()
+    ignored_line_patterns: tuple[str, ...] = ()
+    # Which record wins when a summary table and a detail page disagree on a date.
+    date_precedence: Literal["detail", "summary"] | None = None
     page_start: int | None = Field(default=None, ge=1)
     page_end: int | None = Field(default=None, ge=1)
     summary_page_start: int | None = Field(default=None, ge=1)
@@ -109,6 +199,8 @@ class SourceConfig(BaseModel):
 
 class UtilityConfig(BaseModel):
     id: str
+    # Upper-case code used on project records and as the project ID prefix, e.g. DESC.
+    code: str = Field(pattern=r"^[A-Z][A-Z0-9_]*$")
     display_name: str
     color: str
     states: tuple[str, ...]
