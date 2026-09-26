@@ -93,9 +93,11 @@ Zones panel → "Coordination impact"  (read-only rendering; the frontend does n
 The calculation has four steps.
 
 **Step 1: pick the coordinable pairs** (rule A-4). This is a policy choice with no external source, and it lives in config.
-- **Shared staging** needs a pair whose tier is CROSSING, SHARED_CORRIDOR or SITE_LOGISTICS, *and* whose timeline relevance is OVERLAPPING, STRONG or MEANINGFUL.
-- **Shared mobilization** needs a pair of any tier whose timeline relevance is OVERLAPPING, STRONG or MEANINGFUL.
+- **Only pairs the engine already ranks HIGH or MEDIUM are considered.** The estimate builds on the existing Opportunity Priority rather than re-judging all 33 pairs, and LOW background pairs never inflate it.
+- Among those, **shared staging** needs a pair whose tier is CROSSING, SHARED_CORRIDOR or SITE_LOGISTICS, *and* whose timeline relevance is OVERLAPPING, STRONG or MEANINGFUL.
+- Among those, **shared mobilization** needs a pair of any tier whose timeline relevance is OVERLAPPING, STRONG or MEANINGFUL.
 - Pairs years apart are excluded. Coordinating those is sequencing, not sharing.
+- **Alternative for you to choose at Gate A0:** apply the tier and relevance filters to *all* pairs, including LOW ones. For zone 1 that adds 2 LOW, MEANINGFUL, crews-and-equipment pairs (0139 M,N × 20067 and 06367 D-G × 20066). That gives **1–4 mobilizations** and **up to $4,156,040**, because the Okatie substation's $11,116,933 enters the budget. I recommend the HIGH/MEDIUM scope, because it's more conservative and consistent with the engine.
 
 **Step 2: group the pairs into clusters.** Connected projects form one cluster. If a cluster has *k* projects, then between 1 and *k*−1 duplicates could potentially be avoided (rule A-5). The low end assumes only one cluster actually coordinates. The high end is Σ(*k*−1).
 
@@ -110,10 +112,10 @@ The calculation has four steps.
 
 | Zone | Staging | Mobilization | Dominion budget in play |
 |---|---|---|---|
-| **Zone 1 · Jasper – McIntosh** | 1 cluster (06367 D-G × 20277), so 1 yard, so **2.8–13.0 acres** of temporary footprint | 2 clusters (06367 D-G × 20277; 6808-S × 20067), so **1–2 duplicate mobilizations** | ($23,787,423 + $40,660,000) × ≤5.5% = **up to $3,544,608** of Dominion project-management and mobilization budget |
+| **Zone 1 · Jasper – McIntosh** | 1 cluster (06367 D-G × 20277), so 1 yard, so **3–20 acres** of temporary footprint | 2 clusters (06367 D-G × 20277; 6808-S × 20067), so **1–2 duplicate mobilizations** | ($23,787,423 + $40,660,000) × ≤5.5% = **up to $3,544,608** of Dominion project-management and mobilization budget |
 | **Zone 2 · Thurmond** | No timely pairs | No timely pairs | None |
-| **Zone 3** | No HIGH or MEDIUM pairs | — | None |
-| **Zone 4** | No HIGH or MEDIUM pairs | — | None |
+| **Zone 3** | No HIGH or MEDIUM pairs, and no timely pairs at all | — | None |
+| **Zone 4** | No HIGH or MEDIUM pairs, and no timely pairs at all | — | None |
 
 - Zone 2 reads "Coordination here is crossing structures and outage sequencing; the dates are 3,074 days apart, so there's no shared-mobilization estimate."
 - Zones 3 and 4 read "No timely coordination opportunity, so no impact is estimated."
@@ -122,10 +124,10 @@ The calculation has four steps.
 
 | ID | Assumption | Proposed value | Public source (checked) | Caveat |
 |---|---|---|---|---|
-| A-1 | Temporary footprint of one staging / laydown yard | 2.8–13.0 acres (the final min–max will come from the full table) | Southern California Edison, *West of Devers Upgrade Project* PEA §3.2, Table 3.2-A "Potential Staging Yard Locations" and Table 3.2-G, which list yards of about 2.8, 4.5 and 13.0 acres. <https://ia.cpuc.ca.gov/environment/info/aspen/westofdevers/pea/3.0_project_description_part3.pdf> | This is a California 220 kV project. It gives a realistic *range* of yard sizes, not a Southeast-specific value. |
+| A-1 | Temporary footprint of one staging / laydown yard | **3–20 acres** | Southern California Edison, *West of Devers Upgrade Project* PEA (Oct 2013) §3.2, p. 3-71: "Typically, each yard would be 3 to 20 acres in size, depending on land availability and intended use." The same document's Table 3.2-A lists 10 candidate yards from 2.8 to 30.0 acres (2.8, 3.9, 3.9, 4.4, 5.0, 9.5, 13.0, 15.7, 17.0, 30.0), and Table 3.2-G gives 2.8–17.0 acres of new disturbance per yard. <https://ia.cpuc.ca.gov/environment/info/aspen/westofdevers/pea/3.0_project_description_part3.pdf> | This is a California 220 kV project. It's the document's own "typical" range, not a Southeast-specific value, and yards that were already improved add no new disturbance. |
 | A-2 | Mobilization is part of project management, which is at most this share of project cost | ≤ 5.5%, used **only as an upper bound** | MISO, *Transmission Cost Estimation Guide for MTEP19* (Apr 16, 2019), p. 31: "5.5% of project cost estimate: Project management (including mobilization and demobilization)". This copy was read: <https://nocapx2020.info/wp-content/uploads/2019/07/Transmission-Cost-Estimation-Guide-for-MTEP-2019337433.pdf>. The official current edition, MTEP25, is at cdn.misoenergy.org, which blocks automated download; please confirm it keeps the 5.5% line. | The 5.5% covers *all* project management, not just mobilization, so it is only a ceiling. MISO's 20% contingency and 7.5% AFUDC adders are **not** applied. |
 | A-3 | The share of one mobilization that's avoided when two projects share it | **Not proposed.** No public source was found. | — | **Recommended:** show only the A-2 "budget in play" ceiling, labelled as such. Alternatively, you could approve an explicitly *unsourced* GridLock planning assumption (for example 25–50%), shown in the UI with that label. |
-| A-4 | Which pairs count as coordinable | The tier and relevance sets in A.4 | GridLock policy. It reuses the engine's existing categories and adds no new thresholds. | This is a judgment call, and it will be recorded in `docs/data-decisions.md`. |
+| A-4 | Which pairs count as coordinable | HIGH or MEDIUM pairs only, then the tier and relevance sets in A.4 (or the all-pairs alternative) | GridLock policy. It reuses the engine's existing priority and categories and adds no new thresholds. | This is a judgment call, and it will be recorded in `docs/data-decisions.md`. |
 | A-5 | Counting duplicates avoided in a cluster of *k* | 1 to *k*−1 | GridLock policy | The same. |
 
 I also checked the Dominion siting reports on SC PSC docket pages: Toolebeck–Aiken, Church Creek–Charleston, and a third report whose readable text is marked CEII. None of them states a laydown-yard size, so A-1 can't come from Dominion's own filings.
@@ -189,7 +191,7 @@ I also checked the Dominion siting reports on SC PSC docket pages: Toolebeck–A
 
 ### A.13 Acceptance criteria
 - [ ] Every value in A.5 was approved by you before implementation.
-- [ ] The zone 1 panel shows 2.8–13.0 acres, 1–2 mobilizations and "up to $3,544,608 (Dominion only)", each with its formula and source. The final numbers follow the approved values.
+- [ ] Under the recommended scope, the zone 1 panel shows 3–20 acres, 1–2 mobilizations and "up to $3,544,608 (Dominion only)", each with its formula and source. The final numbers follow the approved values.
 - [ ] No Georgia Power cost appears anywhere.
 - [ ] Zones 2–4 show their reason, not a zero.
 - [ ] "Illustrative planning estimate: not engineering-grade" is shown.
@@ -205,7 +207,7 @@ I also checked the Dominion siting reports on SC PSC docket pages: Toolebeck–A
 ### A.15 Demo value
 The sponsor bonus asks about potential impact and cost. This lets the presenter say:
 
-> "Coordinating these two projects could avoid a staging yard, 2.8 to 13 acres, and up to two mobilizations. Here is every assumption and where it came from."
+> "Coordinating these two projects could avoid a staging yard, 3 to 20 acres, and up to two mobilizations. Here is every assumption and where it came from."
 
 It's credible because it refuses to invent Georgia Power costs.
 
@@ -563,7 +565,7 @@ A (S2 impact) ──► B (S4 brief shows the impact section)
 | 0:20 | Overview | "182 projects, 55 relationships, 4 zones: 13.75× less to look at." | baseline |
 | 0:40 | Zone 1 map and timeline | "4.89 km apart, 152 days apart: site logistics." | baseline |
 | 1:10 | Evidence drawer | "Page 23, project 06367 D - G, Evidence Quality 75/100." | baseline |
-| 1:35 | **Coordination impact** | "One shared yard, 2.8–13 acres; up to 2 mobilizations; every assumption shown." | **A** |
+| 1:35 | **Coordination impact** | "One shared yard, 3–20 acres; up to 2 mobilizations; every assumption shown." | **A** |
 | 2:00 | **Coordination brief** | "What the planner sends to the neighbouring utility." | **B** |
 | 2:25 | **New analysis** | "Rerun live: real stages; reproduced exactly, sha256 …" | **C** |
 | 2:50 | *(optional)* What-if | "Slip this date and the priority drops." | D |
