@@ -140,3 +140,40 @@
     padding: 6px 8px;
   }
 }
+
+/* ---------- Overview map: one chip per coordination zone ---------- */
+
+.zoneChip {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  white-space: pre;
+  color: var(--text);
+  background: rgba(17, 17, 15, 0.9);
+  border: 1px solid var(--line-strong);
+  border-left: 3px solid var(--neutral);
+  border-radius: var(--radius);
+  padding: 5px 9px;
+  cursor: pointer;
+  transition: background 160ms var(--ease);
+}
+
+.zoneChip:hover,
+.zoneChip[data-selected="true"] {
+  background: var(--bg-raised);
+  border-color: var(--text);
+}
+
+.zoneChip[data-priority="HIGH"] {
+  border-left-color: var(--accent);
+}
+
+.zoneChip[data-priority="MEDIUM"] {
+  border-left-color: var(--amber);
+}
+
+.zoneKey {
+  width: 14px;
+  height: 9px;
+  border: 1px dashed var(--muted);
+}

@@ -6,52 +6,22 @@ import type {
   Map as MapLibreMap,
   MapLayerMouseEvent,
   Marker,
-  StyleSpecification,
 } from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 
-import { runtimeConfig } from "@/lib/config";
 import type { GridlockPayload, Zone } from "@/lib/contract";
 import { countOf, formatDistance, label, utilityColor, utilityName } from "@/lib/format";
+import { type Basemap, createBaseMap, token } from "@/lib/mapBase";
 import { closestPointFeatures, connectorFeatures, projectFeatures, topRelationship } from "@/lib/mapData";
 
 import styles from "./map.module.css";
 
 type MapLibre = typeof import("maplibre-gl");
-type Basemap = "loading" | "online" | "bundled";
 
 const PROJECTS = "gl-projects";
 const CONNECTORS = "gl-connectors";
 const CLOSEST = "gl-closest";
 const CLICKABLE = ["gl-project-points", "gl-project-lines", "gl-project-lines-approx"];
-// Served from public/ by scripts/copy-maplibre-worker.mjs (bundlers cannot rewrite the worker's imports).
-const WORKER_URL = "/vendor/maplibre/maplibre-gl-worker.mjs";
-
-/** True only when the online style itself failed to download (not tile or layer errors). */
-function isStyleFetchFailure(error: unknown, styleUrl: string): boolean {
-  const detail = error as { name?: string; url?: string } | undefined;
-  return detail?.url === styleUrl || detail?.name === "AJAXError" || error instanceof TypeError;
-}
-
-function token(name: string): string {
-  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-}
-
-/** The bundled offline basemap: state outlines from the U.S. Census Bureau (see public/data/README.md). */
-function bundledStyle(): StyleSpecification {
-  return {
-    version: 8,
-    sources: {
-      states: { type: "geojson", data: "/data/states-southeast.geojson", attribution: "U.S. Census Bureau" },
-    },
-    layers: [
-      { id: "background", type: "background", paint: { "background-color": token("--bg-sunken") } },
-      { id: "states-fill", type: "fill", source: "states", paint: { "fill-color": token("--bg-raised") } },
-      { id: "states-line", type: "line", source: "states", paint: { "line-color": token("--line-strong"), "line-width": 0.8 } },
-    ],
-  };
-}
-
 function addLayers(map: MapLibreMap) {
   if (map.getSource(PROJECTS)) return;
   const empty = { type: "FeatureCollection" as const, features: [] };
@@ -180,22 +150,16 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
 
   useEffect(() => {
     let cancelled = false;
-    let timer: ReturnType<typeof setTimeout> | undefined;
+    let disposeBase = () => {};
 
     (async () => {
       const lib: MapLibre = await import("maplibre-gl");
       if (cancelled || !container.current) return;
       libRef.current = lib;
-      lib.setWorkerUrl(WORKER_URL);
-      const online = runtimeConfig.mapStyleUrl;
-      const map = new lib.Map({
-        container: container.current,
-        style: online || bundledStyle(),
-        attributionControl: { compact: true },
-        dragRotate: false,
-      });
+      const base = createBaseMap(lib, container.current, setBasemap);
+      const map = base.map;
+      disposeBase = base.dispose;
       mapRef.current = map;
-      map.touchZoomRotate.disableRotation();
       // Keep the canvas matched to its region (layout changes, narrow screens) and re-frame the zone.
       const observer = new ResizeObserver(() => {
         map.resize();
@@ -204,29 +168,6 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
       });
       observer.observe(container.current);
       map.once("remove", () => observer.disconnect());
-
-      let settled = !online;
-      const useBundled = () => {
-        if (settled) return;
-        settled = true;
-        clearTimeout(timer);
-        setBasemap("bundled");
-        map.setStyle(bundledStyle());
-      };
-      if (online) {
-        if (runtimeConfig.mapStyleTimeoutMs) timer = setTimeout(useBundled, runtimeConfig.mapStyleTimeoutMs);
-        map.on("error", (event) => {
-          if (isStyleFetchFailure(event.error, online)) useBundled();
-        });
-        map.once("style.load", () => {
-          if (settled) return;
-          settled = true;
-          clearTimeout(timer);
-          setBasemap("online");
-        });
-      } else {
-        setBasemap("bundled");
-      }
 
       // Every style (online or bundled) gets the GridLock layers re-added on load.
       map.on("style.load", () => {
@@ -250,7 +191,7 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
 
     return () => {
       cancelled = true;
-      clearTimeout(timer);
+      disposeBase();
       markerRef.current?.remove();
       mapRef.current?.remove();
       mapRef.current = null;

@@ -12,6 +12,7 @@ import { StatusNotice } from "../shared/StatusNotice";
 import { EvidenceDrawer } from "./EvidenceDrawer";
 import styles from "./planner.module.css";
 import { PlannerNav } from "./PlannerNav";
+import { OverviewView } from "./views/OverviewView";
 import { ZonesView } from "./views/ZonesView";
 
 function Workspace({ payload }: { payload: GridlockPayload }) {
@@ -27,7 +28,15 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
         {view === "zones" && (
           <ZonesView payload={payload} zone={zone} onSelectZone={(id) => navigate({ view: "zones", zone: id })} onInspect={setInspecting} />
         )}
-        {view !== "zones" && <p className="mono pad">{view} — coming in the next part</p>}
+        {view === "overview" && (
+          <OverviewView
+            payload={payload}
+            selectedZoneId={zoneId}
+            onSelectZone={(id) => navigate({ view: "overview", zone: id })}
+            onInvestigate={(id) => navigate({ view: "zones", zone: id })}
+          />
+        )}
+        {(view === "projects" || view === "quality") && <p className="mono pad">{view} — coming in the next part</p>}
       </div>
       {inspecting && <EvidenceDrawer payload={payload} projectId={inspecting} onClose={closeEvidence} />}
     </div>
