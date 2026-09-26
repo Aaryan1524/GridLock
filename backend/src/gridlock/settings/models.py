@@ -51,8 +51,6 @@ class DisplayConfig(BaseModel):
 class GeometryConfig(BaseModel):
     projected_crs: str
     bbox: tuple[float, float, float, float]
-    overpass_timeout_seconds: int = Field(gt=0)
-    overpass_max_retries: int = Field(ge=0)
 
     @model_validator(mode="after")
     def bbox_is_west_south_east_north(self) -> "GeometryConfig":
@@ -60,6 +58,15 @@ class GeometryConfig(BaseModel):
         if west >= east or south >= north:
             raise ValueError("geometry.bbox must be ordered west, south, east, north")
         return self
+
+
+class OsmConfig(BaseModel):
+    overpass_url: str
+    timeout_seconds: int = Field(gt=0)
+    max_retries: int = Field(ge=0)
+    max_response_bytes: int = Field(gt=0)
+    feature_types: tuple[str, ...] = Field(min_length=1)
+    query_version: str = Field(min_length=1)
 
 
 class AiConfig(BaseModel):
@@ -74,6 +81,7 @@ class GridlockConfig(BaseModel):
     timeline_gap_days: TimelineGapConfig
     display: DisplayConfig
     geometry: GeometryConfig
+    osm: OsmConfig
     ai: AiConfig
 
     @model_validator(mode="after")

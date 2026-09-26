@@ -26,8 +26,12 @@ display:
 geometry:
   projected_crs: EPSG:5070
   bbox: [-85.0, 30.0, -78.0, 36.0]
-  overpass_timeout_seconds: 60
-  overpass_max_retries: 3
+osm:
+  overpass_url: https://overpass-api.de/api/interpreter
+  timeout_seconds: 60
+  max_retries: 3
+  max_response_bytes: 52428800
+  feature_types: [substation, line]
+  query_version: v1
 ai:
   enabled: false
-

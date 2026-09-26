@@ -10,6 +10,8 @@ from typing import Sequence
 
 from .contract import export_contract, validate_payload
 from .ingestion.documents import IngestionError, ingest_plans
+from .ingestion.osm import ingest_osm
+from .ingestion.osm.cache import OsmIngestionError
 from .settings.loader import ConfigError, load_settings
 
 
@@ -30,7 +32,8 @@ def build_parser() -> argparse.ArgumentParser:
     contract_parser.add_argument("action", choices=["export", "validate"])
     contract_parser.add_argument("payload", type=Path, nargs="?")
     ingest_parser = commands.add_parser("ingest", help="ingest configured public sources")
-    ingest_parser.add_argument("source", choices=["plans"])
+    ingest_parser.add_argument("source", choices=["plans", "osm"])
+    ingest_parser.add_argument("--offline", action="store_true")
     return parser
 
 
@@ -67,6 +70,15 @@ def main(argv: Sequence[str] | None = None) -> int:
             report = ingest_plans(bundle, Path(__file__).resolve().parents[3])
         except (ConfigError, IngestionError) as error:
             print(f"Ingestion error: {error}")
+            return 2
+        print(json.dumps(report.as_dict(), indent=2, sort_keys=True))
+        return 0
+    if args.command == "ingest" and args.source == "osm":
+        try:
+            bundle = load_settings(args.config)
+            report = ingest_osm(bundle, Path(__file__).resolve().parents[3], offline=args.offline)
+        except (ConfigError, OsmIngestionError) as error:
+            print(f"OSM ingestion error: {error}")
             return 2
         print(json.dumps(report.as_dict(), indent=2, sort_keys=True))
         return 0
