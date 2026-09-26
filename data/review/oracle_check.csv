@@ -4,10 +4,10 @@ DESC_1,DESC-6809-E,Hooks Sub,,no_candidate,,
 DESC_2,DESC-6810-A,Hooks Sub,,no_candidate,,
 DESC_2,DESC-6810-A,Thurmond Sub,"33.66013,-82.19593",matched,Thurmond Substation (way/52102019),0.00
 DESC_3,DESC-06367-D-G,Jasper Sub,"32.35912,-81.12460",matched,Jasper Substation (way/185380597),0.18
-DESC_3,DESC-06367-D-G,Okatie Sub,"32.33376,-81.03249",no_candidate,,
+DESC_3,DESC-06367-D-G,Okatie Sub,"32.33376,-81.03249",override,human-verified (way/1064022697),0.01
 DESC_4,DESC-6807-B,Queensboro Sub,"32.72279,-79.96733",matched,Queensborough Substation (way/290264139),0.00
 DESC_4,DESC-6807-B,Ft Johnson Sub,,no_candidate,,
-DESC_5,DESC-6808-S,Okatie Sub,"32.33376,-81.03249",no_candidate,,
+DESC_5,DESC-6808-S,Okatie Sub,"32.33376,-81.03249",override,human-verified (way/1064022697),0.01
 DESC_5,DESC-6808-S,Bluffton Sub,"32.23503,-80.85338",matched,Bluffton Substation (way/498967268),0.00
 GPC_1,GPC-20793,EVANS PRIMARY,"33.54399,-82.16865",matched,Evans Primary Substation (way/52103255),0.00
 GPC_1,GPC-20793,THURMOND DAM #5,"33.66013,-82.19593",matched,Thurmond Substation (way/52102019),0.00

@@ -311,6 +311,8 @@ class GeometryOverride(BaseModel):
     endpoint: str = Field(min_length=1)
     lat: float = Field(ge=-90, le=90)
     lon: float = Field(ge=-180, le=180)
+    # The public feature the reviewer identified, when one exists (e.g. an unnamed OSM way).
+    feature_id: str | None = None
     source: str = Field(min_length=1)
     reviewer: str = Field(min_length=1)
     note: str = Field(min_length=1)

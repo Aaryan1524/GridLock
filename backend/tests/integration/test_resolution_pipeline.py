@@ -45,6 +45,14 @@ def test_known_false_friends_stay_rejected(resolved) -> None:
     assert _matches(resolved["GPC-20797"])["EAST VILLA RICA"]["status"] == "no_candidate"
 
 
+def test_okatie_comes_from_the_reviewed_override(resolved) -> None:
+    okatie = _matches(resolved["DESC-06367-D-G"])["Okatie"]
+
+    assert okatie["status"] == "override"
+    assert okatie["featureId"] == "way/1064022697"
+    assert resolved["DESC-06367-D-G"]["geometryResolution"]["method"] == "verified_endpoints_straight_line"
+
+
 def test_topology_and_zone_rules_pick_the_right_namesakes(resolved) -> None:
     assert _matches(resolved["GPC-19636"])["HAMMOND"]["featureName"] == "Hammod Substation"
     assert _matches(resolved["GPC-20065"])["GOSHEN"]["point"]["lat"] == pytest.approx(32.249, abs=0.01)

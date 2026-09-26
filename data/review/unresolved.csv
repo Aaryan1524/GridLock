@@ -1,14 +1,12 @@
 project_id,project_name,endpoint,status,best_candidate,notes
 DESC-6807-B,Queensboro - Ft Johnson 115 kV & Queensboro-Bayfront 115kV (Queensboro-James Island Sect),Ft Johnson,no_candidate,,No public OSM feature with a matching name
 DESC-0167C-D,Union Pier 115-13.8 kV Sub: Tap,Union Pier,no_candidate,,No public OSM feature with a matching name
-DESC-0139-M-N,"Okatie 230-115kV Substation, Jasper – Yemassee 230kV #1 Fold-in",Okatie,no_candidate,,No public OSM feature with a matching name
 DESC-6808-J,Eastover - Square D 115kV: Rebuild,Eastover,no_candidate,,No public OSM feature with a matching name
 DESC-6808-J,Eastover - Square D 115kV: Rebuild,Square D,no_candidate,,No public OSM feature with a matching name
 DESC-6808-K,Burton-St Helena 115kV: Rebuild Burton-Frogmore Transmission Section,St Helena,no_candidate,,No public OSM feature with a matching name
 DESC-6808-L,Burton-St Helena 115kV: Frogmore Distribution - St Helena,St Helena,no_candidate,,No public OSM feature with a matching name
 DESC-6808-N-O,VCS1-Denny Terrace 230kV & VCS1-Pineland 230kV: Rebuild Single Circuit Sections,VCS1,no_candidate,,No public OSM feature with a matching name
 DESC-6808-R,Wateree-Killian 230kV: Rebuild,Killian,no_candidate,,No public OSM feature with a matching name
-DESC-6808-S,Okatie-Bluffton 115kV: Rebuild,Okatie,no_candidate,,No public OSM feature with a matching name
 DESC-6808-U,Hopkins-CIP 230kV: Rebuild,Hopkins,no_candidate,,No public OSM feature with a matching name
 DESC-6808-U,Hopkins-CIP 230kV: Rebuild,CIP,no_candidate,,No public OSM feature with a matching name
 DESC-6808-V,Faber Place-Bayfront 115kV: Rebuild North Bridge Terrace to Bayfront Section,Bayfront,no_candidate,,No public OSM feature with a matching name
@@ -23,7 +21,6 @@ DESC-05004-P,Summerville: Replace and Spare 230-115kV 336MVA Auto Bank,Summervil
 DESC-06076A,Canadys-Ritter 115KV-Rebld SPDC 230/115KV 1272 (Approx 18 Miles),Ritter,no_candidate,,No public OSM feature with a matching name
 DESC-6359,Yemassee– Ritter 230kV #1 & #2: Construct SPDC with B-1272,Ritter,no_candidate,,No public OSM feature with a matching name
 DESC-06367-A-C-H,Riverport Tap: Construct Tap,Riverport,no_candidate,,No public OSM feature with a matching name
-DESC-06367-D-G,Jasper – Okatie 230 kV #2: Construct,Okatie,no_candidate,,No public OSM feature with a matching name
 DESC-06371-D,Wagener 115kV Tap: Construct Tap,Wagener,vetoed,Wagener Substation (way/993540535),Wagener Substation (way/993540535): highest voltage 46 kV is below the project's 115 kV
 DESC-06372-A,Church Creek - Ritter 230kV - Replace 38 Large Angles and Dead Ends,Ritter,no_candidate,,No public OSM feature with a matching name
 DESC-06810-F,VCS2-Ward 230kV: Rebuild Line,VCS2,no_candidate,,No public OSM feature with a matching name

@@ -1,4 +1,18 @@
-# Human-verified geometry matches belong here. Each entry requires provenance
-# and a reviewer note; no override is included in the initial scaffold.
-overrides: []
-
+# Human-verified endpoint locations for substations that OSM has but does not name, or lacks.
+# Each entry needs a public source, the reviewer who confirmed it, and a note on how.
+# The sponsor spreadsheet is never a source here (handoff invariants I-1 and I-3).
+overrides:
+  - utility: DESC
+    endpoint: Okatie
+    lat: 32.33377
+    lon: -81.03264
+    feature_id: way/1064022697
+    source: >-
+      OpenStreetMap way/1064022697 (unnamed 230 kV switching substation; also HIFLD Electric Substations
+      UNKNOWN170159), identified by SC PSC Docket 2023-115-E, Exhibit A (DESC Jasper-Okatie-Riverport
+      230 kV Lines report, 2023), pp. 4, 6, 10, 49-50
+    reviewer: Aaryan
+    note: >-
+      The filing runs Jasper - Okatie 230 kV #2 about 6.6 mi east from Jasper Substation, across I-95 and
+      "the remaining mile into the Okatie Substation", then out southwest past Red Dam Road and Sergeant
+      Jasper Park. The yard lies 1.17 mi from the park at a 239 degree bearing. Confirmed 2026-09-26.

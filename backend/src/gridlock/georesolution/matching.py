@@ -227,7 +227,8 @@ def endpoint_candidates(
         if not in_area(point, context.area):
             return EndpointCandidates(endpoint, [], _match(endpoint, EndpointMatchStatus.VETOED, notes=["Override point is outside the project's service area"]))
         note = f"Human-verified by {override.reviewer}: {override.note} (source: {override.source})"
-        return EndpointCandidates(endpoint, [], _match(endpoint, EndpointMatchStatus.OVERRIDE, point=point, notes=[note]))
+        fallback = _match(endpoint, EndpointMatchStatus.OVERRIDE, feature_id=override.feature_id, point=point, notes=[note])
+        return EndpointCandidates(endpoint, [], fallback)
 
     target = normalize_name(endpoint.name, context.rules)
     named = [(name_score(target, feature.normalized), feature) for feature in index]

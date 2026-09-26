@@ -221,43 +221,56 @@
         "estimated_cost_total": "$11,116,933"
       }
     },
-    "geometry": null,
+    "geometry": {
+      "type": "Point",
+      "coordinates": [
+        -81.03264,
+        32.33377
+      ]
+    },
     "geometryResolution": {
-      "method": "unresolved",
+      "method": "human_verified_override",
       "isApproximation": false,
-      "featureIds": [],
+      "featureIds": [
+        "way/1064022697"
+      ],
       "matches": [
         {
           "endpoint": "Okatie",
           "role": "single",
-          "status": "no_candidate",
-          "featureId": null,
+          "status": "override",
+          "featureId": "way/1064022697",
           "featureName": null,
           "operator": null,
           "operatorRelation": null,
           "voltageKv": [],
           "nameScore": null,
-          "point": null,
+          "point": {
+            "lat": 32.33377,
+            "lon": -81.03264
+          },
           "notes": [
-            "No public OSM feature with a matching name"
+            "Human-verified by Aaryan: The filing runs Jasper - Okatie 230 kV #2 about 6.6 mi east from Jasper Substation, across I-95 and \"the remaining mile into the Okatie Substation\", then out southwest past Red Dam Road and Sergeant Jasper Park. The yard lies 1.17 mi from the park at a 239 degree bearing. Confirmed 2026-09-26. (source: OpenStreetMap way/1064022697 (unnamed 230 kV switching substation; also HIFLD Electric Substations UNKNOWN170159), identified by SC PSC Docket 2023-115-E, Exhibit A (DESC Jasper-Okatie-Riverport 230 kV Lines report, 2023), pp. 4, 6, 10, 49-50)"
           ]
         }
       ],
       "warnings": []
     },
     "evidence": {
-      "level": "UNRESOLVED",
-      "score": 30,
+      "level": "MEDIUM",
+      "score": 60,
       "breakdown": {
         "source": 20,
-        "identity": 0,
-        "geometry": 0,
+        "identity": 15,
+        "geometry": 15,
         "timeline": 10
       },
       "reasons": [
         "✓ Official DESC filing, project 0139 M,N (page 3)",
-        "✓ In-service date 2024-12-31",
-        "△ Okatie not resolved (no candidate)"
+        "✓ Okatie location human-verified",
+        "△ Voltage not confirmed at every resolved endpoint",
+        "✓ Within the DESC service area",
+        "✓ In-service date 2024-12-31"
       ],
       "warnings": []
     },
@@ -965,32 +978,42 @@
       }
     },
     "geometry": {
-      "type": "Point",
+      "type": "LineString",
       "coordinates": [
-        -80.8533836,
-        32.2350272
+        [
+          -81.03264,
+          32.33377
+        ],
+        [
+          -80.8533836,
+          32.2350272
+        ]
       ]
     },
     "geometryResolution": {
-      "method": "verified_single_endpoint",
+      "method": "verified_endpoints_straight_line",
       "isApproximation": true,
       "featureIds": [
+        "way/1064022697",
         "way/498967268"
       ],
       "matches": [
         {
           "endpoint": "Okatie",
           "role": "from",
-          "status": "no_candidate",
-          "featureId": null,
+          "status": "override",
+          "featureId": "way/1064022697",
           "featureName": null,
           "operator": null,
           "operatorRelation": null,
           "voltageKv": [],
           "nameScore": null,
-          "point": null,
+          "point": {
+            "lat": 32.33377,
+            "lon": -81.03264
+          },
           "notes": [
-            "No public OSM feature with a matching name"
+            "Human-verified by Aaryan: The filing runs Jasper - Okatie 230 kV #2 about 6.6 mi east from Jasper Substation, across I-95 and \"the remaining mile into the Okatie Substation\", then out southwest past Red Dam Road and Sergeant Jasper Park. The yard lies 1.17 mi from the park at a 239 degree bearing. Confirmed 2026-09-26. (source: OpenStreetMap way/1064022697 (unnamed 230 kV switching substation; also HIFLD Electric Substations UNKNOWN170159), identified by SC PSC Docket 2023-115-E, Exhibit A (DESC Jasper-Okatie-Riverport 230 kV Lines report, 2023), pp. 4, 6, 10, 49-50)"
           ]
         },
         {
@@ -1019,18 +1042,18 @@
       "score": 75,
       "breakdown": {
         "source": 20,
-        "identity": 30,
-        "geometry": 15,
+        "identity": 15,
+        "geometry": 30,
         "timeline": 10
       },
       "reasons": [
         "✓ Official DESC filing, project 6808 S (page 10)",
         "✓ Bluffton matched OSM “Bluffton Substation” (way/498967268)",
-        "✓ Operator matched DESC",
-        "✓ Voltage matched (115 kV)",
+        "✓ Okatie location human-verified",
+        "△ Voltage not confirmed at every resolved endpoint",
         "✓ Within the DESC service area",
         "✓ In-service date 2025-06-01",
-        "△ Okatie not resolved (no candidate)"
+        "△ Full planned route geometry unavailable; straight line between verified endpoints"
       ],
       "warnings": []
     },
@@ -2206,17 +2229,24 @@
       }
     },
     "geometry": {
-      "type": "Point",
+      "type": "LineString",
       "coordinates": [
-        -81.1241558,
-        32.3606993
+        [
+          -81.1241558,
+          32.3606993
+        ],
+        [
+          -81.03264,
+          32.33377
+        ]
       ]
     },
     "geometryResolution": {
-      "method": "verified_single_endpoint",
+      "method": "verified_endpoints_straight_line",
       "isApproximation": true,
       "featureIds": [
-        "way/185380597"
+        "way/185380597",
+        "way/1064022697"
       ],
       "matches": [
         {
@@ -2240,16 +2270,19 @@
         {
           "endpoint": "Okatie",
           "role": "to",
-          "status": "no_candidate",
-          "featureId": null,
+          "status": "override",
+          "featureId": "way/1064022697",
           "featureName": null,
           "operator": null,
           "operatorRelation": null,
           "voltageKv": [],
           "nameScore": null,
-          "point": null,
+          "point": {
+            "lat": 32.33377,
+            "lon": -81.03264
+          },
           "notes": [
-            "No public OSM feature with a matching name"
+            "Human-verified by Aaryan: The filing runs Jasper - Okatie 230 kV #2 about 6.6 mi east from Jasper Substation, across I-95 and \"the remaining mile into the Okatie Substation\", then out southwest past Red Dam Road and Sergeant Jasper Park. The yard lies 1.17 mi from the park at a 239 degree bearing. Confirmed 2026-09-26. (source: OpenStreetMap way/1064022697 (unnamed 230 kV switching substation; also HIFLD Electric Substations UNKNOWN170159), identified by SC PSC Docket 2023-115-E, Exhibit A (DESC Jasper-Okatie-Riverport 230 kV Lines report, 2023), pp. 4, 6, 10, 49-50)"
           ]
         }
       ],
@@ -2257,21 +2290,22 @@
     },
     "evidence": {
       "level": "MEDIUM",
-      "score": 65,
+      "score": 75,
       "breakdown": {
         "source": 20,
-        "identity": 20,
-        "geometry": 15,
+        "identity": 15,
+        "geometry": 30,
         "timeline": 10
       },
       "reasons": [
         "✓ Official DESC filing, project 06367 D - G (page 23)",
         "✓ Jasper matched OSM “Jasper Substation” (way/185380597)",
+        "✓ Okatie location human-verified",
         "△ Jasper has no operator tag in OSM",
-        "✓ Voltage matched (230 kV)",
+        "△ Voltage not confirmed at every resolved endpoint",
         "✓ Within the DESC service area",
         "✓ In-service date 2025-12-31",
-        "△ Okatie not resolved (no candidate)"
+        "△ Full planned route geometry unavailable; straight line between verified endpoints"
       ],
       "warnings": []
     },

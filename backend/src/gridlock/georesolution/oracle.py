@@ -77,7 +77,8 @@ def oracle_check(
                 continue
             resolved = ours.status in {EndpointMatchStatus.MATCHED, EndpointMatchStatus.OVERRIDE} and ours.point is not None
             distance = distance_km(sheet_point, ours.point) if resolved and sheet_point else None
-            feature = f"{ours.feature_name} ({ours.feature_id})" if ours.feature_id else None
+            label = ours.feature_name or ("human-verified" if ours.status is EndpointMatchStatus.OVERRIDE else "")
+            feature = f"{label} ({ours.feature_id})" if ours.feature_id else label or None
             results.append(OracleRow(sponsor_id, project_id, sheet_name, sheet_point, ours.status.value, feature, distance))
 
     output_path = output_path or repository_root / bundle.root.paths.review_dir / "oracle_check.csv"
