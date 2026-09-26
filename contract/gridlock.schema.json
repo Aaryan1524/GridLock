@@ -81,6 +81,126 @@
       "title": "Endpoint",
       "type": "object"
     },
+    "EndpointMatch": {
+      "description": "How one named endpoint was (or was not) linked to public infrastructure.",
+      "properties": {
+        "endpoint": {
+          "minLength": 1,
+          "title": "Endpoint",
+          "type": "string"
+        },
+        "featureId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Featureid"
+        },
+        "featureName": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Featurename"
+        },
+        "nameScore": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Namescore"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "operator": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operator"
+        },
+        "operatorRelation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Operatorrelation"
+        },
+        "point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Point"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "$ref": "#/$defs/EndpointRole"
+        },
+        "status": {
+          "$ref": "#/$defs/EndpointMatchStatus"
+        },
+        "voltageKv": {
+          "items": {
+            "type": "number"
+          },
+          "title": "Voltagekv",
+          "type": "array"
+        }
+      },
+      "required": [
+        "endpoint",
+        "role",
+        "status"
+      ],
+      "title": "EndpointMatch",
+      "type": "object"
+    },
+    "EndpointMatchStatus": {
+      "enum": [
+        "matched",
+        "override",
+        "no_candidate",
+        "ambiguous",
+        "vetoed",
+        "separation_rejected"
+      ],
+      "title": "EndpointMatchStatus",
+      "type": "string"
+    },
     "EndpointRole": {
       "enum": [
         "from",
@@ -105,6 +225,13 @@
     },
     "Evidence": {
       "properties": {
+        "breakdown": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Breakdown",
+          "type": "object"
+        },
         "level": {
           "$ref": "#/$defs/EvidenceLevel"
         },
@@ -171,6 +298,13 @@
         "isApproximation": {
           "title": "Isapproximation",
           "type": "boolean"
+        },
+        "matches": {
+          "items": {
+            "$ref": "#/$defs/EndpointMatch"
+          },
+          "title": "Matches",
+          "type": "array"
         },
         "method": {
           "$ref": "#/$defs/GeometryMethod"

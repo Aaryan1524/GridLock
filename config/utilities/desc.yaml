@@ -3,7 +3,23 @@ code: DESC
 display_name: Dominion Energy South Carolina
 color: "#1976D2"
 states: [SC]
-operator_aliases: [Dominion Energy South Carolina]
+# Operator spellings seen in data/cache/osm_operators.csv; SCE&G is DESC's former name.
+operator_aliases:
+  - Dominion Energy South Carolina
+  - Dominion Energy
+  - South Carolina Electric & Gas
+  - South Carolina Electric & Gas Company
+  - South Carolina Gas & Electric
+  - SCE&G
+interconnections:
+  - operators: [Georgia Power, Georgia Power Company]
+    qualifiers: [GPC]
+  - operators: [Santee Cooper]
+    qualifiers: [SANTEE COOPER]
+  - operators: [Duke Energy, Duke Energy Progress, "Duke Energy Progress, LLC", Progress Energy Carolinas]
+    qualifiers: [DEP, DEC, DUKE]
+# South Carolina plus the Savannah River margin, where DESC ties into Georgia Power.
+service_area_bbox: [-83.45, 31.9, -78.45, 35.3]
 sources:
   - id: desc_project_descriptions
     parser: desc_project_descriptions

@@ -25,14 +25,17 @@ display:
   timezone: America/New_York
 geometry:
   projected_crs: EPSG:5070
-  bbox: [-85.0, 30.0, -78.0, 36.0]
+  # West, south, east, north. Georgia reaches about -85.6; the margin keeps Alabama tie endpoints.
+  bbox: [-86.0, 30.0, -78.0, 36.0]
 osm:
   overpass_url: https://overpass-api.de/api/interpreter
-  timeout_seconds: 60
+  timeout_seconds: 300
   max_retries: 3
-  max_response_bytes: 52428800
+  max_response_bytes: 209715200
+  backoff_seconds: 30
+  user_agent: GridLock/0.1 (ShellHacks 2026 public-infrastructure research; one-off bulk cache)
   feature_types: [substation, line]
-  query_version: v1
+  query_version: v2
 ai:
   enabled: false
 normalization:
@@ -117,3 +120,46 @@ normalization:
     # Used when no keyword matches but the title names two or more endpoints.
     endpoint_pair_type: transmission_line
     default_type: other
+resolution:
+  candidate_power_types: [substation]
+  name_match_threshold: 90
+  name_noise_words: [substation, sub, switching, switchyard, station, primary, pri, plant, dam]
+  name_abbreviations: {n: north, s: south, e: east, w: west, jct: junction, rd: road}
+  name_leading_abbreviations: {st: saint, ft: fort, mt: mount}
+  name_suffix_equivalents: {borough: boro, burgh: burg}
+  distinguishing_tokens: [north, south, east, west, upper, lower, new, old]
+  same_site_radius_km: 3.0
+  max_endpoint_separation_km: 250
+  max_candidates_per_endpoint: 5
+  tie_keywords: [TIE, TIES]
+  tie_exclusion_phrases: [BUS TIE, BUS-TIE]
+  overrides_file: overrides/geometry_overrides.yaml
+# Handoff section 10. Part maxima: source 20 + identity 30 + geometry 35 + timeline 15 = 100.
+evidence:
+  source: {official_with_id: 20, official_weak_id: 15, secondary: 5, none: 0}
+  identity: {name: 10, operator: 10, voltage: 5, region: 5}
+  geometry:
+    verified_full_line: 35
+    verified_endpoints_straight_line: 30
+    verified_endpoint_route: 22
+    verified_single_endpoint: 15
+    human_verified_override: 15
+    approximate_area_centroid: 5
+    unresolved: 0
+  timeline: {construction_window: 15, start_and_in_service: 15, in_service_date: 10, unknown: 0}
+  levels: {high: 80, medium: 50}
+# The sponsor's Projects_Overlaps.xlsx (in the raw folder): a sanity check only, never pipeline input.
+oracle:
+  file: Projects_Overlaps.xlsx
+  sheet: projects
+  project_ids:
+    DESC_1: DESC-6809-E
+    DESC_2: DESC-6810-A
+    DESC_3: DESC-06367-D-G
+    DESC_4: DESC-6807-B
+    DESC_5: DESC-6808-S
+    GPC_1: GPC-20793
+    GPC_2: GPC-20277
+    GPC_3: GPC-20065
+    GPC_4: GPC-18492
+    GPC_5: GPC-11821

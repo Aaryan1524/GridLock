@@ -7,7 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from gridlock.models.domain import ProjectType
+from gridlock.models.domain import GeometryMethod, ProjectType
 
 
 class PathsConfig(BaseModel):
@@ -70,6 +70,9 @@ class OsmConfig(BaseModel):
     timeout_seconds: int = Field(gt=0)
     max_retries: int = Field(ge=0)
     max_response_bytes: int = Field(gt=0)
+    # Wait before retry n is backoff_seconds * 2**n; Overpass asks clients not to retry tightly.
+    backoff_seconds: float = Field(gt=0)
+    user_agent: str = Field(min_length=1)
     feature_types: tuple[str, ...] = Field(min_length=1)
     query_version: str = Field(min_length=1)
 
@@ -149,6 +152,73 @@ class NormalizationConfig(BaseModel):
         return pattern
 
 
+class ResolutionConfig(BaseModel):
+    """Rules for linking a project's named endpoints to public OSM features."""
+
+    candidate_power_types: tuple[str, ...] = Field(min_length=1)
+    name_match_threshold: float = Field(gt=0, le=100)
+    # Words dropped from both names before comparing ("Substation", "Primary", ...).
+    name_noise_words: tuple[str, ...] = ()
+    # Abbreviations expanded on both sides before comparing ("n" -> "north").
+    name_abbreviations: dict[str, str] = Field(default_factory=dict)
+    # Expanded only as a name's first word: "St George" is Saint George, "Williams St" is a street.
+    name_leading_abbreviations: dict[str, str] = Field(default_factory=dict)
+    # Spelling variants applied to word endings on both sides ("queensborough" -> "queensboro").
+    name_suffix_equivalents: dict[str, str] = Field(default_factory=dict)
+    # Tokens that must agree exactly when present in either name ("east" never matches "west").
+    distinguishing_tokens: tuple[str, ...] = ()
+    # Equal-score candidates this close together are treated as one site (separate voltage yards).
+    same_site_radius_km: float = Field(gt=0)
+    # Endpoints of one project resolved further apart than this are treated as a mismatch.
+    max_endpoint_separation_km: float = Field(gt=0)
+    # How many name candidates per endpoint are tried when choosing a plausible combination.
+    max_candidates_per_endpoint: int = Field(ge=1)
+    # Words in a project title or description that mark it as a tie with a neighbouring system.
+    tie_keywords: tuple[str, ...] = ()
+    # Phrases removed before looking for tie keywords, because they name equipment ("bus tie breaker").
+    tie_exclusion_phrases: tuple[str, ...] = ()
+    overrides_file: str
+
+
+class EvidenceLevelsConfig(BaseModel):
+    high: int = Field(ge=0, le=100)
+    medium: int = Field(ge=0, le=100)
+
+    @model_validator(mode="after")
+    def high_above_medium(self) -> "EvidenceLevelsConfig":
+        if not self.medium < self.high:
+            raise ValueError("evidence.levels must satisfy medium < high")
+        return self
+
+
+class EvidenceConfig(BaseModel):
+    """Handoff section 10 point weights; the four part maxima must add up to 100."""
+
+    source: dict[Literal["official_with_id", "official_weak_id", "secondary", "none"], int]
+    identity: dict[Literal["name", "operator", "voltage", "region"], int]
+    geometry: dict[str, int]
+    timeline: dict[Literal["construction_window", "start_and_in_service", "in_service_date", "unknown"], int]
+    levels: EvidenceLevelsConfig
+
+    @model_validator(mode="after")
+    def weights_total_one_hundred(self) -> "EvidenceConfig":
+        missing = {method.value for method in GeometryMethod} - set(self.geometry)
+        if missing:
+            raise ValueError(f"evidence.geometry is missing weights for {sorted(missing)}")
+        total = max(self.source.values()) + sum(self.identity.values()) + max(self.geometry.values()) + max(self.timeline.values())
+        if total != 100:
+            raise ValueError(f"evidence weights must total 100 at their maxima, found {total}")
+        return self
+
+
+class OracleConfig(BaseModel):
+    """The sponsor's worked example, used only to sanity-check our output, never as input."""
+
+    file: str
+    sheet: str
+    project_ids: dict[str, str]
+
+
 class GridlockConfig(BaseModel):
     paths: PathsConfig
     utilities: tuple[str, ...]
@@ -160,6 +230,9 @@ class GridlockConfig(BaseModel):
     osm: OsmConfig
     ai: AiConfig
     normalization: NormalizationConfig
+    resolution: ResolutionConfig
+    evidence: EvidenceConfig
+    oracle: OracleConfig | None = None
 
     @model_validator(mode="after")
     def utility_file_count_matches_scope(self) -> "GridlockConfig":
@@ -197,6 +270,15 @@ class SourceConfig(BaseModel):
     detail_page_end: int | None = Field(default=None, ge=1)
 
 
+class Interconnection(BaseModel):
+    """A neighbouring system. Its substations are accepted as endpoints only when the filing says so:
+    a matching qualifier on the endpoint ("WEBB (APC)"), a tie keyword, or always for co-owners."""
+
+    operators: tuple[str, ...] = Field(min_length=1)
+    qualifiers: tuple[str, ...] = ()
+    always_allowed: bool = False
+
+
 class UtilityConfig(BaseModel):
     id: str
     # Upper-case code used on project records and as the project ID prefix, e.g. DESC.
@@ -205,5 +287,34 @@ class UtilityConfig(BaseModel):
     color: str
     states: tuple[str, ...]
     operator_aliases: tuple[str, ...] = ()
+    # Neighbouring or co-owning systems whose substations can be the far end of this utility's lines.
+    interconnections: tuple[Interconnection, ...] = ()
+    # West, south, east, north box that endpoints must fall inside, including tie-line neighbours.
+    service_area_bbox: tuple[float, float, float, float]
+    # Narrower boxes for sponsors with their own territory (e.g. GPC's Savannah zone).
+    sponsor_service_areas: dict[str, tuple[float, float, float, float]] = Field(default_factory=dict)
     included_sponsors: tuple[str, ...] = ()
     sources: tuple[SourceConfig, ...]
+
+    @model_validator(mode="after")
+    def service_area_is_ordered(self) -> "UtilityConfig":
+        west, south, east, north = self.service_area_bbox
+        if west >= east or south >= north:
+            raise ValueError("service_area_bbox must be ordered west, south, east, north")
+        return self
+
+
+class GeometryOverride(BaseModel):
+    """A human-verified endpoint location from a public source, used when OSM has no usable match."""
+
+    utility: str = Field(pattern=r"^[A-Z][A-Z0-9_]*$")
+    endpoint: str = Field(min_length=1)
+    lat: float = Field(ge=-90, le=90)
+    lon: float = Field(ge=-180, le=180)
+    source: str = Field(min_length=1)
+    reviewer: str = Field(min_length=1)
+    note: str = Field(min_length=1)
+
+
+class GeometryOverrides(BaseModel):
+    overrides: tuple[GeometryOverride, ...] = ()
