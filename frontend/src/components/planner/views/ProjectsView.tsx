@@ -143,6 +143,8 @@ export function ProjectsView({ payload, onInspect, onOpenZone }: Props) {
                 data-location={loc}
                 onClick={() => onInspect(project.id)}
                 onKeyDown={(event) => {
+                  // Only keys pressed on the row itself; the zone links inside it handle their own.
+                  if (event.target !== event.currentTarget) return;
                   if (event.key === "Enter" || event.key === " ") {
                     event.preventDefault();
                     onInspect(project.id);

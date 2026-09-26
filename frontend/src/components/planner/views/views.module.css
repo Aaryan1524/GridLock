@@ -1,10 +1,5 @@
 /* Overview, Projects and Data quality views; the Zones view keeps the V1 workspace styles. */
 
-.scroll {
-  overflow-y: auto;
-  min-height: 0;
-}
-
 /* ---------- Overview ---------- */
 
 .overview {
