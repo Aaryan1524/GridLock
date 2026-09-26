@@ -2,7 +2,8 @@
 
 import type { GridlockPayload, Zone } from "@/lib/contract";
 import { countOf, formatDays, formatDistance, formatNumber, label, projectIndex, utilityName } from "@/lib/format";
-import { priorityCounts, spatialLabel, topRelationshipOf } from "@/lib/presentation";
+import { topRelationship } from "@/lib/mapData";
+import { priorityCounts, spatialLabel } from "@/lib/presentation";
 
 import { OverviewMap } from "../OverviewMap";
 import styles from "./views.module.css";
@@ -16,7 +17,7 @@ interface Props {
 
 function ZoneSummary({ payload, zone, eyebrow, onInvestigate }: { payload: GridlockPayload; zone: Zone; eyebrow: string; onInvestigate: (id: string) => void }) {
   const { metadata } = payload;
-  const top = topRelationshipOf(payload, zone);
+  const top = topRelationship(payload, zone);
   const projects = projectIndex(payload);
   const spatial = top ? spatialLabel(metadata, top, projects) : null;
   return (

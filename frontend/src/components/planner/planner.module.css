@@ -70,7 +70,7 @@
 
 .shell {
   display: grid;
-  grid-template-columns: 148px minmax(0, 1fr);
+  grid-template-columns: 164px minmax(0, 1fr);
   min-height: 0;
 }
 

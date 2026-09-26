@@ -23,7 +23,7 @@ export function ZonesView({ payload, zone, onSelectZone, onInspect }: Props) {
 
   return (
     <div className={styles.workspace}>
-      <ZoneRail zones={payload.zones} metadata={payload.metadata} selectedId={zone?.id ?? null} onSelect={onSelectZone} />
+      <ZoneRail payload={payload} selectedId={zone?.id ?? null} onSelect={onSelectZone} />
       <section className={styles.mapRegion} aria-label="Map">
         <MapView payload={payload} zone={zone} showAll={showAll} onShowAllChange={setShowAll} onProjectClick={onInspect} />
       </section>

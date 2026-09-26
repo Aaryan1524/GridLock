@@ -38,10 +38,6 @@ export function spatialLabel(metadata: Metadata, relationship: Relationship, pro
   return { short: tier, long: tier };
 }
 
-export function topRelationshipOf(payload: GridlockPayload, zone: Zone): Relationship | undefined {
-  return payload.relationships.find((relationship) => relationship.id === zone.topRelationshipId);
-}
-
 export type LocationStatus = "resolved" | "approximate" | "human_verified" | "unresolved";
 
 export const LOCATION_STATUS_LABELS: Record<LocationStatus, string> = {
