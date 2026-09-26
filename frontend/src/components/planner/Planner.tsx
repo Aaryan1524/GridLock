@@ -9,8 +9,10 @@ import type { GridlockPayload } from "@/lib/contract";
 import { formatNumber, utilityName } from "@/lib/format";
 
 import { StatusNotice } from "../shared/StatusNotice";
+import { EvidenceDrawer } from "./EvidenceDrawer";
 import { MapView } from "./MapView";
 import styles from "./planner.module.css";
+import { ZonePanel } from "./ZonePanel";
 import { ZoneRail } from "./ZoneRail";
 
 function Workspace({ payload }: { payload: GridlockPayload }) {
@@ -22,6 +24,7 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
   const selected = useMemo(() => zones.find((zone) => zone.id === requested) ?? zones[0] ?? null, [zones, requested]);
   const [showAll, setShowAll] = useState(false);
   const [inspecting, setInspecting] = useState<string | null>(null);
+  const closeEvidence = useCallback(() => setInspecting(null), []);
 
   const select = useCallback(
     (zoneId: string) => {
@@ -38,9 +41,13 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
         <MapView payload={payload} zone={selected} showAll={showAll} onShowAllChange={setShowAll} onProjectClick={setInspecting} />
       </section>
       <aside className={styles.panel} aria-label="Selected zone">
-        {selected ? <h2 className="display">{selected.name}</h2> : <p className="muted">No coordination zones in this payload.</p>}
-        {inspecting && <p className="mono-plain">Inspecting {inspecting}</p>}
+        {selected ? (
+          <ZonePanel payload={payload} zone={selected} onInspect={setInspecting} />
+        ) : (
+          <p className="muted pad">No coordination zones in this payload.</p>
+        )}
       </aside>
+      {inspecting && <EvidenceDrawer payload={payload} projectId={inspecting} onClose={closeEvidence} />}
     </div>
   );
 }

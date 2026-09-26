@@ -53,6 +53,14 @@
         "MEDIUM": "Medium",
         "LOW": "Low"
       },
+      "endpoint_match_status": {
+        "matched": "Matched to public geometry",
+        "override": "Human-verified location",
+        "no_candidate": "No public feature with this name",
+        "ambiguous": "Several equally good candidates",
+        "vetoed": "Candidate rejected by a deterministic check",
+        "separation_rejected": "Candidates too far apart to be one project"
+      },
       "evidence_levels": {
         "HIGH": "High",
         "MEDIUM": "Medium",
