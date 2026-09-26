@@ -213,6 +213,7 @@ class Relationship(ContractModel):
     timeline: Timeline
     # Set by ranking (Phase 6); absent on raw overlap-engine output.
     opportunity_priority: Priority | None = None
+    rank: int | None = Field(default=None, ge=1)
     coordination_playbook: list[str] = Field(default_factory=list)
     evidence: Evidence
 
@@ -224,17 +225,43 @@ class Bounds(ContractModel):
     north: float = Field(ge=-90, le=90)
 
 
+class DateRange(ContractModel):
+    start: date | None = None
+    end: date | None = None
+
+
 class Zone(ContractModel):
+    """A regional coordination situation: a guarded group of related cross-utility relationships."""
+
     id: str = Field(min_length=1)
+    rank: int | None = Field(default=None, ge=1)
     name: str = Field(min_length=1)
     project_ids: list[str] = Field(default_factory=list)
     relationship_ids: list[str] = Field(default_factory=list)
+    # The relationship the zone is ranked by; its closest points name the zone.
+    top_relationship_id: str | None = None
     utilities: list[UtilityCode] = Field(default_factory=list)
     closest_distance_km: float = Field(ge=0)
+    # Smallest date gap among the zone's relationships.
+    best_gap_days: int | None = Field(default=None, ge=0)
+    in_service_range: DateRange = Field(default_factory=DateRange)
+    geographic_span_km: float | None = Field(default=None, ge=0)
+    timeline_span_days: int | None = Field(default=None, ge=0)
     opportunity_priority: Priority
+    # The weakest evidence among the zone's relationships.
     evidence_level: EvidenceLevel
     coordination_themes: list[str] = Field(default_factory=list)
     bounds: Bounds
+    warnings: list[str] = Field(default_factory=list)
+
+
+class SourceSnapshot(ContractModel):
+    """A public input the payload was built from."""
+
+    kind: str = Field(min_length=1)
+    name: str = Field(min_length=1)
+    retrieved_at: str | None = None
+    sha256: str | None = None
 
 
 class Metadata(ContractModel):
@@ -242,11 +269,37 @@ class Metadata(ContractModel):
     fixture: bool = False
     distance_unit: str = "km"
     thresholds_km: dict[str, float]
+    timeline_gap_days: dict[str, int] = Field(default_factory=dict)
+    zone_guards: dict[str, Any] = Field(default_factory=dict)
     utility_colors: dict[str, str]
+    utility_names: dict[str, str] = Field(default_factory=dict)
+    # Display labels by vocabulary (tiers, relevance, playbook, ...); the UI never hardcodes them.
+    labels: dict[str, dict[str, str]] = Field(default_factory=dict)
+    sources: list[SourceSnapshot] = Field(default_factory=list)
+
+
+class Metrics(ContractModel):
+    """Handoff section 28 metrics, computed from the real run; nothing here is estimated."""
+
+    projects: int = Field(ge=0)
+    projects_by_utility: dict[str, int]
+    located_projects: int = Field(ge=0)
+    # Projects without geometry were not assessed for overlap; that is not the same as "no overlap".
+    not_assessed_by_utility: dict[str, int]
+    projects_with_named_endpoints: int = Field(ge=0)
+    automatic_resolution_rate: float = Field(ge=0, le=1)
+    human_verified_endpoints: int = Field(ge=0)
+    relationships: int = Field(ge=0)
+    relationships_by_tier: dict[str, int]
+    zones: int = Field(ge=0)
+    attention_compression_ratio: float | None = None
+    evidence_distribution: dict[str, int]
+    geometry_distribution: dict[str, int]
 
 
 class Payload(ContractModel):
     metadata: Metadata
+    metrics: Metrics | None = None
     projects: list[Project] = Field(default_factory=list)
     relationships: list[Relationship] = Field(default_factory=list)
     zones: list[Zone] = Field(default_factory=list)

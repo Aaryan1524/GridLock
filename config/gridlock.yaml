@@ -170,6 +170,59 @@ overlap:
     crews: Crews
     contractors: Contractors
     heavy_equipment: Heavy equipment and mobilization
+zones:
+  # Handoff section 14 guards. Zones partition relationships, so no relationship is ever dropped.
+  max_geographic_span_km: 60
+  max_timeline_span_days: 730
+  # "warn" flags zones whose in-service dates spread beyond the limit; "split" enforces it.
+  # Chosen on the real data (2026-09-26): 48 of 55 relationships are over a year apart, so
+  # splitting leaves ~44 single-relationship zones and no attention compression.
+  timeline_guard: warn
+  max_projects: null
+  id_prefix: ZONE
+  name_strip_words: [Substation, Switching Station, Switchyard]
+  name_separator: " – "
+# Handoff section 15: spatial tier first, timeline relevance second; evidence never changes priority.
+priority:
+  rules:
+    - {priority: HIGH, tiers: [CROSSING, SHARED_CORRIDOR]}
+    - {priority: HIGH, tiers: [SITE_LOGISTICS], relevance: [OVERLAPPING, STRONG, MEANINGFUL]}
+    - {priority: MEDIUM, tiers: [SITE_LOGISTICS]}
+    - {priority: MEDIUM, tiers: [CREWS_EQUIPMENT], relevance: [OVERLAPPING, STRONG]}
+  default: LOW
+labels:
+  spatial_tiers:
+    CROSSING: Touching or crossing
+    SHARED_CORRIDOR: Shared corridor
+    SITE_LOGISTICS: Site logistics
+    CREWS_EQUIPMENT: Crews and equipment
+  timeline_types:
+    IN_SERVICE_GAP: In-service date gap
+    WINDOW_OVERLAP: Construction windows overlap
+    WINDOW_GAP: Gap between construction windows
+    UNRESOLVED: Dates unknown
+  timeline_relevance:
+    OVERLAPPING: Overlapping
+    STRONG: Strong
+    MEANINGFUL: Meaningful
+    POSSIBLE: Possible
+    WEAK: Weak
+    UNKNOWN: Unknown
+  priority: {HIGH: High, MEDIUM: Medium, LOW: Low}
+  evidence_levels: {HIGH: High, MEDIUM: Medium, LOW: Low, UNRESOLVED: Unresolved}
+  geometry_methods:
+    verified_full_line: Verified line geometry
+    verified_endpoints_straight_line: Straight line between verified endpoints
+    verified_endpoint_route: One verified endpoint with route evidence
+    verified_single_endpoint: One verified endpoint
+    human_verified_override: Human-verified location
+    approximate_area_centroid: Approximate area
+    unresolved: Not located
+api:
+  host: 127.0.0.1
+  port: 8000
+  cors_origins: [http://localhost:3000]
+  payload_file: gridlock.json
 # The sponsor's Projects_Overlaps.xlsx (in the raw folder): a sanity check only, never pipeline input.
 oracle:
   file: Projects_Overlaps.xlsx

@@ -12,6 +12,7 @@ from .contract import export_contract, validate_payload
 from .georesolution import resolve_projects
 from .georesolution.oracle import HEADER, OVERLAP_HEADER, oracle_check, overlap_oracle_check
 from .overlap import run_overlap
+from .pipeline import PipelineError, build_payload, run_pipeline, summarize
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
@@ -40,6 +41,11 @@ def build_parser() -> argparse.ArgumentParser:
     commands.add_parser("resolve", help="resolve projects to public OSM geometry")
     commands.add_parser("oracle", help="compare resolved endpoints with the sponsor's worked example")
     commands.add_parser("overlap", help="measure and classify cross-utility project relationships")
+    commands.add_parser("payload", help="build graph, zones, ranking and the frontend payload from stage outputs")
+    run_parser = commands.add_parser("run", help="run every stage and build the payload")
+    run_parser.add_argument("--offline", action="store_true", help="read OSM from the local cache only")
+    run_parser.add_argument("--skip-ingest", action="store_true", help="reuse the committed normalized projects")
+    commands.add_parser("serve", help="serve the payload read-only over HTTP")
     inspect_parser = commands.add_parser("inspect", help="print one normalized project record")
     inspect_parser.add_argument("project_id")
     inspect_parser.add_argument("--resolved", action="store_true", help="read the geometry-resolved output instead")
@@ -136,6 +142,35 @@ def main(argv: Sequence[str] | None = None) -> int:
             overlaps = overlap_oracle_check(bundle, Path(__file__).resolve().parents[3], relationships)
             print()
             _print_table(OVERLAP_HEADER, [row.as_list() for row in overlaps], [10, 30, 9, 14, 16, 8, 12, 16])
+        return 0
+    if args.command in {"payload", "run"}:
+        root = Path(__file__).resolve().parents[3]
+        try:
+            bundle = load_settings(args.config)
+            if args.command == "run":
+                result = run_pipeline(bundle, root, offline=args.offline, skip_ingest=args.skip_ingest)
+            else:
+                result = build_payload(bundle, root)
+        except (ConfigError, PipelineError, IngestionError, OsmIngestionError, OSError, ValueError) as error:
+            print(f"Pipeline error: {error}")
+            return 2
+        print()
+        print("\n".join(summarize(result.payload)))
+        print(f"\nWrote {result.output_path}")
+        return 0
+    if args.command == "serve":
+        import uvicorn
+
+        try:
+            bundle = load_settings(args.config)
+        except ConfigError as error:
+            print(f"Configuration error: {error}")
+            return 2
+        api = bundle.root.api
+        host = os.environ.get("GRIDLOCK_API_HOST") or api.host
+        port = int(os.environ.get("GRIDLOCK_API_PORT") or api.port)
+        os.environ.setdefault("GRIDLOCK_CONFIG", str(Path(args.config).resolve()))
+        uvicorn.run("gridlock.api.app:app", host=host, port=port)
         return 0
     if args.command == "overlap":
         try:
