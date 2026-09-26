@@ -1,5 +1,7 @@
 "use client";
 
+import type { CSSProperties } from "react";
+
 import type { GridlockPayload, Project, Zone } from "@/lib/contract";
 import { countOf, formatDays, formatDistance, label, utilityColor, utilityName } from "@/lib/format";
 import { topRelationship } from "@/lib/mapData";
@@ -72,7 +74,7 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
           <div className={styles.pair}>
             {[a, b].map((project, index) => (
               <button key={project.id} type="button" className={styles.pairProject} onClick={() => onInspect(project.id)}>
-                <span className="mono-plain" style={{ color: utilityColor(metadata, project.utility) }}>
+                <span className="mono-plain utility-ink" style={{ "--utility": utilityColor(metadata, project.utility) } as CSSProperties}>
                   {utilityName(metadata, project.utility)}
                 </span>
                 <span>{project.projectName}</span>

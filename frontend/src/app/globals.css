@@ -1,5 +1,7 @@
 /* GridLock design system: editorial infrastructure intelligence.
-   Graphite surfaces, warm ivory type, a visible hairline grid, one restrained accent. */
+   Dark (default): graphite surfaces, warm ivory type, a visible hairline grid, one restrained accent.
+   Light: the same system printed on warm technical paper (see [data-theme="light"] below).
+   Components only ever reference these tokens, so one set of styles renders both themes. */
 
 :root {
   color-scheme: dark;
@@ -22,6 +24,23 @@
   --neutral-soft: rgba(143, 138, 128, 0.12);
   --positive: #a8b98a;
   --caution: #c9a45f;
+  --accent-line: rgba(217, 130, 91, 0.45);
+  --amber-line: rgba(201, 164, 95, 0.4);
+
+  /* Floating surfaces over the map (badges, legend, toggles) and the drawer scrim; used as rgba(var(--overlay-rgb), alpha). */
+  --overlay-rgb: 17, 17, 15;
+  --scrim: rgba(8, 8, 7, 0.55);
+  --track: rgba(163, 158, 146, 0.15);
+  --grain-opacity: 0.035;
+
+  /* Map. The bundled offline basemap; project outlines are invisible in dark, where the utility colors already contrast. */
+  --map-bg: #0b0b0a;
+  --map-land: #171714;
+  --map-outline: rgba(236, 229, 214, 0.22);
+  --map-casing: rgba(0, 0, 0, 0);
+  /* Optional tints for the online basemap; empty leaves the provider's colors untouched. */
+  --map-tint-land: ;
+  --map-tint-water: ;
 
   --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-sans: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
@@ -32,6 +51,43 @@
   --columns: 12;
   --radius: 2px;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Light: warm paper, dark ink, drafting-guide hairlines. Only values change; names and usage stay the same. */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #f2efe8;
+  --bg-raised: #e9e5dc;
+  --bg-sunken: #ebe7df;
+  --line: rgba(27, 27, 24, 0.09);
+  --line-strong: rgba(27, 27, 24, 0.2);
+  --text: #1b1b18;
+  --muted: #58544c;
+  --faint: #7a756b;
+
+  --accent: #ad552a;
+  --accent-soft: rgba(173, 85, 42, 0.1);
+  --amber: #86651c;
+  --amber-soft: rgba(134, 101, 28, 0.1);
+  --neutral: #67635a;
+  --neutral-soft: rgba(103, 99, 90, 0.1);
+  --positive: #56693a;
+  --caution: #86651c;
+  --accent-line: rgba(173, 85, 42, 0.4);
+  --amber-line: rgba(134, 101, 28, 0.38);
+
+  --overlay-rgb: 246, 243, 236;
+  --scrim: rgba(27, 27, 24, 0.28);
+  --track: rgba(88, 84, 76, 0.14);
+  --grain-opacity: 0.05;
+
+  --map-bg: #e3dfd5;
+  --map-land: #f4f1ea;
+  --map-outline: rgba(27, 27, 24, 0.28);
+  --map-casing: rgba(27, 27, 24, 0.55);
+  --map-tint-land: #efebe3;
+  --map-tint-water: #d9dcd8;
 }
 
 *,
@@ -64,7 +120,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 100;
-  opacity: 0.035;
+  opacity: var(--grain-opacity);
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
 }
 
@@ -113,6 +169,16 @@ a {
 
 .faint {
   color: var(--faint);
+}
+
+/* Text in a utility's configured color (set inline as --utility). On paper, light utility colors
+   are mixed toward the ink so the text stays readable; the hue still identifies the utility. */
+.utility-ink {
+  color: var(--utility);
+}
+
+:root[data-theme="light"] .utility-ink {
+  color: color-mix(in srgb, var(--utility) 55%, var(--text));
 }
 
 /* ---------- Grid framework ---------- */
@@ -222,13 +288,13 @@ a {
 
 .tag[data-priority="HIGH"] {
   color: var(--accent);
-  border-color: rgba(217, 130, 91, 0.45);
+  border-color: var(--accent-line);
   background: var(--accent-soft);
 }
 
 .tag[data-priority="MEDIUM"] {
   color: var(--amber);
-  border-color: rgba(201, 164, 95, 0.4);
+  border-color: var(--amber-line);
   background: var(--amber-soft);
 }
 

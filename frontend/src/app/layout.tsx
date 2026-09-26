@@ -8,6 +8,8 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
+import { DEFAULT_THEME, THEME_INIT_SCRIPT } from "@/lib/themeScript";
+
 export const metadata: Metadata = {
   title: "GridLock — cross-utility transmission coordination",
   description:
@@ -16,7 +18,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`}>
+    // The init script may change data-theme before hydration, hence suppressHydrationWarning on <html> only.
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} data-theme={DEFAULT_THEME} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+      </head>
       <body>{children}</body>
     </html>
   );

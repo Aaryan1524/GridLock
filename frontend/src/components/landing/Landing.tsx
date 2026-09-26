@@ -8,6 +8,7 @@ import { formatDays, formatDistance, formatNumber, label, projectIndex, utilityN
 
 import { Coverage } from "../shared/Coverage";
 import { StatusNotice } from "../shared/StatusNotice";
+import { ThemeToggle } from "../shared/ThemeToggle";
 import styles from "./landing.module.css";
 
 const OLD_WAY = ["Utility A plan", "Utility B plan", "Separate PDFs", "Separate timelines", "Manual comparison", "Dozens of possible project pairs"];
@@ -84,9 +85,12 @@ export function Landing() {
     <main className={styles.page}>
       <header className={`frame ${styles.nav}`}>
         <span className={styles.wordmark}>GridLock</span>
-        <Link className="mono" href="/planner">
-          Planner →
-        </Link>
+        <span className={styles.navActions}>
+          <ThemeToggle />
+          <Link className="mono" href="/planner">
+            Planner →
+          </Link>
+        </span>
       </header>
 
       <section className={`frame guides rule-top ${styles.hero}`}>

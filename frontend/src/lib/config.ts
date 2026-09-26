@@ -10,6 +10,7 @@ export const runtimeConfig = {
   apiBaseUrl: (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/+$/, ""),
   apiService: process.env.NEXT_PUBLIC_API_SERVICE ?? "",
   mapStyleUrl: process.env.NEXT_PUBLIC_MAP_STYLE_URL ?? "",
+  mapStyleUrlLight: process.env.NEXT_PUBLIC_MAP_STYLE_URL_LIGHT ?? "",
   mapStyleTimeoutMs: number(process.env.NEXT_PUBLIC_MAP_STYLE_TIMEOUT_MS),
 } as const;
 

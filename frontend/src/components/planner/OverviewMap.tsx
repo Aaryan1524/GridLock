@@ -68,12 +68,27 @@ function addLayers(map: MapLibreMap) {
     source: ZONES,
     paint: { "line-color": tone, "line-width": ["case", ["get", "selected"], 2, 1], "line-opacity": ["case", ["get", "selected"], 1, 0.6], "line-dasharray": [3, 2] },
   });
+  // Thin ink outline under project geometry so light utility colors hold on paper; transparent in dark.
+  map.addLayer({
+    id: "ov-project-casing",
+    type: "line",
+    source: PROJECTS,
+    filter: ["==", ["geometry-type"], "LineString"],
+    paint: { "line-color": token("--map-casing"), "line-width": ["case", zoneRole, 3.4, 2.4], "line-opacity": ["case", zoneRole, 0.75, 0.06] },
+  });
   map.addLayer({
     id: "ov-project-lines",
     type: "line",
     source: PROJECTS,
     filter: ["==", ["geometry-type"], "LineString"],
     paint: { "line-color": ["get", "color"], "line-width": ["case", zoneRole, 1.8, 1], "line-opacity": ["case", zoneRole, 0.85, 0.25] },
+  });
+  map.addLayer({
+    id: "ov-project-point-casing",
+    type: "circle",
+    source: PROJECTS,
+    filter: ["==", ["geometry-type"], "Point"],
+    paint: { "circle-radius": ["case", zoneRole, 4.8, 3.2], "circle-color": token("--map-casing"), "circle-opacity": ["case", zoneRole, 0.8, 0.08] },
   });
   map.addLayer({
     id: "ov-project-points",

@@ -20,6 +20,17 @@
   text-decoration: none;
 }
 
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* The theme switch is taller than the nav text; keep it from changing the nav's height. */
+.navActions > [role="group"] {
+  margin-block: -4px;
+}
+
 .nav a:hover {
   color: var(--text);
 }

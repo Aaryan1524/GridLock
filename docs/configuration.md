@@ -63,6 +63,7 @@ Never use the sponsor spreadsheet as a source.
 | `NEXT_PUBLIC_API_BASE_URL` | frontend | Where the API is |
 | `NEXT_PUBLIC_API_SERVICE` | frontend | Must equal `api.service_name`; any other server is refused |
 | `NEXT_PUBLIC_MAP_STYLE_URL` | frontend | Online basemap style; empty means always use the bundled map |
+| `NEXT_PUBLIC_MAP_STYLE_URL_LIGHT` | frontend | Online basemap style for the light theme; empty means the bundled map in light colors |
 | `NEXT_PUBLIC_MAP_STYLE_TIMEOUT_MS` | frontend | Wait before switching to the bundled map |
 | `NEXT_DIST_DIR` | frontend (process only) | Separate build folder, for running a second server beside a dev server |
 

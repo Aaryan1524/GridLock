@@ -36,7 +36,7 @@
 .badge,
 .toggle,
 .legend {
-  background: rgba(17, 17, 15, 0.86);
+  background: rgba(var(--overlay-rgb), 0.86);
   border: 1px solid var(--line);
   border-radius: var(--radius);
   backdrop-filter: none;
@@ -121,7 +121,7 @@
 }
 
 .frame :global(.maplibregl-ctrl-attrib) {
-  background: rgba(17, 17, 15, 0.8);
+  background: rgba(var(--overlay-rgb), 0.8);
   color: var(--faint);
 }
 
@@ -149,7 +149,7 @@
   letter-spacing: 0.06em;
   white-space: pre;
   color: var(--text);
-  background: rgba(17, 17, 15, 0.9);
+  background: rgba(var(--overlay-rgb), 0.9);
   border: 1px solid var(--line-strong);
   border-left: 3px solid var(--neutral);
   border-radius: var(--radius);

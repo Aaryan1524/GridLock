@@ -34,7 +34,18 @@ function addLayers(map: MapLibreMap) {
   const point: ExpressionSpecification = ["==", ["geometry-type"], "Point"];
   const width: ExpressionSpecification = ["match", ["get", "role"], "top", 4, "zone", 2.2, 1];
   const opacity: ExpressionSpecification = ["match", ["get", "role"], "top", 1, "zone", 0.8, 0.28];
+  // Outlines fade faster than the lines, so faint background projects stay faint rather than muddy.
+  const casingOpacity: ExpressionSpecification = ["match", ["get", "role"], "top", 1, "zone", 0.7, 0.08];
 
+  // Thin ink outline under project geometry so light utility colors hold on paper; transparent in dark.
+  map.addLayer({
+    id: "gl-project-casing",
+    type: "line",
+    source: PROJECTS,
+    filter: ["all", line, ["!", ["get", "approximate"]]],
+    layout: { "line-cap": "round" },
+    paint: { "line-color": token("--map-casing"), "line-width": ["+", width, 2], "line-opacity": casingOpacity },
+  });
   map.addLayer({
     id: "gl-project-lines",
     type: "line",
@@ -68,6 +79,17 @@ function addLayers(map: MapLibreMap) {
     source: CONNECTORS,
     filter: ["get", "top"],
     paint: { "line-color": token("--accent"), "line-width": 2.5 },
+  });
+  map.addLayer({
+    id: "gl-project-point-casing",
+    type: "circle",
+    source: PROJECTS,
+    filter: point,
+    paint: {
+      "circle-radius": ["+", ["match", ["get", "role"], "top", 7, "zone", 5, 2.5], ["case", ["==", ["get", "role"], "background"], 2, 3]],
+      "circle-color": token("--map-casing"),
+      "circle-opacity": casingOpacity,
+    },
   });
   map.addLayer({
     id: "gl-project-points",

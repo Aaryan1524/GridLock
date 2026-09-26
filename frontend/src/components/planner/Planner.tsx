@@ -9,6 +9,7 @@ import { formatNumber, utilityName } from "@/lib/format";
 import { usePlannerState } from "@/lib/plannerState";
 
 import { StatusNotice } from "../shared/StatusNotice";
+import { ThemeToggle } from "../shared/ThemeToggle";
 import { EvidenceDrawer } from "./EvidenceDrawer";
 import styles from "./planner.module.css";
 import { PlannerNav } from "./PlannerNav";
@@ -62,31 +63,34 @@ export function Planner() {
           </Link>
           <span className="muted">Cross-utility coordination planner</span>
         </div>
-        {payload && metrics && (
-          <dl className={styles.headerStats}>
-            <div>
-              <dt className="mono">Zones</dt>
-              <dd>{formatNumber(metrics.zones)}</dd>
-            </div>
-            <div>
-              <dt className="mono">Relationships</dt>
-              <dd>{formatNumber(metrics.relationships)}</dd>
-            </div>
-            <div>
-              <dt className="mono">Compression</dt>
-              <dd>{metrics.attentionCompressionRatio != null ? `${metrics.attentionCompressionRatio}×` : "—"}</dd>
-            </div>
-            <div className={styles.headerSource}>
-              <dt className="mono">Sources</dt>
-              <dd className="mono-plain">
-                {Object.keys(metrics.projectsByUtility)
-                  .map((code) => utilityName(payload.metadata, code))
-                  .join(" + ")}{" "}
-                · public planning data
-              </dd>
-            </div>
-          </dl>
-        )}
+        <div className={styles.headerActions}>
+          {payload && metrics && (
+            <dl className={styles.headerStats}>
+              <div>
+                <dt className="mono">Zones</dt>
+                <dd>{formatNumber(metrics.zones)}</dd>
+              </div>
+              <div>
+                <dt className="mono">Relationships</dt>
+                <dd>{formatNumber(metrics.relationships)}</dd>
+              </div>
+              <div>
+                <dt className="mono">Compression</dt>
+                <dd>{metrics.attentionCompressionRatio != null ? `${metrics.attentionCompressionRatio}×` : "—"}</dd>
+              </div>
+              <div className={styles.headerSource}>
+                <dt className="mono">Sources</dt>
+                <dd className="mono-plain">
+                  {Object.keys(metrics.projectsByUtility)
+                    .map((code) => utilityName(payload.metadata, code))
+                    .join(" + ")}{" "}
+                  · public planning data
+                </dd>
+              </div>
+            </dl>
+          )}
+          <ThemeToggle />
+        </div>
       </header>
       {state.status === "ready" ? (
         <Workspace payload={state.payload} />

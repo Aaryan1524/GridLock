@@ -18,6 +18,13 @@
   flex-wrap: wrap;
 }
 
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+
 .brand {
   display: flex;
   align-items: baseline;
@@ -164,7 +171,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--muted);
-  background: rgba(17, 17, 15, 0.92);
+  background: rgba(var(--overlay-rgb), 0.92);
   border: 1px solid var(--line-strong);
   border-right: 0;
   border-radius: var(--radius) 0 0 var(--radius);
@@ -362,6 +369,20 @@
 }
 
 @media (max-width: 560px) {
+  /* The theme switch sits beside the wordmark; the figures take the next row. */
+  .headerActions {
+    display: contents;
+  }
+
+  .brand {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .headerStats {
+    order: 1;
+  }
+
   .plannerNav button {
     grid-template-columns: minmax(0, 1fr);
     padding: 12px 8px;
