@@ -10,6 +10,10 @@ export interface ConstructionWindow {
   startDate: string;
   endDate: string;
 }
+export interface DateRange {
+  start?: string | null;
+  end?: string | null;
+}
 export interface Endpoint {
   name: string;
   role?: EndpointRole;
@@ -52,7 +56,27 @@ export interface Metadata {
   fixture?: boolean;
   distanceUnit?: string;
   thresholdsKm: Record<string, unknown>;
+  timelineGapDays?: Record<string, unknown>;
+  zoneGuards?: Record<string, unknown>;
   utilityColors: Record<string, unknown>;
+  utilityNames?: Record<string, unknown>;
+  labels?: Record<string, unknown>;
+  sources?: Array<SourceSnapshot>;
+}
+export interface Metrics {
+  projects: number;
+  projectsByUtility: Record<string, unknown>;
+  locatedProjects: number;
+  notAssessedByUtility: Record<string, unknown>;
+  projectsWithNamedEndpoints: number;
+  automaticResolutionRate: number;
+  humanVerifiedEndpoints: number;
+  relationships: number;
+  relationshipsByTier: Record<string, unknown>;
+  zones: number;
+  attentionCompressionRatio?: number | null;
+  evidenceDistribution: Record<string, unknown>;
+  geometryDistribution: Record<string, unknown>;
 }
 export interface Point {
   lat: number;
@@ -92,6 +116,7 @@ export interface Relationship {
   approximate: boolean;
   timeline: Timeline;
   opportunityPriority?: Priority | null;
+  rank?: number | null;
   coordinationPlaybook?: Array<string>;
   evidence: Evidence;
 }
@@ -101,6 +126,12 @@ export interface SourceRef {
   page: number;
   rawText?: string | null;
   rawFields?: Record<string, unknown>;
+}
+export interface SourceSnapshot {
+  kind: string;
+  name: string;
+  retrievedAt?: string | null;
+  sha256?: string | null;
 }
 export type SpatialTier = "CROSSING" | "SHARED_CORRIDOR" | "SITE_LOGISTICS" | "CREWS_EQUIPMENT";
 export interface Timeline {
@@ -114,18 +145,37 @@ export type TimelineRelevance = "OVERLAPPING" | "STRONG" | "MEANINGFUL" | "POSSI
 export type TimelineType = "IN_SERVICE_GAP" | "WINDOW_OVERLAP" | "WINDOW_GAP" | "UNRESOLVED";
 export interface Zone {
   id: string;
+  rank?: number | null;
   name: string;
   projectIds?: Array<string>;
   relationshipIds?: Array<string>;
+  topRelationshipId?: string | null;
+  headline?: ZoneHeadline | null;
   utilities?: Array<string>;
   closestDistanceKm: number;
+  inServiceRange?: DateRange;
+  geographicSpanKm?: number | null;
+  timelineSpanDays?: number | null;
   opportunityPriority: Priority;
   evidenceLevel: EvidenceLevel;
   coordinationThemes?: Array<string>;
   bounds: Bounds;
+  warnings?: Array<string>;
+}
+export interface ZoneHeadline {
+  relationshipId: string;
+  projectA: string;
+  projectB: string;
+  distanceKm: number;
+  spatialTier: SpatialTier;
+  timelineType: TimelineType;
+  gapDays?: number | null;
+  timelineRelevance: TimelineRelevance;
+  opportunityPriority: Priority;
 }
 export interface Payload {
   metadata: Metadata;
+  metrics?: Metrics | null;
   projects?: Array<Project>;
   relationships?: Array<Relationship>;
   zones?: Array<Zone>;

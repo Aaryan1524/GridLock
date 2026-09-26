@@ -56,6 +56,38 @@
       "title": "ConstructionWindow",
       "type": "object"
     },
+    "DateRange": {
+      "properties": {
+        "end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "End"
+        },
+        "start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Start"
+        }
+      },
+      "title": "DateRange",
+      "type": "object"
+    },
     "Endpoint": {
       "properties": {
         "name": {
@@ -336,10 +368,27 @@
           "title": "Fixture",
           "type": "boolean"
         },
+        "labels": {
+          "additionalProperties": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
+          "title": "Labels",
+          "type": "object"
+        },
         "schemaVersion": {
           "default": "1.0",
           "title": "Schemaversion",
           "type": "string"
+        },
+        "sources": {
+          "items": {
+            "$ref": "#/$defs/SourceSnapshot"
+          },
+          "title": "Sources",
+          "type": "array"
         },
         "thresholdsKm": {
           "additionalProperties": {
@@ -348,11 +397,30 @@
           "title": "Thresholdskm",
           "type": "object"
         },
+        "timelineGapDays": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Timelinegapdays",
+          "type": "object"
+        },
         "utilityColors": {
           "additionalProperties": {
             "type": "string"
           },
           "title": "Utilitycolors",
+          "type": "object"
+        },
+        "utilityNames": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Utilitynames",
+          "type": "object"
+        },
+        "zoneGuards": {
+          "additionalProperties": true,
+          "title": "Zoneguards",
           "type": "object"
         }
       },
@@ -361,6 +429,110 @@
         "utilityColors"
       ],
       "title": "Metadata",
+      "type": "object"
+    },
+    "Metrics": {
+      "description": "Handoff section 28 metrics, computed from the real run; nothing here is estimated.",
+      "properties": {
+        "attentionCompressionRatio": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Attentioncompressionratio"
+        },
+        "automaticResolutionRate": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Automaticresolutionrate",
+          "type": "number"
+        },
+        "evidenceDistribution": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Evidencedistribution",
+          "type": "object"
+        },
+        "geometryDistribution": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Geometrydistribution",
+          "type": "object"
+        },
+        "humanVerifiedEndpoints": {
+          "minimum": 0,
+          "title": "Humanverifiedendpoints",
+          "type": "integer"
+        },
+        "locatedProjects": {
+          "minimum": 0,
+          "title": "Locatedprojects",
+          "type": "integer"
+        },
+        "notAssessedByUtility": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Notassessedbyutility",
+          "type": "object"
+        },
+        "projects": {
+          "minimum": 0,
+          "title": "Projects",
+          "type": "integer"
+        },
+        "projectsByUtility": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Projectsbyutility",
+          "type": "object"
+        },
+        "projectsWithNamedEndpoints": {
+          "minimum": 0,
+          "title": "Projectswithnamedendpoints",
+          "type": "integer"
+        },
+        "relationships": {
+          "minimum": 0,
+          "title": "Relationships",
+          "type": "integer"
+        },
+        "relationshipsByTier": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "title": "Relationshipsbytier",
+          "type": "object"
+        },
+        "zones": {
+          "minimum": 0,
+          "title": "Zones",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "projects",
+        "projectsByUtility",
+        "locatedProjects",
+        "notAssessedByUtility",
+        "projectsWithNamedEndpoints",
+        "automaticResolutionRate",
+        "humanVerifiedEndpoints",
+        "relationships",
+        "relationshipsByTier",
+        "zones",
+        "evidenceDistribution",
+        "geometryDistribution"
+      ],
+      "title": "Metrics",
       "type": "object"
     },
     "Point": {
@@ -660,6 +832,19 @@
           "title": "Projectb",
           "type": "string"
         },
+        "rank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rank"
+        },
         "spatialTier": {
           "$ref": "#/$defs/SpatialTier"
         },
@@ -725,6 +910,51 @@
         "page"
       ],
       "title": "SourceRef",
+      "type": "object"
+    },
+    "SourceSnapshot": {
+      "description": "A public input the payload was built from.",
+      "properties": {
+        "kind": {
+          "minLength": 1,
+          "title": "Kind",
+          "type": "string"
+        },
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "retrievedAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retrievedat"
+        },
+        "sha256": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sha256"
+        }
+      },
+      "required": [
+        "kind",
+        "name"
+      ],
+      "title": "SourceSnapshot",
       "type": "object"
     },
     "SpatialTier": {
@@ -809,6 +1039,7 @@
       "type": "string"
     },
     "Zone": {
+      "description": "A regional coordination situation: a guarded group of related cross-utility relationships.",
       "properties": {
         "bounds": {
           "$ref": "#/$defs/Bounds"
@@ -828,10 +1059,37 @@
         "evidenceLevel": {
           "$ref": "#/$defs/EvidenceLevel"
         },
+        "geographicSpanKm": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Geographicspankm"
+        },
+        "headline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ZoneHeadline"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
         "id": {
           "minLength": 1,
           "title": "Id",
           "type": "string"
+        },
+        "inServiceRange": {
+          "$ref": "#/$defs/DateRange"
         },
         "name": {
           "minLength": 1,
@@ -848,12 +1106,50 @@
           "title": "Projectids",
           "type": "array"
         },
+        "rank": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rank"
+        },
         "relationshipIds": {
           "items": {
             "type": "string"
           },
           "title": "Relationshipids",
           "type": "array"
+        },
+        "timelineSpanDays": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Timelinespandays"
+        },
+        "topRelationshipId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Toprelationshipid"
         },
         "utilities": {
           "items": {
@@ -862,6 +1158,13 @@
             "type": "string"
           },
           "title": "Utilities",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
           "type": "array"
         }
       },
@@ -875,11 +1178,84 @@
       ],
       "title": "Zone",
       "type": "object"
+    },
+    "ZoneHeadline": {
+      "description": "Card figures, all from the zone's single top relationship so they describe one real pair.",
+      "properties": {
+        "distanceKm": {
+          "minimum": 0,
+          "title": "Distancekm",
+          "type": "number"
+        },
+        "gapDays": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gapdays"
+        },
+        "opportunityPriority": {
+          "$ref": "#/$defs/Priority"
+        },
+        "projectA": {
+          "minLength": 1,
+          "title": "Projecta",
+          "type": "string"
+        },
+        "projectB": {
+          "minLength": 1,
+          "title": "Projectb",
+          "type": "string"
+        },
+        "relationshipId": {
+          "minLength": 1,
+          "title": "Relationshipid",
+          "type": "string"
+        },
+        "spatialTier": {
+          "$ref": "#/$defs/SpatialTier"
+        },
+        "timelineRelevance": {
+          "$ref": "#/$defs/TimelineRelevance"
+        },
+        "timelineType": {
+          "$ref": "#/$defs/TimelineType"
+        }
+      },
+      "required": [
+        "relationshipId",
+        "projectA",
+        "projectB",
+        "distanceKm",
+        "spatialTier",
+        "timelineType",
+        "timelineRelevance",
+        "opportunityPriority"
+      ],
+      "title": "ZoneHeadline",
+      "type": "object"
     }
   },
   "properties": {
     "metadata": {
       "$ref": "#/$defs/Metadata"
+    },
+    "metrics": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Metrics"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
     },
     "projects": {
       "items": {

@@ -7,7 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from gridlock.models.domain import GeometryMethod, ProjectType, SpatialTier
+from gridlock.models.domain import GeometryMethod, Priority, ProjectType, SpatialTier, TimelineRelevance
 
 
 class PathsConfig(BaseModel):
@@ -233,6 +233,39 @@ class OverlapConfig(BaseModel):
         return self
 
 
+class ZonesConfig(BaseModel):
+    max_geographic_span_km: float = Field(gt=0)
+    max_timeline_span_days: int = Field(gt=0)
+    timeline_guard: Literal["warn", "split"]
+    max_projects: int | None = Field(default=None, ge=2)
+    id_prefix: str = Field(min_length=1)
+    name_strip_words: tuple[str, ...] = ()
+    name_separator: str
+
+
+class PriorityRule(BaseModel):
+    priority: Priority
+    tiers: tuple[SpatialTier, ...] = Field(min_length=1)
+    # Empty means any timeline relevance.
+    relevance: tuple[TimelineRelevance, ...] = ()
+    # Matches only when the date gap is at most this many days; an unknown gap still matches.
+    max_gap_days: int | None = Field(default=None, ge=0)
+
+
+class PriorityConfig(BaseModel):
+    rules: tuple[PriorityRule, ...] = Field(min_length=1)
+    default: Priority
+
+
+class ApiConfig(BaseModel):
+    # Returned by /api/health so a client can tell it reached GridLock and not another local server.
+    service_name: str = Field(min_length=1)
+    host: str
+    port: int = Field(gt=0, lt=65536)
+    cors_origins: tuple[str, ...] = ()
+    payload_file: str
+
+
 class OracleConfig(BaseModel):
     """The sponsor's worked example, used only to sanity-check our output, never as input."""
 
@@ -256,6 +289,10 @@ class GridlockConfig(BaseModel):
     resolution: ResolutionConfig
     evidence: EvidenceConfig
     overlap: OverlapConfig
+    zones: ZonesConfig
+    priority: PriorityConfig
+    labels: dict[str, dict[str, str]]
+    api: ApiConfig
     oracle: OracleConfig | None = None
 
     @model_validator(mode="after")
