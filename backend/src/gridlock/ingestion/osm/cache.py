@@ -16,7 +16,10 @@ import httpx
 from shapely.geometry import LineString, mapping
 from shapely.ops import polygonize, unary_union
 
+from gridlock.logs import get_logger
 from gridlock.settings.loader import ConfigBundle
+
+log = get_logger("ingest.osm")
 
 CACHE_FILE = "osm_power.geojson"
 METADATA_FILE = "osm_power.meta.json"
@@ -174,6 +177,7 @@ def _fetch_overpass(bundle: ConfigBundle, query: str) -> dict[str, Any]:
         except (httpx.HTTPError, ValueError) as error:
             last_error = error
             if attempt < config.max_retries:
+                log.warning("overpass attempt=%d failed (%s); retrying", attempt + 1, type(error).__name__)
                 sleep(config.backoff_seconds * 2**attempt)
     raise OsmIngestionError(f"Overpass request failed after {config.max_retries + 1} attempts: {last_error}")
 
@@ -207,6 +211,7 @@ def ingest_osm(bundle: ConfigBundle, repository_root: Path, *, offline: bool) ->
         }
         metadata_path.write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8")
     _write_operator_index(collection["features"], operators_path)
+    log.info("mode=%s features=%d cache=%s", "offline-cache" if offline else "overpass-refresh", len(collection["features"]), cache_path)
     return OsmIngestionReport(
         feature_counts=_feature_counts(collection["features"]),
         cache_path=cache_path,

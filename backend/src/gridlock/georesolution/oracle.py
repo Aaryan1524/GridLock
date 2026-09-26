@@ -13,7 +13,7 @@ from pathlib import Path
 
 from openpyxl import load_workbook
 
-from gridlock.ingestion.documents.plans import raw_dir
+from gridlock.ingestion.documents.plans import IngestionError, raw_dir
 from gridlock.models.domain import EndpointMatchStatus, Point, Project
 from gridlock.settings.loader import ConfigBundle
 
@@ -51,7 +51,7 @@ def oracle_check(
     rules = bundle.root.resolution
     resolved_path = resolved_path or repository_root / bundle.root.paths.normalized_dir / "projects_resolved.json"
     projects = {item["id"]: Project.model_validate(item) for item in json.loads(resolved_path.read_text(encoding="utf-8"))}
-    sheet = load_workbook(raw_dir(bundle, repository_root) / oracle.file, read_only=True, data_only=True)[oracle.sheet]
+    sheet = _open_sheet(bundle, repository_root, oracle.sheet)
     rows = sheet.iter_rows(values_only=True)
     header = [str(value) for value in next(rows)]
 
@@ -90,6 +90,18 @@ def oracle_check(
     return results
 
 
+def _open_sheet(bundle: ConfigBundle, repository_root: Path, sheet_name: str):
+    """Open the sponsor workbook read-only after the same type and size checks as source documents."""
+    limits, oracle = bundle.root.limits, bundle.root.oracle
+    path = raw_dir(bundle, repository_root) / oracle.file
+    if path.suffix.lower() not in {suffix.lower() for suffix in limits.allowed_oracle_extensions}:
+        raise IngestionError(f"{path.name}: file type {path.suffix or '(none)'} is not allowed for the oracle")
+    if path.stat().st_size > limits.max_oracle_bytes:
+        raise IngestionError(f"{path.name}: exceeds the {limits.max_oracle_bytes}-byte oracle limit")
+    # read_only + data_only: cell values only; openpyxl never runs macros or formulas.
+    return load_workbook(path, read_only=True, data_only=True)[sheet_name]
+
+
 KM_PER_MILE = 1.609344
 OVERLAP_HEADER = ["overlap_id", "pair", "sheet_km", "sheet_gap_days", "our_tier", "our_km", "our_gap_days", "our_timeline"]
 
@@ -122,7 +134,7 @@ def overlap_oracle_check(
         raise ValueError("no oracle is configured")
     relationships_path = relationships_path or repository_root / bundle.root.paths.output_dir / "relationships.json"
     relationships = {item["id"]: item for item in json.loads(relationships_path.read_text(encoding="utf-8"))}
-    sheet = load_workbook(raw_dir(bundle, repository_root) / oracle.file, read_only=True, data_only=True)[oracle.overlaps_sheet]
+    sheet = _open_sheet(bundle, repository_root, oracle.overlaps_sheet)
     rows = sheet.iter_rows(values_only=True)
     header = [str(value) for value in next(rows)]
 

@@ -36,8 +36,21 @@ osm:
   user_agent: GridLock/0.1 (ShellHacks 2026 public-infrastructure research; one-off bulk cache)
   feature_types: [substation, line]
   query_version: v2
+# AI extraction is not part of V1 (decided 2026-09-26): parsing is deterministic regex only, and AI
+# must never decide geometry, distance, evidence, edges or zones. Setting this to true is rejected.
 ai:
   enabled: false
+# Handoff section 22: input hardening and resource ceilings. Inputs outside these limits fail loudly.
+limits:
+  allowed_document_extensions: [.pdf]
+  max_document_bytes: 52428800
+  max_projects_per_utility: 500
+  # Stored source text per record; longer extractions are cut with a marker.
+  max_raw_text_chars: 20000
+  allowed_oracle_extensions: [.xlsx]
+  max_oracle_bytes: 10485760
+logging:
+  level: INFO
 normalization:
   date_formats: ["%m/%d/%Y", "%m/%d/%y"]
   # A voltage token: a number or a chain of numbers joined by - or / followed by kV ("230-115kV").

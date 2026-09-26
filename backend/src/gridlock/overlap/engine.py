@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from collections import Counter
 from dataclasses import dataclass
 from itertools import combinations
@@ -21,6 +22,32 @@ from gridlock.settings.loader import ConfigBundle
 
 from .classify import playbook, spatial_tier, timeline_relation
 from .geometry import Measurement, Projector, bounding_gap_m, measure
+
+from gridlock.logs import get_logger
+
+log = get_logger("overlap")
+
+
+class OverlapError(ValueError):
+    """Raised when a located project's geometry is malformed; never measured by guesswork."""
+
+
+def validate_geometry(project: Project) -> None:
+    """Only well-formed Point / LineString geometry in WGS84 range enters the engine (fail visibly)."""
+    geometry = project.geometry or {}
+    kind, coordinates = geometry.get("type"), geometry.get("coordinates")
+    points = [coordinates] if kind == "Point" else coordinates if kind == "LineString" else None
+    if points is None:
+        raise OverlapError(f"{project.id}: unsupported geometry type {kind!r}")
+    if kind == "LineString" and len(points) < 2:
+        raise OverlapError(f"{project.id}: a line needs at least two points")
+    for point in points:
+        if not (isinstance(point, (list, tuple)) and len(point) == 2 and all(isinstance(v, (int, float)) and math.isfinite(v) for v in point)):
+            raise OverlapError(f"{project.id}: malformed coordinate {point!r}")
+        lon, lat = point
+        if not (-180 <= lon <= 180 and -90 <= lat <= 90):
+            raise OverlapError(f"{project.id}: coordinate {point!r} is outside longitude/latitude range")
+
 
 CHECK = "✓"
 PARTIAL = "△"
@@ -92,6 +119,8 @@ def find_relationships(projects: list[Project], bundle: ConfigBundle) -> tuple[l
     projector = Projector(bundle.root.geometry.projected_crs)
     order = {utility.code: rank for rank, utility in enumerate(bundle.utilities)}
     located = sorted((p for p in projects if p.geometry is not None), key=lambda p: (order[p.utility], p.id))
+    for project in located:
+        validate_geometry(project)
     shapes: dict[str, BaseGeometry] = {project.id: projector.project(project.geometry) for project in located}
     prefilter_m = thresholds.maximum * 1000 * (1 + config.prefilter_slack_ratio)
 
@@ -111,6 +140,7 @@ def find_relationships(projects: list[Project], bundle: ConfigBundle) -> tuple[l
             continue
         shared = _shared_features(a, b)
         touching_label = f"Both projects end at {', '.join(shared)}" if measurement.touching and shared else None
+        log.debug("relationship=%s-%s distance_km=%s tier=%s", a.id, b.id, measurement.distance_km, tier.value)
         relationships.append(
             Relationship(
                 id=f"REL-{a.id}-{b.id}",
@@ -126,6 +156,10 @@ def find_relationships(projects: list[Project], bundle: ConfigBundle) -> tuple[l
                 evidence=relationship_evidence(a, b, measurement, touching_label),
             )
         )
+    log.info(
+        "located=%d cross_utility_pairs=%d measured=%d relationships=%d beyond_maximum=%d",
+        len(located), stats["cross_utility_pairs"], stats["measured_pairs"], len(relationships), stats["beyond_maximum"],
+    )
     return sorted(relationships, key=lambda relationship: relationship.id), dict(stats)
 
 

@@ -80,6 +80,27 @@ class OsmConfig(BaseModel):
 class AiConfig(BaseModel):
     enabled: bool = False
 
+    @model_validator(mode="after")
+    def ai_stays_off(self) -> "AiConfig":
+        if self.enabled:
+            raise ValueError("ai.enabled must be false: V1 has no AI extraction path (deterministic parsing only)")
+        return self
+
+
+class LimitsConfig(BaseModel):
+    """Handoff section 22 input hardening and resource ceilings."""
+
+    allowed_document_extensions: tuple[str, ...] = Field(min_length=1)
+    max_document_bytes: int = Field(gt=0)
+    max_projects_per_utility: int = Field(gt=0)
+    max_raw_text_chars: int = Field(gt=0)
+    allowed_oracle_extensions: tuple[str, ...] = Field(min_length=1)
+    max_oracle_bytes: int = Field(gt=0)
+
+
+class LoggingConfig(BaseModel):
+    level: Literal["DEBUG", "INFO", "WARNING", "ERROR"]
+
 
 def _compiles(patterns: tuple[str, ...]) -> tuple[str, ...]:
     for pattern in patterns:
@@ -285,6 +306,8 @@ class GridlockConfig(BaseModel):
     geometry: GeometryConfig
     osm: OsmConfig
     ai: AiConfig
+    limits: LimitsConfig
+    logging: LoggingConfig
     normalization: NormalizationConfig
     resolution: ResolutionConfig
     evidence: EvidenceConfig
