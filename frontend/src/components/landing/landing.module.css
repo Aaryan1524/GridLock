@@ -1,0 +1,319 @@
+.page {
+  padding-bottom: 0;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--gutter);
+}
+
+.wordmark {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+}
+
+.nav a {
+  text-decoration: none;
+}
+
+.nav a:hover {
+  color: var(--text);
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: clamp(72px, 12vw, 168px) var(--gutter) clamp(64px, 9vw, 128px);
+  display: grid;
+  gap: 28px;
+  justify-items: start;
+}
+
+.hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.heroTitle {
+  font-size: clamp(48px, 7.4vw, 116px);
+}
+
+.heroTitle em,
+.finalTitle em {
+  color: var(--muted);
+}
+
+.heroCopy {
+  max-width: 56ch;
+  font-size: clamp(16px, 1.4vw, 18px);
+  color: var(--muted);
+  margin: 0 0 8px;
+}
+
+/* ---------- Result strip ---------- */
+
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.strip > .stat {
+  padding: clamp(24px, 3vw, 40px) var(--gutter);
+  border-right: 1px solid var(--line);
+}
+
+.strip > .stat:last-child {
+  border-right: 0;
+}
+
+.stat {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+
+.statValue {
+  font-size: clamp(40px, 5vw, 72px);
+}
+
+.stripNote {
+  margin: 0 auto;
+  padding: 14px var(--gutter);
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* ---------- Old way / GridLock ---------- */
+
+.split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.splitColumn {
+  padding: clamp(32px, 4vw, 56px) var(--gutter);
+  border-right: 1px solid var(--line);
+}
+
+.splitColumn:last-of-type {
+  border-right: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.list li {
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  font-size: 17px;
+}
+
+.pullQuote {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: clamp(40px, 6vw, 88px) var(--gutter);
+  border-top: 1px solid var(--line);
+  font-size: clamp(32px, 4.6vw, 64px);
+}
+
+.pullQuote > span {
+  display: block;
+  max-width: 22ch;
+}
+
+/* ---------- How it works ---------- */
+
+.flowSection {
+  padding: clamp(32px, 4vw, 56px) var(--gutter);
+  display: grid;
+  gap: 24px;
+}
+
+.flow {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.flow li {
+  display: grid;
+  gap: 12px;
+  padding: 20px 16px 24px 0;
+  position: relative;
+}
+
+.flow li + li {
+  padding-left: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.flow li:not(:last-child)::after {
+  content: "→";
+  position: absolute;
+  right: 8px;
+  top: 20px;
+  color: var(--faint);
+  font-family: var(--font-mono);
+}
+
+.flowStep {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.1;
+}
+
+.flowCaption {
+  max-width: 70ch;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* ---------- Featured zone ---------- */
+
+.featured {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+}
+
+.featuredIntro {
+  padding: clamp(32px, 4vw, 64px) var(--gutter);
+  border-right: 1px solid var(--line);
+  display: grid;
+  gap: 20px;
+  align-content: start;
+  justify-items: start;
+}
+
+.featuredName {
+  font-size: clamp(44px, 6vw, 88px);
+}
+
+.featuredCopy {
+  margin: 0;
+  color: var(--muted);
+  max-width: 44ch;
+}
+
+.featuredFacts {
+  display: grid;
+  align-content: start;
+}
+
+.factRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border-bottom: 1px solid var(--line);
+}
+
+.factRow > .stat {
+  padding: 24px var(--gutter);
+  border-right: 1px solid var(--line);
+}
+
+.factRow > .stat:last-child {
+  border-right: 0;
+}
+
+.factRow .statValue {
+  font-size: clamp(30px, 3.4vw, 48px);
+}
+
+.topPair {
+  padding-top: 24px;
+}
+
+.topPair > :global(.eyebrow) {
+  margin: 0;
+  padding: 0 var(--gutter);
+}
+
+.pairNames {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0 var(--gutter) 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.pairNames > span {
+  display: grid;
+  gap: 2px;
+}
+
+.pairName {
+  font-size: 17px;
+}
+
+/* ---------- Final CTA ---------- */
+
+.final {
+  padding: clamp(80px, 12vw, 160px) var(--gutter);
+  display: grid;
+  gap: 36px;
+  justify-items: start;
+}
+
+.final > * {
+  position: relative;
+  z-index: 1;
+}
+
+.finalTitle {
+  font-size: clamp(44px, 7vw, 104px);
+}
+
+.footer {
+  padding: 24px var(--gutter) 40px;
+}
+
+@media (max-width: 880px) {
+  .strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .strip > .stat:nth-child(2) {
+    border-right: 0;
+  }
+
+  .strip > .stat:nth-child(-n + 2) {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .split,
+  .featured {
+    grid-template-columns: 1fr;
+  }
+
+  .splitColumn,
+  .featuredIntro {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .flow {
+    grid-template-columns: 1fr;
+  }
+
+  .flow li + li {
+    padding-left: 0;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .flow li:not(:last-child)::after {
+    content: "↓";
+  }
+}

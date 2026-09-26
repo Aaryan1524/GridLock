@@ -17,7 +17,10 @@ def _camel_case(value: str) -> str:
 class ContractModel(BaseModel):
     """Base model that keeps Python snake_case and API camelCase aligned."""
 
-    model_config = ConfigDict(alias_generator=_camel_case, populate_by_name=True)
+    # Defaults always serialize, so the emitted (serialization) schema marks those fields required.
+    model_config = ConfigDict(
+        alias_generator=_camel_case, populate_by_name=True, json_schema_serialization_defaults_required=True
+    )
 
 
 # Utility codes come from config/utilities/*.yaml, so a new utility needs no model change.

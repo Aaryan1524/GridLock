@@ -85,6 +85,10 @@
           "title": "Start"
         }
       },
+      "required": [
+        "start",
+        "end"
+      ],
       "title": "DateRange",
       "type": "object"
     },
@@ -108,7 +112,9 @@
         }
       },
       "required": [
-        "name"
+        "name",
+        "role",
+        "qualifiers"
       ],
       "title": "Endpoint",
       "type": "object"
@@ -216,7 +222,15 @@
       "required": [
         "endpoint",
         "role",
-        "status"
+        "status",
+        "featureId",
+        "featureName",
+        "operator",
+        "operatorRelation",
+        "voltageKv",
+        "nameScore",
+        "point",
+        "notes"
       ],
       "title": "EndpointMatch",
       "type": "object"
@@ -290,7 +304,10 @@
       },
       "required": [
         "level",
-        "score"
+        "score",
+        "breakdown",
+        "reasons",
+        "warnings"
       ],
       "title": "Evidence",
       "type": "object"
@@ -351,7 +368,10 @@
       },
       "required": [
         "method",
-        "isApproximation"
+        "isApproximation",
+        "featureIds",
+        "matches",
+        "warnings"
       ],
       "title": "GeometryResolution",
       "type": "object"
@@ -425,8 +445,16 @@
         }
       },
       "required": [
+        "schemaVersion",
+        "fixture",
+        "distanceUnit",
         "thresholdsKm",
-        "utilityColors"
+        "timelineGapDays",
+        "zoneGuards",
+        "utilityColors",
+        "utilityNames",
+        "labels",
+        "sources"
       ],
       "title": "Metadata",
       "type": "object"
@@ -541,6 +569,7 @@
         "relationships",
         "relationshipsByTier",
         "zones",
+        "attentionCompressionRatio",
         "evidenceDistribution",
         "geometryDistribution"
       ],
@@ -754,7 +783,21 @@
         "utility",
         "projectName",
         "projectType",
-        "source"
+        "sponsor",
+        "description",
+        "voltageKv",
+        "endpoints",
+        "endpointStatus",
+        "status",
+        "plannedInServiceDate",
+        "filedStartDate",
+        "constructionWindow",
+        "estimatedCostUsd",
+        "source",
+        "geometry",
+        "geometryResolution",
+        "evidence",
+        "warnings"
       ],
       "title": "Project",
       "type": "object"
@@ -874,6 +917,9 @@
         "geometryMethods",
         "approximate",
         "timeline",
+        "opportunityPriority",
+        "rank",
+        "coordinationPlaybook",
         "evidence"
       ],
       "title": "Relationship",
@@ -952,7 +998,9 @@
       "required": [
         "document",
         "projectIdRaw",
-        "page"
+        "page",
+        "rawText",
+        "rawFields"
       ],
       "title": "SourceRef",
       "type": "object"
@@ -997,7 +1045,9 @@
       },
       "required": [
         "kind",
-        "name"
+        "name",
+        "retrievedAt",
+        "sha256"
       ],
       "title": "SourceSnapshot",
       "type": "object"
@@ -1055,7 +1105,10 @@
       },
       "required": [
         "type",
-        "relevance"
+        "gapDays",
+        "overlapDays",
+        "relevance",
+        "isdWithinFiledSpan"
       ],
       "title": "Timeline",
       "type": "object"
@@ -1215,11 +1268,22 @@
       },
       "required": [
         "id",
+        "rank",
         "name",
+        "projectIds",
+        "relationshipIds",
+        "topRelationshipId",
+        "headline",
+        "utilities",
         "closestDistanceKm",
+        "inServiceRange",
+        "geographicSpanKm",
+        "timelineSpanDays",
         "opportunityPriority",
         "evidenceLevel",
-        "bounds"
+        "coordinationThemes",
+        "bounds",
+        "warnings"
       ],
       "title": "Zone",
       "type": "object"
@@ -1280,6 +1344,7 @@
         "distanceKm",
         "spatialTier",
         "timelineType",
+        "gapDays",
         "timelineRelevance",
         "opportunityPriority"
       ],
@@ -1325,7 +1390,11 @@
     }
   },
   "required": [
-    "metadata"
+    "metadata",
+    "metrics",
+    "projects",
+    "relationships",
+    "zones"
   ],
   "title": "Payload",
   "type": "object"
