@@ -40,8 +40,14 @@ def test_unordered_thresholds_are_rejected() -> None:
                 "geometry": {
                     "projected_crs": "EPSG:5070",
                     "bbox": [-85, 30, -78, 36],
-                    "overpass_timeout_seconds": 60,
-                    "overpass_max_retries": 3,
+                },
+                "osm": {
+                    "overpass_url": "https://overpass-api.de/api/interpreter",
+                    "timeout_seconds": 60,
+                    "max_retries": 3,
+                    "max_response_bytes": 52428800,
+                    "feature_types": ["substation", "line"],
+                    "query_version": "v1",
                 },
                 "ai": {"enabled": False},
             }
@@ -60,7 +66,8 @@ utility_files: [utilities/other.yaml]
 thresholds_km: {near: 1.6, local: 8, maximum: 40}
 timeline_gap_days: {near: 90, moderate: 180, distant: 365}
 display: {distance_unit: km, timezone: America/New_York}
-geometry: {projected_crs: EPSG:5070, bbox: [-85, 30, -78, 36], overpass_timeout_seconds: 60, overpass_max_retries: 3}
+geometry: {projected_crs: EPSG:5070, bbox: [-85, 30, -78, 36]}
+osm: {overpass_url: https://overpass-api.de/api/interpreter, timeout_seconds: 60, max_retries: 3, max_response_bytes: 52428800, feature_types: [substation, line], query_version: v1}
 ai: {enabled: false}
 """.strip(),
         encoding="utf-8",
@@ -78,4 +85,3 @@ sources: [{id: test, parser: test, path: test.pdf}]
 
     with pytest.raises(ConfigError, match="must exactly match root utilities"):
         load_settings(root)
-
