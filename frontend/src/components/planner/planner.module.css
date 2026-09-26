@@ -6,72 +6,125 @@
   grid-template-columns: minmax(0, 1fr);
 }
 
-/* ---------- Header ---------- */
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 14px var(--gutter);
-  border-bottom: 1px solid var(--line);
-  flex-wrap: wrap;
-}
-
-.brand {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  flex-wrap: wrap;
-}
-
-.wordmark {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  text-decoration: none;
-}
-
-.headerStats {
-  display: flex;
-  margin: 0;
-}
-
-.headerStats > div {
-  padding: 0 20px;
-  border-left: 1px solid var(--line);
-  display: grid;
-  gap: 2px;
-}
-
-.headerStats dt {
-  font-size: 10px;
-}
-
-.headerStats dd {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: 24px;
-  line-height: 1;
-}
-
-.headerSource dd {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1.6;
-}
-
 .status {
   padding: var(--gutter);
+}
+
+/* ---------- Planner shell: compact section nav + active view ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: 164px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.viewport {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  overflow: hidden;
+}
+
+.plannerNav {
+  border-right: 1px solid var(--line);
+  min-height: 0;
+}
+
+.plannerNav ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plannerNav li + li {
+  border-top: 1px solid var(--line);
+}
+
+.plannerNav button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 14px 14px 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+
+.plannerNav button:hover {
+  color: var(--text);
+  background: var(--bg-raised);
+}
+
+.plannerNav button[data-active="true"] {
+  color: var(--text);
+  background: var(--bg-raised);
+  border-left-color: var(--accent);
+}
+
+.navLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 /* ---------- Three-region workspace ---------- */
 
 .workspace {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr) 440px;
+  grid-template-columns: 300px minmax(0, 1fr) 420px;
   min-height: 0;
+  transition: grid-template-columns 200ms ease;
+}
+
+.workspace[data-details="closed"] {
+  grid-template-columns: 300px minmax(0, 1fr) 0;
+}
+
+.workspace[data-details="closed"] .panel {
+  visibility: hidden;
+  border-left: 0;
+}
+
+/* ---------- Details toggle (Zones and Overview) ---------- */
+
+.panelToggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 3;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 12px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(var(--overlay-rgb), 0.92);
+  border: 1px solid var(--line-strong);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  cursor: pointer;
+}
+
+.panelToggle:hover,
+.panelToggle:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.panelToggleLabel {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .rail,
@@ -166,13 +219,61 @@
 /* ---------- Narrower screens: stack the regions ---------- */
 
 @media (max-width: 1180px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plannerNav {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .plannerNav ol {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .plannerNav li + li {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .plannerNav button {
+    grid-template-columns: 1fr auto;
+    padding: 12px;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .plannerNav button > span:first-child {
+    display: none;
+  }
+
+  .plannerNav button[data-active="true"] {
+    border-bottom-color: var(--accent);
+  }
+
+  .viewport {
+    overflow: visible;
+  }
+
   .page {
     height: auto;
     min-height: 100vh;
   }
 
-  .workspace {
+  .workspace,
+  .workspace[data-details="closed"] {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked layout: the details sit below the map, so there is nothing to retract. */
+  .workspace[data-details="closed"] .panel {
+    visibility: visible;
+  }
+
+  .panelToggle {
+    display: none;
   }
 
   .rail,
@@ -198,19 +299,20 @@
     height: 60vh;
     min-height: 360px;
   }
-
-  .headerStats > .headerSource {
-    display: none;
-  }
 }
 
 @media (max-width: 560px) {
-  .headerStats > div {
-    padding: 0 12px;
+  .plannerNav button {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px 8px;
+    text-align: center;
   }
 
-  .headerStats > div:first-child {
-    padding-left: 0;
-    border-left: 0;
+  .plannerNav button > span:last-child:not(.navLabel) {
+    display: none;
+  }
+
+  .navLabel {
+    letter-spacing: 0.08em;
   }
 }

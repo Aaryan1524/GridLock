@@ -2,28 +2,6 @@
   padding-bottom: 0;
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px var(--gutter);
-}
-
-.wordmark {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-}
-
-.nav a {
-  text-decoration: none;
-}
-
-.nav a:hover {
-  color: var(--text);
-}
-
 /* ---------- Hero ---------- */
 
 .hero {

@@ -1,0 +1,36 @@
+.nav {
+  /* Full width (up to the frame's max) even as a grid item, e.g. in the planner. */
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px var(--gutter);
+  border-bottom: 1px solid var(--line);
+}
+
+.wordmark {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.actions a {
+  text-decoration: none;
+}
+
+.actions a:hover {
+  color: var(--text);
+}
+
+/* The theme switch is taller than the nav text; keep it from changing the nav's height. */
+.actions > [role="group"] {
+  margin-block: -6px;
+}

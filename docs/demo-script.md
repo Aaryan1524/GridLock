@@ -24,23 +24,27 @@ terminals:
 
 Point at the **Old way / With GridLock** section as you say it.
 
-## 2. The noisy world (0:20–0:40) — planner, map zoomed out
+## 2. The noisy world (0:20–0:40) — planner Overview
 
-Click **Open coordination planner**, then zoom the map out (scroll or
-pinch) until both states and every faint project line are visible.
+Click **Open coordination planner**. The planner opens on the
+**Overview**: one map of both states with every located project as a
+faint line or dot, and the four coordination zones outlined on top.
 
 > "Every line and dot here is a planned project from Dominion Energy South
 > Carolina or Georgia Power. A map alone doesn't tell a planner where to
 > look."
 
-## 3. Compression (0:40–1:00) — planner header and zone rail
+## 3. Compression (0:40–1:00) — Overview figures
+
+Point at the figures along the bottom of the Overview.
 
 > "Across **182** public projects, GridLock finds **55** cross-utility
 > relationships and compresses them into **4** coordination zones —
 > **13.75×** less to look at. It doesn't give planners more data; it tells
 > them where to look."
 
-Click **Jasper – McIntosh** in the rail; the map flies back to it.
+Click the **01 Jasper – McIntosh** label on the map; its details slide
+out on the right. Click **Investigate zone →** to open it in **Zones**.
 
 ## 4. The strongest opportunity (1:00–1:45) — zone 1
 
@@ -74,11 +78,12 @@ Click the Dominion project in **Top coordination opportunity**.
 
 Press Escape.
 
-## 6. Ranking with judgment (2:30–2:50) — click zone 2, Thurmond
+## 6. Ranking with judgment (2:30–2:50) — click zone 2, Thurmond, in the rail
 
-> "Thurmond is where two projects physically touch — **0 km** — but their
-> dates are **3,074 days** apart, so it ranks below the timely Savannah
-> zone instead of crowding it out."
+> "Thurmond is where two projects share an endpoint — both end at
+> Thurmond Substation, **0 km** apart — but their dates are **3,074 days**
+> apart, so it ranks below the timely Savannah zone instead of crowding
+> it out."
 
 ## 7. Close (2:50–3:00)
 
@@ -90,3 +95,6 @@ Press Escape.
   zones and distances are unaffected.
 - **"GridLock data is unavailable"** — the API is not running or is on a
   different port; see the README's troubleshooting section.
+- **Wrong theme for the room** — the sun / moon switch at the top right
+  changes light and dark; the browser remembers the choice. Dark is the
+  default.

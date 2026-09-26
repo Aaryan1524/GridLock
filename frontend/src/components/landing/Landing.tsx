@@ -7,6 +7,7 @@ import type { GridlockPayload, Zone } from "@/lib/contract";
 import { formatDays, formatDistance, formatNumber, label, projectIndex, utilityName } from "@/lib/format";
 
 import { Coverage } from "../shared/Coverage";
+import { SiteNav } from "../shared/SiteNav";
 import { StatusNotice } from "../shared/StatusNotice";
 import styles from "./landing.module.css";
 
@@ -82,14 +83,9 @@ export function Landing() {
 
   return (
     <main className={styles.page}>
-      <header className={`frame ${styles.nav}`}>
-        <span className={styles.wordmark}>GridLock</span>
-        <Link className="mono" href="/planner">
-          Planner →
-        </Link>
-      </header>
+      <SiteNav />
 
-      <section className={`frame guides rule-top ${styles.hero}`}>
+      <section className={`frame guides ${styles.hero}`}>
         <p className="eyebrow">Cross-utility transmission intelligence</p>
         <h1 className={`display ${styles.heroTitle}`}>
           Infrastructure plans,

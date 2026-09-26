@@ -112,8 +112,10 @@ GridLock/
 │   ├── review/               unresolved endpoints, oracle comparisons
 │   └── output/               relationships, gridlock.json, metrics.json
 ├── frontend/
-│   ├── src/app/              `/` landing and `/planner`
-│   ├── src/components/       zone rail, map, panel, timeline, evidence drawer
+│   ├── src/app/              `/` landing, `/planner` and `/team`
+│   ├── src/components/       planner views (overview, zones, projects, data
+│   │                         quality), maps, evidence drawer, site nav
+│   ├── src/content/team.ts   the people listed on `/team`
 │   ├── src/lib/contract.ts   generated from the backend models
 │   └── public/data/          bundled Census state boundaries (offline map)
 └── docs/                     the documents listed above

@@ -1,19 +1,22 @@
 "use client";
 
-import type { Metadata, Zone } from "@/lib/contract";
-import { countOf, formatDays, formatDistance, formatNumber, label } from "@/lib/format";
+import type { GridlockPayload } from "@/lib/contract";
+import { countOf, formatDays, formatDistance, formatNumber, label, projectIndex } from "@/lib/format";
+import { topRelationship } from "@/lib/mapData";
+import { spatialLabel } from "@/lib/presentation";
 
 import styles from "./planner.module.css";
 
 interface Props {
-  zones: Zone[];
-  metadata: Metadata;
+  payload: GridlockPayload;
   selectedId: string | null;
   onSelect: (zoneId: string) => void;
 }
 
 /** Zones in backend rank order; each row shows its headline pair's own figures. */
-export function ZoneRail({ zones, metadata, selectedId, onSelect }: Props) {
+export function ZoneRail({ payload, selectedId, onSelect }: Props) {
+  const { metadata, zones } = payload;
+  const projects = projectIndex(payload);
   return (
     <nav className={styles.rail} aria-label="Coordination zones">
       <div className={styles.railHead}>
@@ -26,6 +29,8 @@ export function ZoneRail({ zones, metadata, selectedId, onSelect }: Props) {
         {zones.map((zone) => {
           const headline = zone.headline;
           const selected = zone.id === selectedId;
+          const top = topRelationship(payload, zone);
+          const spatial = top ? spatialLabel(metadata, top, projects) : null;
           return (
             <li key={zone.id}>
               <button
@@ -46,7 +51,10 @@ export function ZoneRail({ zones, metadata, selectedId, onSelect }: Props) {
                   <span className={styles.zoneFigures}>
                     <span>
                       {formatDistance(headline.distanceKm, metadata)}
-                      <span className="faint"> · {label(metadata, "spatial_tiers", headline.spatialTier)}</span>
+                      <span className="faint" title={spatial?.long}>
+                        {" "}
+                        · {spatial?.short ?? label(metadata, "spatial_tiers", headline.spatialTier)}
+                      </span>
                     </span>
                     <span>
                       {formatDays(headline.gapDays)}

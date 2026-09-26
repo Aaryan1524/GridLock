@@ -69,5 +69,17 @@ uses camelCase through a Pydantic alias generator.
   `payload.metadata.labels`.
 - `src/lib/mapData.ts` turns the payload into GeoJSON; it only decides
   emphasis (top pair, zone, background), never analysis.
-- `src/components/planner/` holds the zone rail, MapLibre map, zone
-  panel, timeline and evidence drawer.
+- `src/components/planner/` holds the planner: a section nav and four
+  views (Overview, Zones, Projects, Data quality) under
+  `components/planner/views/`, plus the zone rail, both MapLibre maps,
+  zone panel, timeline and evidence drawer. The view and selected zone
+  live in the URL (`?view=zones&zone=ZONE-01`, `src/lib/plannerState.ts`).
+- `src/lib/presentation.ts` re-expresses backend results for display
+  (location status, "Shared endpoint" when both projects end at the same
+  matched feature, priority counts); it never classifies or ranks.
+- `src/lib/mapBase.ts` creates both maps: the online style for the
+  current theme, the bundled fallback, and restyling on a theme change.
+- Light and dark themes share one set of CSS tokens in
+  `src/app/globals.css`; `[data-theme="light"]` only changes values.
+  `src/lib/themeScript.ts` applies the stored choice before first paint,
+  and `components/shared/SiteNav.tsx` is the one header on every page.

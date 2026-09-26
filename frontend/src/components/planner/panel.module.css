@@ -196,7 +196,7 @@
   width: 18px;
   height: 8px;
   border: 1px dashed var(--muted);
-  background: rgba(163, 158, 146, 0.15);
+  background: var(--track);
 }
 
 /* ---------- Project list ---------- */
@@ -235,7 +235,7 @@
 .drawerBackdrop {
   position: fixed;
   inset: 0;
-  background: rgba(8, 8, 7, 0.55);
+  background: var(--scrim);
   z-index: 50;
   display: flex;
   justify-content: flex-end;

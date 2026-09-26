@@ -1,0 +1,74 @@
+/* Fill the viewport so the frame's side rules run to the bottom even with few members. */
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  padding: clamp(64px, 10vw, 136px) var(--gutter) clamp(48px, 7vw, 96px);
+  display: grid;
+  gap: 24px;
+}
+
+.hero > :global(.eyebrow) {
+  margin: 0;
+}
+
+.title {
+  font-size: clamp(48px, 7vw, 96px);
+}
+
+.title em {
+  color: var(--muted);
+}
+
+.members {
+  flex: 1;
+  width: 100%;
+}
+
+.empty {
+  margin: 0;
+  padding: 40px var(--gutter);
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.member {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  padding: 28px var(--gutter) 32px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.member > * {
+  margin: 0;
+}
+
+.name {
+  font-size: 32px;
+  line-height: 1.05;
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}
+
+.links a {
+  text-decoration: none;
+}
+
+.links a:hover {
+  color: var(--text);
+}

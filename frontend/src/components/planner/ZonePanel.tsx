@@ -1,8 +1,11 @@
 "use client";
 
+import type { CSSProperties } from "react";
+
 import type { GridlockPayload, Project, Zone } from "@/lib/contract";
 import { countOf, formatDays, formatDistance, label, utilityColor, utilityName } from "@/lib/format";
 import { topRelationship } from "@/lib/mapData";
+import { spatialLabel } from "@/lib/presentation";
 
 import { Coverage } from "../shared/Coverage";
 import styles from "./panel.module.css";
@@ -44,6 +47,8 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
   const top = topRelationship(payload, zone);
   const a = top ? projects.get(top.projectA) : undefined;
   const b = top ? projects.get(top.projectB) : undefined;
+  const spatial = top ? spatialLabel(metadata, top, projects) : null;
+  const tier = top ? label(metadata, "spatial_tiers", top.spatialTier) : "";
   const members = zone.projectIds.map((id) => projects.get(id)).filter((project): project is Project => !!project);
 
   return (
@@ -69,7 +74,7 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
           <div className={styles.pair}>
             {[a, b].map((project, index) => (
               <button key={project.id} type="button" className={styles.pairProject} onClick={() => onInspect(project.id)}>
-                <span className="mono-plain" style={{ color: utilityColor(metadata, project.utility) }}>
+                <span className="mono-plain utility-ink" style={{ "--utility": utilityColor(metadata, project.utility) } as CSSProperties}>
                   {utilityName(metadata, project.utility)}
                 </span>
                 <span>{project.projectName}</span>
@@ -87,8 +92,10 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
               <dd className="display">{formatDays(top.timeline.gapDays)}</dd>
             </div>
             <div>
-              <dt className="mono">Spatial tier</dt>
-              <dd className="display">{label(metadata, "spatial_tiers", top.spatialTier)}</dd>
+              <dt className="mono">Spatial relationship</dt>
+              <dd className="display" title={spatial?.long}>
+                {spatial?.short}
+              </dd>
             </div>
           </dl>
         </section>
@@ -102,7 +109,7 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
               <li key={reason}>{reason}</li>
             ))}
             <li>
-              {label(metadata, "spatial_tiers", top.spatialTier)} tier ·{" "}
+              {spatial && spatial.long !== tier ? `${spatial.long} · ${tier.toLowerCase()} tier` : `${tier} tier`} ·{" "}
               {label(metadata, "timeline_relevance", top.timeline.relevance).toLowerCase()} timeline relevance ·{" "}
               {label(metadata, "priority", top.opportunityPriority ?? undefined).toLowerCase()} opportunity priority
             </li>
