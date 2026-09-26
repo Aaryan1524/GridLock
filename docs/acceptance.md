@@ -1,8 +1,10 @@
 # V1 acceptance evidence
 
 The handoff's §25 checklist, each item with the command, test or
-screenshot that proves it. Test paths are under `backend/tests/`; the
-browser checks ran against a production build (see the last section).
+screenshot that proves it. Test paths are under `backend/tests/` and run
+with `pytest`. The browser checks were ad-hoc Playwright scripts run on
+2026-09-26 during Phase 8; they are not part of the repository (see the
+last section).
 
 | # | Criterion | Evidence |
 |---|---|---|
@@ -27,19 +29,32 @@ browser checks ran against a production build (see the last section).
 
 - **Every §25 item is ticked** — the table above.
 - **A fresh clone plus `.env` plus the documented commands brings up the
-  demo with no network.** Verified by cloning the branch into an empty
-  folder and running everything with proxies pointed at a dead port:
-  `uv sync --offline`, `gridlock run --offline --skip-ingest` (reproduced
-  every committed output, `git status` clean), `pnpm install --offline`,
-  `pnpm build`, `gridlock serve`, `pnpm start`. The browser blocked every
-  non-localhost request; all 26 checks passed.
+  demo with no network.** The branch was cloned into an empty folder,
+  `.env` copied from `.env.example`, and the README's commands run as
+  written from the repository root, with proxies pointed at a dead port
+  and `UV_OFFLINE=1`. Two deviations, both because of the test machine:
+  the default ports 3000 and 8010 were already in use, so
+  `GRIDLOCK_API_PORT=8040`, `GRIDLOCK_API_CORS_ORIGINS` and
+  `NEXT_PUBLIC_API_BASE_URL` were set **only in `.env`** (which also proves
+  the backend reads it) and the UI ran with `pnpm dev -p 3040`; and
+  `pnpm install --offline` stood in for `pnpm install`. The run
+  reproduced every committed output (`git status` clean), the API
+  identified as GridLock on :8040, and with the browser blocking every
+  non-localhost request all 26 browser checks passed. A second fresh
+  clone also passed with a production build (`pnpm build`, `pnpm start`).
 - **The 3-minute demo is rehearsed against real output.** An automated
   walkthrough of `docs/demo-script.md` on the offline fresh clone found
-  every quoted figure on screen at each of its 5 steps.
+  every quoted figure on screen at each of its 6 steps, including the
+  zoomed-out "noisy world" map.
 
 ## Browser checks
 
-26 checks against a production build: landing copy and call to action;
+These ran with Playwright (software WebGL) from local tooling, not from
+the repository; turning them into a committed end-to-end suite would add
+a Playwright dependency and is left as a decision for the team.
+
+26 checks, against both a production build and the fresh clone's dev
+server: landing copy and call to action;
 landing metrics equal the payload; featured zone is the payload's #1;
 headline count equals `zones.length`; zones in backend order with
 Jasper – McIntosh first; connector distance equals the JSON; panel figures
