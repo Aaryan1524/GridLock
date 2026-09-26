@@ -66,11 +66,76 @@
   padding: var(--gutter);
 }
 
+/* ---------- Planner shell: compact section nav + active view ---------- */
+
+.shell {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.viewport {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  overflow: hidden;
+}
+
+.plannerNav {
+  border-right: 1px solid var(--line);
+  min-height: 0;
+}
+
+.plannerNav ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.plannerNav li + li {
+  border-top: 1px solid var(--line);
+}
+
+.plannerNav button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: baseline;
+  gap: 8px;
+  width: 100%;
+  padding: 14px 14px 14px 12px;
+  text-align: left;
+  font: inherit;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+
+.plannerNav button:hover {
+  color: var(--text);
+  background: var(--bg-raised);
+}
+
+.plannerNav button[data-active="true"] {
+  color: var(--text);
+  background: var(--bg-raised);
+  border-left-color: var(--accent);
+}
+
+.navLabel {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
 /* ---------- Three-region workspace ---------- */
 
 .workspace {
   display: grid;
-  grid-template-columns: 320px minmax(0, 1fr) 440px;
+  grid-template-columns: 300px minmax(0, 1fr) 420px;
   min-height: 0;
 }
 
@@ -166,6 +231,44 @@
 /* ---------- Narrower screens: stack the regions ---------- */
 
 @media (max-width: 1180px) {
+  .shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .plannerNav {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .plannerNav ol {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .plannerNav li + li {
+    border-top: 0;
+    border-left: 1px solid var(--line);
+  }
+
+  .plannerNav button {
+    grid-template-columns: 1fr auto;
+    padding: 12px;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+  }
+
+  .plannerNav button > span:first-child {
+    display: none;
+  }
+
+  .plannerNav button[data-active="true"] {
+    border-bottom-color: var(--accent);
+  }
+
+  .viewport {
+    overflow: visible;
+  }
+
   .page {
     height: auto;
     min-height: 100vh;
