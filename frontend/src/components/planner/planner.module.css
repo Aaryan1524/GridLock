@@ -137,6 +137,50 @@
   display: grid;
   grid-template-columns: 300px minmax(0, 1fr) 420px;
   min-height: 0;
+  transition: grid-template-columns 200ms ease;
+}
+
+.workspace[data-details="closed"] {
+  grid-template-columns: 300px minmax(0, 1fr) 0;
+}
+
+.workspace[data-details="closed"] .panel {
+  visibility: hidden;
+  border-left: 0;
+}
+
+/* ---------- Details toggle (Zones and Overview) ---------- */
+
+.panelToggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 3;
+  transform: translateY(-50%);
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 12px 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: rgba(17, 17, 15, 0.92);
+  border: 1px solid var(--line-strong);
+  border-right: 0;
+  border-radius: var(--radius) 0 0 var(--radius);
+  cursor: pointer;
+}
+
+.panelToggle:hover,
+.panelToggle:focus-visible {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.panelToggleLabel {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .rail,
@@ -274,8 +318,18 @@
     min-height: 100vh;
   }
 
-  .workspace {
+  .workspace,
+  .workspace[data-details="closed"] {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked layout: the details sit below the map, so there is nothing to retract. */
+  .workspace[data-details="closed"] .panel {
+    visibility: visible;
+  }
+
+  .panelToggle {
+    display: none;
   }
 
   .rail,

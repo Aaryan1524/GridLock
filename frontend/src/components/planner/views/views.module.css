@@ -9,13 +9,14 @@
 
 .overview {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto auto;
   min-height: 0;
 }
 
 .stats {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
 }
 
@@ -39,7 +40,6 @@
 .coverageLine {
   margin: 0;
   padding: 10px var(--gutter);
-  border-bottom: 1px solid var(--line);
   font-size: 13px;
   color: var(--muted);
 }
@@ -48,6 +48,16 @@
   display: grid;
   grid-template-columns: minmax(0, 1fr) 380px;
   min-height: 0;
+  transition: grid-template-columns 200ms ease;
+}
+
+.overviewBody[data-details="closed"] {
+  grid-template-columns: minmax(0, 1fr) 0;
+}
+
+.overviewBody[data-details="closed"] .overviewSide {
+  visibility: hidden;
+  border-left: 0;
 }
 
 .overviewMap {
@@ -55,16 +65,6 @@
   min-height: 420px;
   overflow: hidden;
   background: var(--bg-sunken);
-}
-
-.mapCard {
-  position: absolute;
-  top: 12px;
-  right: 12px;
-  width: min(340px, calc(100% - 24px));
-  background: rgba(17, 17, 15, 0.94);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--radius);
 }
 
 .overviewSide {
@@ -213,8 +213,14 @@
     border-bottom: 1px solid var(--line);
   }
 
-  .overviewBody {
+  .overviewBody,
+  .overviewBody[data-details="closed"] {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Stacked layout: the details sit below the map, so there is nothing to retract. */
+  .overviewBody[data-details="closed"] .overviewSide {
+    visibility: visible;
   }
 
   .overviewMap {

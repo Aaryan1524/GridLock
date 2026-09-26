@@ -1,11 +1,14 @@
 "use client";
 
+import { useState } from "react";
+
 import type { GridlockPayload, Zone } from "@/lib/contract";
 import { countOf, formatDays, formatDistance, formatNumber, label, projectIndex, utilityName } from "@/lib/format";
 import { topRelationship } from "@/lib/mapData";
 import { priorityCounts, spatialLabel } from "@/lib/presentation";
 
 import { OverviewMap } from "../OverviewMap";
+import { PanelToggle } from "../PanelToggle";
 import styles from "./views.module.css";
 
 interface Props {
@@ -15,13 +18,25 @@ interface Props {
   onInvestigate: (zoneId: string) => void;
 }
 
-function ZoneSummary({ payload, zone, eyebrow, onInvestigate }: { payload: GridlockPayload; zone: Zone; eyebrow: string; onInvestigate: (id: string) => void }) {
+function ZoneSummary({
+  payload,
+  zone,
+  eyebrow,
+  role,
+  onInvestigate,
+}: {
+  payload: GridlockPayload;
+  zone: Zone;
+  eyebrow: string;
+  role: "selected" | "top";
+  onInvestigate: (id: string) => void;
+}) {
   const { metadata } = payload;
   const top = topRelationship(payload, zone);
   const projects = projectIndex(payload);
   const spatial = top ? spatialLabel(metadata, top, projects) : null;
   return (
-    <div className={styles.zoneSummary}>
+    <div className={styles.zoneSummary} data-summary={role}>
       <p className="eyebrow">{eyebrow}</p>
       <h3 className={`display ${styles.summaryName}`}>{zone.name}</h3>
       <div className={styles.summaryMeta}>
@@ -58,12 +73,18 @@ function ZoneSummary({ payload, zone, eyebrow, onInvestigate }: { payload: Gridl
 /** Broad system state: what was analyzed, where the coordination situations are, and how much is unknown. */
 export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestigate }: Props) {
   const { metadata, metrics, zones } = payload;
+  const [detailsOpen, setDetailsOpen] = useState(false);
   if (!metrics) return <p className="mono pad">This payload has no metrics.</p>;
   const r = metrics.resolution;
   const notAssessed = r.notLocatedUnresolved + r.notLocatedNoNamedSite;
   const top = zones[0];
   const selected = zones.find((zone) => zone.id === selectedZoneId) ?? null;
   const utilities = Object.keys(metrics.projectsByUtility);
+  // The map leads; the details column slides out when a zone is chosen and can be retracted again.
+  const selectZone = (zoneId: string) => {
+    onSelectZone(zoneId);
+    setDetailsOpen(true);
+  };
 
   const stats: { value: string; caption: string; note?: string }[] = [
     { value: formatNumber(metrics.projects), caption: "Projects analyzed" },
@@ -74,8 +95,8 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
     { value: metrics.attentionCompressionRatio != null ? `${metrics.attentionCompressionRatio}×` : "—", caption: "Attention compression" },
   ];
 
-  return (
-    <div className={styles.overview}>
+  const statsStrip = (
+    <>
       <section className={styles.stats} aria-label="Analysis summary">
         {stats.map((stat) => (
           <div key={stat.caption} className={styles.stat}>
@@ -90,21 +111,32 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
         {formatNumber(notAssessed)} have an unresolved location ({formatNumber(r.notLocatedUnresolved)} with named sites not yet
         resolved, {formatNumber(r.notLocatedNoNamedSite)} whose titles name no site). Unresolved means unknown — never “no overlap”.
       </p>
+    </>
+  );
 
-      <div className={styles.overviewBody}>
+  return (
+    <div className={styles.overview}>
+      <div className={styles.overviewBody} data-details={detailsOpen ? "open" : "closed"}>
         <section className={styles.overviewMap} aria-label="Where the coordination situations are">
-          <OverviewMap payload={payload} selectedId={selected?.id ?? null} onSelect={onSelectZone} />
-          {selected && (
-            <div className={styles.mapCard}>
-              <ZoneSummary payload={payload} zone={selected} eyebrow={`Selected · zone ${selected.rank} of ${zones.length}`} onInvestigate={onInvestigate} />
-            </div>
-          )}
+          <OverviewMap payload={payload} selectedId={selected?.id ?? null} onSelect={selectZone} />
+          <PanelToggle open={detailsOpen} controls="overview-details" onToggle={() => setDetailsOpen((open) => !open)} />
         </section>
 
-        <aside className={styles.overviewSide}>
-          {top && (
+        <aside id="overview-details" className={styles.overviewSide} aria-label="Overview details">
+          {selected && (
             <section className={styles.sideSection}>
-              <ZoneSummary payload={payload} zone={top} eyebrow={`Top opportunity · backend rank ${top.rank}`} onInvestigate={onInvestigate} />
+              <ZoneSummary
+                payload={payload}
+                zone={selected}
+                role="selected"
+                eyebrow={selected.id === top?.id ? `Selected · top opportunity · backend rank ${selected.rank}` : `Selected · zone ${selected.rank} of ${zones.length}`}
+                onInvestigate={onInvestigate}
+              />
+            </section>
+          )}
+          {top && top.id !== selected?.id && (
+            <section className={styles.sideSection}>
+              <ZoneSummary payload={payload} zone={top} role="top" eyebrow={`Top opportunity · backend rank ${top.rank}`} onInvestigate={onInvestigate} />
             </section>
           )}
 
@@ -119,7 +151,7 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
                   </span>
                   <span className={styles.priorityZones}>
                     {group.map((zone) => (
-                      <button key={zone.id} type="button" onClick={() => onSelectZone(zone.id)}>
+                      <button key={zone.id} type="button" onClick={() => selectZone(zone.id)}>
                         {zone.name}
                       </button>
                     ))}
@@ -166,6 +198,7 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
           </section>
         </aside>
       </div>
+      {statsStrip}
     </div>
   );
 }
