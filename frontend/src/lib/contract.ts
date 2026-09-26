@@ -11,26 +11,26 @@ export interface ConstructionWindow {
   endDate: string;
 }
 export interface DateRange {
-  start?: string | null;
-  end?: string | null;
+  start: string | null;
+  end: string | null;
 }
 export interface Endpoint {
   name: string;
-  role?: EndpointRole;
-  qualifiers?: Array<string>;
+  role: EndpointRole;
+  qualifiers: Array<string>;
 }
 export interface EndpointMatch {
   endpoint: string;
   role: EndpointRole;
   status: EndpointMatchStatus;
-  featureId?: string | null;
-  featureName?: string | null;
-  operator?: string | null;
-  operatorRelation?: string | null;
-  voltageKv?: Array<number>;
-  nameScore?: number | null;
-  point?: Point | null;
-  notes?: Array<string>;
+  featureId: string | null;
+  featureName: string | null;
+  operator: string | null;
+  operatorRelation: string | null;
+  voltageKv: Array<number>;
+  nameScore: number | null;
+  point: Point | null;
+  notes: Array<string>;
 }
 export type EndpointMatchStatus = "matched" | "override" | "no_candidate" | "ambiguous" | "vetoed" | "separation_rejected";
 export type EndpointRole = "from" | "to" | "via" | "single" | "unknown";
@@ -38,45 +38,47 @@ export type EndpointStatus = "explicit_pair" | "chain" | "single_site" | "none";
 export interface Evidence {
   level: EvidenceLevel;
   score: number;
-  breakdown?: Record<string, unknown>;
-  reasons?: Array<string>;
-  warnings?: Array<string>;
+  breakdown: Record<string, number>;
+  reasons: Array<string>;
+  warnings: Array<string>;
 }
 export type EvidenceLevel = "HIGH" | "MEDIUM" | "LOW" | "UNRESOLVED";
 export type GeometryMethod = "verified_full_line" | "verified_endpoints_straight_line" | "verified_endpoint_route" | "verified_single_endpoint" | "approximate_area_centroid" | "human_verified_override" | "unresolved";
 export interface GeometryResolution {
   method: GeometryMethod;
   isApproximation: boolean;
-  featureIds?: Array<string>;
-  matches?: Array<EndpointMatch>;
-  warnings?: Array<string>;
+  featureIds: Array<string>;
+  matches: Array<EndpointMatch>;
+  warnings: Array<string>;
 }
 export interface Metadata {
-  schemaVersion?: string;
-  fixture?: boolean;
-  distanceUnit?: string;
-  thresholdsKm: Record<string, unknown>;
-  timelineGapDays?: Record<string, unknown>;
-  zoneGuards?: Record<string, unknown>;
-  utilityColors: Record<string, unknown>;
-  utilityNames?: Record<string, unknown>;
-  labels?: Record<string, unknown>;
-  sources?: Array<SourceSnapshot>;
+  schemaVersion: string;
+  fixture: boolean;
+  distanceUnit: string;
+  thresholdsKm: Record<string, number>;
+  timelineGapDays: Record<string, number>;
+  zoneGuards: Record<string, unknown>;
+  utilityColors: Record<string, string>;
+  utilityNames: Record<string, string>;
+  labels: Record<string, Record<string, string>>;
+  sources: Array<SourceSnapshot>;
 }
 export interface Metrics {
   projects: number;
-  projectsByUtility: Record<string, unknown>;
+  projectsByUtility: Record<string, number>;
   locatedProjects: number;
-  notAssessedByUtility: Record<string, unknown>;
+  notAssessedByUtility: Record<string, number>;
+  resolution: ResolutionBreakdown;
+  resolutionByUtility: Record<string, ResolutionBreakdown>;
   projectsWithNamedEndpoints: number;
   automaticResolutionRate: number;
   humanVerifiedEndpoints: number;
   relationships: number;
-  relationshipsByTier: Record<string, unknown>;
+  relationshipsByTier: Record<string, number>;
   zones: number;
-  attentionCompressionRatio?: number | null;
-  evidenceDistribution: Record<string, unknown>;
-  geometryDistribution: Record<string, unknown>;
+  attentionCompressionRatio: number | null;
+  evidenceDistribution: Record<string, number>;
+  geometryDistribution: Record<string, number>;
 }
 export interface Point {
   lat: number;
@@ -88,21 +90,21 @@ export interface Project {
   utility: string;
   projectName: string;
   projectType: ProjectType;
-  sponsor?: string | null;
-  description?: string | null;
-  voltageKv?: Array<number>;
-  endpoints?: Array<Endpoint>;
-  endpointStatus?: EndpointStatus;
-  status?: string | null;
-  plannedInServiceDate?: string | null;
-  filedStartDate?: string | null;
-  constructionWindow?: ConstructionWindow | null;
-  estimatedCostUsd?: number | null;
+  sponsor: string | null;
+  description: string | null;
+  voltageKv: Array<number>;
+  endpoints: Array<Endpoint>;
+  endpointStatus: EndpointStatus;
+  status: string | null;
+  plannedInServiceDate: string | null;
+  filedStartDate: string | null;
+  constructionWindow: ConstructionWindow | null;
+  estimatedCostUsd: number | null;
   source: SourceRef;
-  geometry?: Record<string, unknown> | null;
-  geometryResolution?: GeometryResolution | null;
-  evidence?: Evidence | null;
-  warnings?: Array<string>;
+  geometry: Record<string, unknown> | null;
+  geometryResolution: GeometryResolution | null;
+  evidence: Evidence | null;
+  warnings: Array<string>;
 }
 export type ProjectType = "transmission_line" | "substation" | "reactor" | "other";
 export interface Relationship {
@@ -110,57 +112,63 @@ export interface Relationship {
   projectA: string;
   projectB: string;
   distanceKm: number;
-  closestPoints: Array<unknown>;
+  closestPoints: [Point, Point];
   spatialTier: SpatialTier;
-  geometryMethods: Array<unknown>;
+  geometryMethods: [GeometryMethod, GeometryMethod];
   approximate: boolean;
   timeline: Timeline;
-  opportunityPriority?: Priority | null;
-  rank?: number | null;
-  coordinationPlaybook?: Array<string>;
+  opportunityPriority: Priority | null;
+  rank: number | null;
+  coordinationPlaybook: Array<string>;
   evidence: Evidence;
+}
+export interface ResolutionBreakdown {
+  locatedAutomatically: number;
+  locatedHumanVerifiedOnly: number;
+  notLocatedUnresolved: number;
+  notLocatedNoNamedSite: number;
 }
 export interface SourceRef {
   document: string;
   projectIdRaw: string;
   page: number;
-  rawText?: string | null;
-  rawFields?: Record<string, unknown>;
+  rawText: string | null;
+  rawFields: Record<string, string>;
 }
 export interface SourceSnapshot {
   kind: string;
   name: string;
-  retrievedAt?: string | null;
-  sha256?: string | null;
+  retrievedAt: string | null;
+  sha256: string | null;
 }
 export type SpatialTier = "CROSSING" | "SHARED_CORRIDOR" | "SITE_LOGISTICS" | "CREWS_EQUIPMENT";
 export interface Timeline {
   type: TimelineType;
-  gapDays?: number | null;
-  overlapDays?: number | null;
+  gapDays: number | null;
+  overlapDays: number | null;
   relevance: TimelineRelevance;
-  isdWithinFiledSpan?: boolean;
+  isdWithinFiledSpan: boolean;
 }
 export type TimelineRelevance = "OVERLAPPING" | "STRONG" | "MEANINGFUL" | "POSSIBLE" | "WEAK" | "UNKNOWN";
 export type TimelineType = "IN_SERVICE_GAP" | "WINDOW_OVERLAP" | "WINDOW_GAP" | "UNRESOLVED";
 export interface Zone {
   id: string;
-  rank?: number | null;
+  rank: number | null;
   name: string;
-  projectIds?: Array<string>;
-  relationshipIds?: Array<string>;
-  topRelationshipId?: string | null;
-  headline?: ZoneHeadline | null;
-  utilities?: Array<string>;
+  projectIds: Array<string>;
+  relationshipIds: Array<string>;
+  topRelationshipId: string | null;
+  headline: ZoneHeadline | null;
+  utilities: Array<string>;
   closestDistanceKm: number;
-  inServiceRange?: DateRange;
-  geographicSpanKm?: number | null;
-  timelineSpanDays?: number | null;
+  inServiceRange: DateRange;
+  geographicSpanKm: number | null;
+  timelineSpanDays: number | null;
   opportunityPriority: Priority;
   evidenceLevel: EvidenceLevel;
-  coordinationThemes?: Array<string>;
+  coordinationThemes: Array<string>;
   bounds: Bounds;
-  warnings?: Array<string>;
+  warnings: Array<string>;
 }
 export interface ZoneHeadline {
   relationshipId: string;
@@ -169,16 +177,16 @@ export interface ZoneHeadline {
   distanceKm: number;
   spatialTier: SpatialTier;
   timelineType: TimelineType;
-  gapDays?: number | null;
+  gapDays: number | null;
   timelineRelevance: TimelineRelevance;
   opportunityPriority: Priority;
 }
 export interface Payload {
   metadata: Metadata;
-  metrics?: Metrics | null;
-  projects?: Array<Project>;
-  relationships?: Array<Relationship>;
-  zones?: Array<Zone>;
+  metrics: Metrics | null;
+  projects: Array<Project>;
+  relationships: Array<Relationship>;
+  zones: Array<Zone>;
 }
 
 export type GridlockPayload = Payload;

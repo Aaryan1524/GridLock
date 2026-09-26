@@ -1,0 +1,251 @@
+/* GridLock design system: editorial infrastructure intelligence.
+   Graphite surfaces, warm ivory type, a visible hairline grid, one restrained accent. */
+
+:root {
+  color-scheme: dark;
+
+  --bg: #11110f;
+  --bg-raised: #171714;
+  --bg-sunken: #0b0b0a;
+  --line: rgba(236, 229, 214, 0.1);
+  --line-strong: rgba(236, 229, 214, 0.22);
+  --text: #ece5d6;
+  --muted: #a39e92;
+  --faint: #6f6b62;
+
+  /* Semantic tones: selection and HIGH share the accent; MEDIUM is muted amber; LOW is neutral. */
+  --accent: #d9825b;
+  --accent-soft: rgba(217, 130, 91, 0.14);
+  --amber: #c9a45f;
+  --amber-soft: rgba(201, 164, 95, 0.12);
+  --neutral: #8f8a80;
+  --neutral-soft: rgba(143, 138, 128, 0.12);
+  --positive: #a8b98a;
+  --caution: #c9a45f;
+
+  --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --max: 1440px;
+  --gutter: clamp(16px, 3vw, 32px);
+  --columns: 12;
+  --radius: 2px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+}
+
+/* Lightweight film grain; a static data URI, no animation. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Type ---------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 0.98;
+  margin: 0;
+}
+
+.eyebrow,
+.mono {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mono-plain {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.faint {
+  color: var(--faint);
+}
+
+/* ---------- Grid framework ---------- */
+
+.frame {
+  max-width: var(--max);
+  margin: 0 auto;
+  border-left: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  position: relative;
+}
+
+/* Visible column guides behind a section. */
+.guides {
+  position: relative;
+}
+
+.guides::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(100% / var(--columns) - 1px),
+    var(--line) calc(100% / var(--columns) - 1px),
+    var(--line) calc(100% / var(--columns))
+  );
+  opacity: 0.55;
+}
+
+.rule-top {
+  border-top: 1px solid var(--line);
+}
+
+.rule-bottom {
+  border-bottom: 1px solid var(--line);
+}
+
+.pad {
+  padding: var(--gutter);
+}
+
+/* ---------- Controls ---------- */
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bg);
+  background: var(--text);
+  border: 1px solid var(--text);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 160ms var(--ease), color 160ms var(--ease);
+}
+
+.button:hover {
+  background: transparent;
+  color: var(--text);
+}
+
+.button.ghost {
+  background: transparent;
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.button.ghost:hover {
+  border-color: var(--text);
+}
+
+.button.small {
+  padding: 8px 12px;
+  font-size: 11px;
+}
+
+/* ---------- Priority and evidence tags ---------- */
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  white-space: nowrap;
+}
+
+.tag::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+}
+
+.tag[data-priority="HIGH"] {
+  color: var(--accent);
+  border-color: rgba(217, 130, 91, 0.45);
+  background: var(--accent-soft);
+}
+
+.tag[data-priority="MEDIUM"] {
+  color: var(--amber);
+  border-color: rgba(201, 164, 95, 0.4);
+  background: var(--amber-soft);
+}
+
+.tag[data-priority="LOW"] {
+  color: var(--neutral);
+  background: var(--neutral-soft);
+}
+
+.tag.plain::before {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}

@@ -45,7 +45,7 @@ def run_pipeline(
     osm = ingest_osm(bundle, repository_root, offline=offline)
     log(f"2/5 osm: {sum(osm.feature_counts.values())} features ({'cache' if offline else 'refreshed from Overpass'})")
     resolution = resolve_projects(bundle, repository_root).as_dict()
-    log(f"3/5 resolve: {resolution['projects_with_geometry']} projects located")
+    log(f"3/5 resolve: {resolution['located_projects']} of {resolution['projects']} projects located")
     overlap = run_overlap(bundle, repository_root).as_dict()
     log(f"4/5 overlap: {overlap['relationships']} relationships")
     result = build_payload(bundle, repository_root)
@@ -60,8 +60,13 @@ def summarize(payload: Payload) -> list[str]:
     lines = [
         f"{metrics.zones} coordination zones from {metrics.relationships} cross-utility relationships "
         f"(attention compression {metrics.attention_compression_ratio}x)",
-        f"{metrics.located_projects} of {metrics.projects} projects located; not assessed: "
-        + ", ".join(f"{code} {count}" for code, count in metrics.not_assessed_by_utility.items()),
+        f"{metrics.projects} projects = {metrics.located_projects} located "
+        f"({metrics.resolution.located_automatically} automatically, {metrics.resolution.located_human_verified_only} human-verified only)"
+        f" + {metrics.projects - metrics.located_projects} not assessed "
+        f"({metrics.resolution.not_located_unresolved} with named sites not resolved, "
+        f"{metrics.resolution.not_located_no_named_site} whose titles name no site)",
+        f"automatic resolution rate {metrics.automatic_resolution_rate:.1%} "
+        f"= {metrics.resolution.located_automatically} of {metrics.projects_with_named_endpoints} projects that name a site",
     ]
     for zone in payload.zones:
         themes = ", ".join(labels.get("playbook", {}).get(theme, theme) for theme in zone.coordination_themes)

@@ -14,6 +14,14 @@ from gridlock.settings.loader import ConfigBundle, load_settings
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
 CONFIG_ENV = "GRIDLOCK_CONFIG"
+CORS_ENV = "GRIDLOCK_API_CORS_ORIGINS"
+
+
+def cors_origins(configured: tuple[str, ...]) -> list[str]:
+    """Allowed browser origins: a comma-separated GRIDLOCK_API_CORS_ORIGINS overrides the config."""
+    override = os.environ.get(CORS_ENV, "")
+    origins = [origin.strip() for origin in override.split(",") if origin.strip()]
+    return origins or list(configured)
 
 
 class _PayloadFile:
@@ -40,7 +48,7 @@ def create_app(bundle: ConfigBundle, repository_root: Path = REPOSITORY_ROOT) ->
     api = bundle.root.api
     payload = _PayloadFile(repository_root / bundle.root.paths.output_dir / api.payload_file)
     app = FastAPI(title="GridLock", description="Evidence-backed cross-utility coordination zones (read-only).")
-    app.add_middleware(CORSMiddleware, allow_origins=list(api.cors_origins), allow_methods=["GET"], allow_headers=["*"])
+    app.add_middleware(CORSMiddleware, allow_origins=cors_origins(api.cors_origins), allow_methods=["GET"], allow_headers=["*"])
 
     @app.get("/api/health")
     def health() -> dict[str, Any]:

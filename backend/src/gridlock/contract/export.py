@@ -17,11 +17,14 @@ def _type_from_schema(schema: dict[str, Any]) -> str:
     if "anyOf" in schema:
         return " | ".join(_type_from_schema(option) for option in schema["anyOf"])
     if schema.get("type") == "array":
+        if "prefixItems" in schema:  # fixed-length tuples such as closestPoints
+            return "[" + ", ".join(_type_from_schema(item) for item in schema["prefixItems"]) + "]"
         return f"Array<{_type_from_schema(schema.get('items', {}))}>"
     if schema.get("type") == "object":
         properties = schema.get("properties")
         if not properties:
-            return "Record<string, unknown>"
+            values = schema.get("additionalProperties")
+            return f"Record<string, {_type_from_schema(values)}>" if isinstance(values, dict) and values else "Record<string, unknown>"
         required = set(schema.get("required", []))
         fields = [
             f"{key}{'' if key in required else '?'}: {_type_from_schema(value)}"
@@ -62,8 +65,12 @@ def schema_to_typescript(schema: dict[str, Any]) -> str:
 
 
 def export_contract(repository_root: Path) -> tuple[Path, Path]:
-    """Write canonical API schema and derived frontend types in a stable order."""
-    schema = Payload.model_json_schema(by_alias=True)
+    """Write canonical API schema and derived frontend types in a stable order.
+
+    The schema describes what the API emits (serialization mode), so fields that always serialize,
+    including those with defaults, are required in the TypeScript types.
+    """
+    schema = Payload.model_json_schema(by_alias=True, mode="serialization")
     schema_path = repository_root / "contract" / "gridlock.schema.json"
     types_path = repository_root / "frontend" / "src" / "lib" / "contract.ts"
     schema_path.parent.mkdir(parents=True, exist_ok=True)

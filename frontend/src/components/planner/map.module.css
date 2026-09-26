@@ -1,0 +1,142 @@
+.frame {
+  position: absolute;
+  inset: 0;
+}
+
+.map {
+  position: absolute;
+  inset: 0;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: var(--gutter);
+  pointer-events: none;
+}
+
+.topBar {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.topBar > * {
+  pointer-events: auto;
+}
+
+.badge,
+.toggle,
+.legend {
+  background: rgba(17, 17, 15, 0.86);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  backdrop-filter: none;
+}
+
+.badge {
+  padding: 6px 10px;
+  font-size: 10px;
+}
+
+.badge[data-basemap="bundled"] {
+  color: var(--caution);
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  font-size: 10px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.toggle input {
+  accent-color: var(--accent);
+  margin: 0;
+}
+
+.legend {
+  position: absolute;
+  left: 12px;
+  bottom: 40px; /* clear of the attribution line */
+  display: grid;
+  gap: 6px;
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  max-width: min(60%, 420px);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.swatch {
+  width: 14px;
+  height: 3px;
+}
+
+.dashed {
+  width: 14px;
+  border-top: 2px dashed var(--muted);
+}
+
+.hollow {
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+}
+
+.connector {
+  width: 14px;
+  height: 2px;
+  background: var(--accent);
+}
+
+/* The exact distance of the top relationship, placed on its closest-point connector. */
+.distanceLabel {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 3px 7px;
+  border-radius: var(--radius);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.frame :global(.maplibregl-ctrl-attrib) {
+  background: rgba(17, 17, 15, 0.8);
+  color: var(--faint);
+}
+
+.frame :global(.maplibregl-ctrl-attrib a) {
+  color: var(--muted);
+}
+
+/* Small maps: keep only the utility colours in the legend so the geometry stays visible. */
+@media (max-width: 640px) {
+  .legendItem:nth-child(n + 3) {
+    display: none;
+  }
+
+  .legend {
+    bottom: 36px;
+    padding: 6px 8px;
+  }
+}
