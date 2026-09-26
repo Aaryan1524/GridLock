@@ -587,6 +587,10 @@
     },
     "Relationship": {
       "properties": {
+        "approximate": {
+          "title": "Approximate",
+          "type": "boolean"
+        },
         "closestPoints": {
           "maxItems": 2,
           "minItems": 2,
@@ -616,13 +620,35 @@
         "evidence": {
           "$ref": "#/$defs/Evidence"
         },
+        "geometryMethods": {
+          "maxItems": 2,
+          "minItems": 2,
+          "prefixItems": [
+            {
+              "$ref": "#/$defs/GeometryMethod"
+            },
+            {
+              "$ref": "#/$defs/GeometryMethod"
+            }
+          ],
+          "title": "Geometrymethods",
+          "type": "array"
+        },
         "id": {
           "minLength": 1,
           "title": "Id",
           "type": "string"
         },
         "opportunityPriority": {
-          "$ref": "#/$defs/Priority"
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Priority"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "projectA": {
           "minLength": 1,
@@ -648,8 +674,9 @@
         "distanceKm",
         "closestPoints",
         "spatialTier",
+        "geometryMethods",
+        "approximate",
         "timeline",
-        "opportunityPriority",
         "evidence"
       ],
       "title": "Relationship",
@@ -711,6 +738,7 @@
       "type": "string"
     },
     "Timeline": {
+      "description": "How two projects relate in time; an in-service gap is never presented as a window overlap (I-6).",
       "properties": {
         "gapDays": {
           "anyOf": [
@@ -729,6 +757,19 @@
           "default": false,
           "title": "Isdwithinfiledspan",
           "type": "boolean"
+        },
+        "overlapDays": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Overlapdays"
         },
         "relevance": {
           "$ref": "#/$defs/TimelineRelevance"
@@ -761,6 +802,7 @@
       "enum": [
         "IN_SERVICE_GAP",
         "WINDOW_OVERLAP",
+        "WINDOW_GAP",
         "UNRESOLVED"
       ],
       "title": "TimelineType",

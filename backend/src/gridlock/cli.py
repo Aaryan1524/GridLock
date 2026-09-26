@@ -10,7 +10,8 @@ from typing import Sequence
 
 from .contract import export_contract, validate_payload
 from .georesolution import resolve_projects
-from .georesolution.oracle import HEADER, oracle_check
+from .georesolution.oracle import HEADER, OVERLAP_HEADER, oracle_check, overlap_oracle_check
+from .overlap import run_overlap
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
@@ -38,11 +39,18 @@ def build_parser() -> argparse.ArgumentParser:
     ingest_parser.add_argument("--offline", action="store_true")
     commands.add_parser("resolve", help="resolve projects to public OSM geometry")
     commands.add_parser("oracle", help="compare resolved endpoints with the sponsor's worked example")
+    commands.add_parser("overlap", help="measure and classify cross-utility project relationships")
     inspect_parser = commands.add_parser("inspect", help="print one normalized project record")
     inspect_parser.add_argument("project_id")
     inspect_parser.add_argument("--resolved", action="store_true", help="read the geometry-resolved output instead")
     inspect_parser.add_argument("--raw-text", action="store_true", help="include the stored source page text")
     return parser
+
+
+def _print_table(header: list[str], rows: list[list[object]], widths: list[int]) -> None:
+    print("  ".join(title.ljust(width) for title, width in zip(header, widths)))
+    for row in rows:
+        print("  ".join(str(value)[:width].ljust(width) for value, width in zip(row, widths)))
 
 
 def _inspect(bundle: ConfigBundle, project_id: str, resolved: bool, include_raw_text: bool) -> int:
@@ -122,10 +130,21 @@ def main(argv: Sequence[str] | None = None) -> int:
         except (ConfigError, OSError, ValueError, KeyError) as error:
             print(f"Oracle check error: {error}")
             return 2
-        widths = [10, 16, 20, 20, 20, 44, 11]
-        print("  ".join(title.ljust(width) for title, width in zip(HEADER, widths)))
-        for row in rows:
-            print("  ".join(str(value)[:width].ljust(width) for value, width in zip(row.as_list(), widths)))
+        _print_table(HEADER, [row.as_list() for row in rows], [10, 16, 20, 20, 20, 44, 11])
+        relationships = Path(__file__).resolve().parents[3] / bundle.root.paths.output_dir / "relationships.json"
+        if relationships.is_file():
+            overlaps = overlap_oracle_check(bundle, Path(__file__).resolve().parents[3], relationships)
+            print()
+            _print_table(OVERLAP_HEADER, [row.as_list() for row in overlaps], [10, 30, 9, 14, 16, 8, 12, 16])
+        return 0
+    if args.command == "overlap":
+        try:
+            bundle = load_settings(args.config)
+            report = run_overlap(bundle, Path(__file__).resolve().parents[3])
+        except (ConfigError, OSError, ValueError) as error:
+            print(f"Overlap error: {error}")
+            return 2
+        print(json.dumps(report.as_dict(), indent=2))
         return 0
     if args.command == "resolve":
         try:

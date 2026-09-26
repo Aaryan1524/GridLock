@@ -1,0 +1,2840 @@
+[
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20065",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20065",
+    "distanceKm": 13.567,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 882,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 90
+      },
+      "reasons": [
+        "✓ Closest approach 13.567 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20065: HIGH evidence (90)"
+      ],
+      "warnings": [
+        "△ GPC-20065 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20066",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20066",
+    "distanceKm": 29.635,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 517,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 29.635 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20066: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ GPC-20066 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20067",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20067",
+    "distanceKm": 29.635,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 152,
+      "overlapDays": null,
+      "relevance": "MEANINGFUL",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 29.635 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20067: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ GPC-20067 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20277",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20277",
+    "distanceKm": 13.567,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 517,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 13.567 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20277: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ GPC-20277 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20407",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20407",
+    "distanceKm": 34.867,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0226602,
+        "lon": -81.0862104
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1248,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 34.867 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20407: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ GPC-20407 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20783",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20783",
+    "distanceKm": 31.411,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1248,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 31.411 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20783: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ GPC-20783 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20784",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20784",
+    "distanceKm": 37.317,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2709,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 37.317 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20784: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ GPC-20784 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20785",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20785",
+    "distanceKm": 19.142,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.2487012,
+        "lon": -81.2094724
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 882,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 19.142 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20785: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ GPC-20785 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-20796",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-20796",
+    "distanceKm": 37.317,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_single_endpoint"
+    ],
+    "approximate": false,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 37.317 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-20796: HIGH evidence (80)"
+      ],
+      "warnings": []
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-21006",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-21006",
+    "distanceKm": 34.119,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0411765,
+        "lon": -81.1445634
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1613,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 34.119 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-21006: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ GPC-21006 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-0139-M-N-GPC-21023",
+    "projectA": "DESC-0139-M-N",
+    "projectB": "GPC-21023",
+    "distanceKm": 31.411,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "human_verified_override",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1613,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 31.411 km between public geometries",
+        "DESC-0139-M-N: MEDIUM evidence (60)",
+        "GPC-21023: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ GPC-21023 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20065",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20065",
+    "distanceKm": 4.89,
+    "closestPoints": [
+      {
+        "lat": 32.3606993,
+        "lon": -81.1241558
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "SITE_LOGISTICS",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 517,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "staging_yards",
+      "deliveries",
+      "site_logistics"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 90
+      },
+      "reasons": [
+        "✓ Closest approach 4.89 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20065: HIGH evidence (90)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20065 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20066",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20066",
+    "distanceKm": 29.635,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 152,
+      "overlapDays": null,
+      "relevance": "MEANINGFUL",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 29.635 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20066: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20066 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20067",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20067",
+    "distanceKm": 29.635,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 213,
+      "overlapDays": null,
+      "relevance": "POSSIBLE",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 29.635 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20067: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20067 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20277",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20277",
+    "distanceKm": 4.89,
+    "closestPoints": [
+      {
+        "lat": 32.3606993,
+        "lon": -81.1241558
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "SITE_LOGISTICS",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 152,
+      "overlapDays": null,
+      "relevance": "MEANINGFUL",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "staging_yards",
+      "deliveries",
+      "site_logistics"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 4.89 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20277: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20277 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20407",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20407",
+    "distanceKm": 34.867,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0226602,
+        "lon": -81.0862104
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 883,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 34.867 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20407: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20407 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20783",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20783",
+    "distanceKm": 31.04,
+    "closestPoints": [
+      {
+        "lat": 32.3474242,
+        "lon": -81.0790024
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 883,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 31.04 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20783: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20783 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20784",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20784",
+    "distanceKm": 32.377,
+    "closestPoints": [
+      {
+        "lat": 32.3606993,
+        "lon": -81.1241558
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2344,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 32.377 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20784: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20784 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20785",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20785",
+    "distanceKm": 14.792,
+    "closestPoints": [
+      {
+        "lat": 32.3606993,
+        "lon": -81.1241558
+      },
+      {
+        "lat": 32.2487012,
+        "lon": -81.2094724
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 517,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 14.792 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20785: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20785 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-20796",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-20796",
+    "distanceKm": 32.377,
+    "closestPoints": [
+      {
+        "lat": 32.3606993,
+        "lon": -81.1241558
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2709,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 32.377 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-20796: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-21006",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-21006",
+    "distanceKm": 34.119,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.0411765,
+        "lon": -81.1445634
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1248,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 34.119 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-21006: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-21006 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-06367-D-G-GPC-21023",
+    "projectA": "DESC-06367-D-G",
+    "projectB": "GPC-21023",
+    "distanceKm": 31.04,
+    "closestPoints": [
+      {
+        "lat": 32.3474242,
+        "lon": -81.0790024
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1248,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 31.04 km between public geometries",
+        "DESC-06367-D-G: MEDIUM evidence (75)",
+        "GPC-21023: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+        "△ GPC-21023 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20065",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20065",
+    "distanceKm": 13.567,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 730,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 90
+      },
+      "reasons": [
+        "✓ Closest approach 13.567 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20065: HIGH evidence (90)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20065 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20066",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20066",
+    "distanceKm": 25.656,
+    "closestPoints": [
+      {
+        "lat": 32.2598284,
+        "lon": -80.8983145
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 365,
+      "overlapDays": null,
+      "relevance": "POSSIBLE",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 25.656 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20066: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20066 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20067",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20067",
+    "distanceKm": 25.656,
+    "closestPoints": [
+      {
+        "lat": 32.2598284,
+        "lon": -80.8983145
+      },
+      {
+        "lat": 32.0668575,
+        "lon": -81.0483698
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 0,
+      "overlapDays": null,
+      "relevance": "STRONG",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 25.656 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20067: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20067 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20277",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20277",
+    "distanceKm": 13.567,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.3521285,
+        "lon": -81.1751191
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 365,
+      "overlapDays": null,
+      "relevance": "POSSIBLE",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 13.567 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20277: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20277 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20407",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20407",
+    "distanceKm": 31.712,
+    "closestPoints": [
+      {
+        "lat": 32.2612238,
+        "lon": -80.9008443
+      },
+      {
+        "lat": 32.0226602,
+        "lon": -81.0862104
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1096,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 31.712 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20407: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20407 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20783",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20783",
+    "distanceKm": 31.296,
+    "closestPoints": [
+      {
+        "lat": 32.3190835,
+        "lon": -81.0059156
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1096,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 31.296 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20783: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20783 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20784",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20784",
+    "distanceKm": 37.317,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2557,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 37.317 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20784: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20784 geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20785",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20785",
+    "distanceKm": 19.142,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.2487012,
+        "lon": -81.2094724
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 730,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 19.142 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20785: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20785 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-20796",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-20796",
+    "distanceKm": 37.317,
+    "closestPoints": [
+      {
+        "lat": 32.33377,
+        "lon": -81.03264
+      },
+      {
+        "lat": 32.1552708,
+        "lon": -81.3683204
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2922,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 37.317 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-20796: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-21006",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-21006",
+    "distanceKm": 31.712,
+    "closestPoints": [
+      {
+        "lat": 32.2612238,
+        "lon": -80.9008443
+      },
+      {
+        "lat": 32.0226602,
+        "lon": -81.0862104
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1461,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 31.712 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-21006: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-21006 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6808-S-GPC-21023",
+    "projectA": "DESC-6808-S",
+    "projectB": "GPC-21023",
+    "distanceKm": 31.296,
+    "closestPoints": [
+      {
+        "lat": 32.3190835,
+        "lon": -81.0059156
+      },
+      {
+        "lat": 32.0834992,
+        "lon": -81.1886851
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1461,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 31.296 km between public geometries",
+        "DESC-6808-S: MEDIUM evidence (75)",
+        "GPC-21023: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6808-S geometry is approximate (verified endpoints straight line)",
+        "△ GPC-21023 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-E-GPC-14222",
+    "projectA": "DESC-6809-E",
+    "projectB": "GPC-14222",
+    "distanceKm": 35.592,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.4542411,
+        "lon": -82.4142261
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 35.592 km between public geometries",
+        "DESC-6809-E: MEDIUM evidence (65)",
+        "GPC-14222: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6809-E geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-E-GPC-17993",
+    "projectA": "DESC-6809-E",
+    "projectB": "GPC-17993",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3652,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-E: MEDIUM evidence (65)",
+        "GPC-17993: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-E geometry is approximate (verified single endpoint)",
+        "△ GPC-17993 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-E-GPC-20793",
+    "projectA": "DESC-6809-E",
+    "projectB": "GPC-20793",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-E: MEDIUM evidence (65)",
+        "GPC-20793: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-E geometry is approximate (verified single endpoint)",
+        "△ GPC-20793 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-E-GPC-20794",
+    "projectA": "DESC-6809-E",
+    "projectB": "GPC-20794",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-E: MEDIUM evidence (65)",
+        "GPC-20794: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-E geometry is approximate (verified single endpoint)",
+        "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-E-GPC-21116",
+    "projectA": "DESC-6809-E",
+    "projectB": "GPC-21116",
+    "distanceKm": 27.363,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.3197655,
+        "lon": -81.9953242
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1978,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 27.363 km between public geometries",
+        "DESC-6809-E: MEDIUM evidence (65)",
+        "GPC-21116: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6809-E geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-G-GPC-14222",
+    "projectA": "DESC-6809-G",
+    "projectB": "GPC-14222",
+    "distanceKm": 35.592,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.4542411,
+        "lon": -82.4142261
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2709,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 35.592 km between public geometries",
+        "DESC-6809-G: MEDIUM evidence (65)",
+        "GPC-14222: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6809-G geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-G-GPC-17993",
+    "projectA": "DESC-6809-G",
+    "projectB": "GPC-17993",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3287,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-G: MEDIUM evidence (65)",
+        "GPC-17993: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-G geometry is approximate (verified single endpoint)",
+        "△ GPC-17993 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-G-GPC-20793",
+    "projectA": "DESC-6809-G",
+    "projectB": "GPC-20793",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2709,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-G: MEDIUM evidence (65)",
+        "GPC-20793: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-G geometry is approximate (verified single endpoint)",
+        "△ GPC-20793 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-G-GPC-20794",
+    "projectA": "DESC-6809-G",
+    "projectB": "GPC-20794",
+    "distanceKm": 10.893,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2709,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 10.893 km between public geometries",
+        "DESC-6809-G: MEDIUM evidence (65)",
+        "GPC-20794: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6809-G geometry is approximate (verified single endpoint)",
+        "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6809-G-GPC-21116",
+    "projectA": "DESC-6809-G",
+    "projectB": "GPC-21116",
+    "distanceKm": 27.363,
+    "closestPoints": [
+      {
+        "lat": 33.5616477,
+        "lon": -82.0532537
+      },
+      {
+        "lat": 33.3197655,
+        "lon": -81.9953242
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1613,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 27.363 km between public geometries",
+        "DESC-6809-G: MEDIUM evidence (65)",
+        "GPC-21116: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6809-G geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-A-GPC-14222",
+    "projectA": "DESC-6810-A",
+    "projectB": "GPC-14222",
+    "distanceKm": 30.533,
+    "closestPoints": [
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      },
+      {
+        "lat": 33.4542411,
+        "lon": -82.4142261
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 30.533 km between public geometries",
+        "DESC-6810-A: MEDIUM evidence (65)",
+        "GPC-14222: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6810-A geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-A-GPC-17993",
+    "projectA": "DESC-6810-A",
+    "projectB": "GPC-17993",
+    "distanceKm": 13.128,
+    "closestPoints": [
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3652,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 13.128 km between public geometries",
+        "DESC-6810-A: MEDIUM evidence (65)",
+        "GPC-17993: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-A geometry is approximate (verified single endpoint)",
+        "△ GPC-17993 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-A-GPC-20793",
+    "projectA": "DESC-6810-A",
+    "projectB": "GPC-20793",
+    "distanceKm": 0.0,
+    "closestPoints": [
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      },
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      }
+    ],
+    "spatialTier": "CROSSING",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crossing_structures",
+      "outage_sequencing"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 0 km between public geometries",
+        "✓ Both projects end at Thurmond Substation (way/52102019)",
+        "DESC-6810-A: MEDIUM evidence (65)",
+        "GPC-20793: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-A geometry is approximate (verified single endpoint)",
+        "△ GPC-20793 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-A-GPC-20794",
+    "projectA": "DESC-6810-A",
+    "projectB": "GPC-20794",
+    "distanceKm": 0.0,
+    "closestPoints": [
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      },
+      {
+        "lat": 33.6601141,
+        "lon": -82.19595
+      }
+    ],
+    "spatialTier": "CROSSING",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3074,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crossing_structures",
+      "outage_sequencing"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 65,
+      "breakdown": {
+        "project_a": 65,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 0 km between public geometries",
+        "✓ Both projects end at Thurmond Substation (way/52102019)",
+        "DESC-6810-A: MEDIUM evidence (65)",
+        "GPC-20794: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-A geometry is approximate (verified single endpoint)",
+        "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-O-GPC-17993",
+    "projectA": "DESC-6810-O",
+    "projectB": "GPC-17993",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2557,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6810-O: MEDIUM evidence (60)",
+        "GPC-17993: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-O geometry is approximate (verified single endpoint)",
+        "△ GPC-17993 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-O-GPC-20793",
+    "projectA": "DESC-6810-O",
+    "projectB": "GPC-20793",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1979,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6810-O: MEDIUM evidence (60)",
+        "GPC-20793: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-O geometry is approximate (verified single endpoint)",
+        "△ GPC-20793 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-O-GPC-20794",
+    "projectA": "DESC-6810-O",
+    "projectB": "GPC-20794",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1979,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6810-O: MEDIUM evidence (60)",
+        "GPC-20794: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6810-O geometry is approximate (verified single endpoint)",
+        "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6810-O-GPC-21116",
+    "projectA": "DESC-6810-O",
+    "projectB": "GPC-21116",
+    "distanceKm": 14.785,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.3197655,
+        "lon": -81.9953242
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_single_endpoint",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 883,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 60,
+      "breakdown": {
+        "project_a": 60,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 14.785 km between public geometries",
+        "DESC-6810-O: MEDIUM evidence (60)",
+        "GPC-21116: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6810-O geometry is approximate (verified single endpoint)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6852-GPC-17993",
+    "projectA": "DESC-6852",
+    "projectB": "GPC-17993",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 3063,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6852: MEDIUM evidence (75)",
+        "GPC-17993: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6852 geometry is approximate (verified endpoints straight line)",
+        "△ GPC-17993 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6852-GPC-20793",
+    "projectA": "DESC-6852",
+    "projectB": "GPC-20793",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2485,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6852: MEDIUM evidence (75)",
+        "GPC-20793: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6852 geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20793 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6852-GPC-20794",
+    "projectA": "DESC-6852",
+    "projectB": "GPC-20794",
+    "distanceKm": 26.905,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.5439824,
+        "lon": -82.1686362
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_endpoints_straight_line"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 2485,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": false
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 95
+      },
+      "reasons": [
+        "✓ Closest approach 26.905 km between public geometries",
+        "DESC-6852: MEDIUM evidence (75)",
+        "GPC-20794: HIGH evidence (95)"
+      ],
+      "warnings": [
+        "△ DESC-6852 geometry is approximate (verified endpoints straight line)",
+        "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  },
+  {
+    "id": "REL-DESC-6852-GPC-21116",
+    "projectA": "DESC-6852",
+    "projectB": "GPC-21116",
+    "distanceKm": 14.785,
+    "closestPoints": [
+      {
+        "lat": 33.4328919,
+        "lon": -81.9112802
+      },
+      {
+        "lat": 33.3197655,
+        "lon": -81.9953242
+      }
+    ],
+    "spatialTier": "CREWS_EQUIPMENT",
+    "geometryMethods": [
+      "verified_endpoints_straight_line",
+      "verified_single_endpoint"
+    ],
+    "approximate": true,
+    "timeline": {
+      "type": "IN_SERVICE_GAP",
+      "gapDays": 1389,
+      "overlapDays": null,
+      "relevance": "WEAK",
+      "isdWithinFiledSpan": true
+    },
+    "opportunityPriority": null,
+    "coordinationPlaybook": [
+      "crews",
+      "contractors",
+      "heavy_equipment"
+    ],
+    "evidence": {
+      "level": "MEDIUM",
+      "score": 75,
+      "breakdown": {
+        "project_a": 75,
+        "project_b": 80
+      },
+      "reasons": [
+        "✓ Closest approach 14.785 km between public geometries",
+        "DESC-6852: MEDIUM evidence (75)",
+        "GPC-21116: HIGH evidence (80)"
+      ],
+      "warnings": [
+        "△ DESC-6852 geometry is approximate (verified endpoints straight line)"
+      ]
+    }
+  }
+]

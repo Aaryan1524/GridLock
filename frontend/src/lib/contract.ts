@@ -88,8 +88,10 @@ export interface Relationship {
   distanceKm: number;
   closestPoints: Array<unknown>;
   spatialTier: SpatialTier;
+  geometryMethods: Array<unknown>;
+  approximate: boolean;
   timeline: Timeline;
-  opportunityPriority: Priority;
+  opportunityPriority?: Priority | null;
   coordinationPlaybook?: Array<string>;
   evidence: Evidence;
 }
@@ -104,11 +106,12 @@ export type SpatialTier = "CROSSING" | "SHARED_CORRIDOR" | "SITE_LOGISTICS" | "C
 export interface Timeline {
   type: TimelineType;
   gapDays?: number | null;
+  overlapDays?: number | null;
   relevance: TimelineRelevance;
   isdWithinFiledSpan?: boolean;
 }
 export type TimelineRelevance = "OVERLAPPING" | "STRONG" | "MEANINGFUL" | "POSSIBLE" | "WEAK" | "UNKNOWN";
-export type TimelineType = "IN_SERVICE_GAP" | "WINDOW_OVERLAP" | "UNRESOLVED";
+export type TimelineType = "IN_SERVICE_GAP" | "WINDOW_OVERLAP" | "WINDOW_GAP" | "UNRESOLVED";
 export interface Zone {
   id: string;
   name: string;

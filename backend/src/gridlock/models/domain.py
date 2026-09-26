@@ -75,6 +75,7 @@ class SpatialTier(StrEnum):
 class TimelineType(StrEnum):
     IN_SERVICE_GAP = "IN_SERVICE_GAP"
     WINDOW_OVERLAP = "WINDOW_OVERLAP"
+    WINDOW_GAP = "WINDOW_GAP"
     UNRESOLVED = "UNRESOLVED"
 
 
@@ -187,9 +188,15 @@ class Project(ContractModel):
 
 
 class Timeline(ContractModel):
+    """How two projects relate in time; an in-service gap is never presented as a window overlap (I-6)."""
+
     type: TimelineType
+    # Days between in-service dates (IN_SERVICE_GAP) or between windows that do not overlap.
     gap_days: int | None = Field(default=None, ge=0)
+    # Days two explicit construction windows share; only set for WINDOW_OVERLAP.
+    overlap_days: int | None = Field(default=None, ge=0)
     relevance: TimelineRelevance
+    # One project's in-service date falls inside the other's filed start-to-need span (not a construction overlap).
     isd_within_filed_span: bool = False
 
 
@@ -200,8 +207,12 @@ class Relationship(ContractModel):
     distance_km: float = Field(ge=0)
     closest_points: tuple[Point, Point]
     spatial_tier: SpatialTier
+    # Geometry method of project A and project B, so approximations stay visible (I-10).
+    geometry_methods: tuple[GeometryMethod, GeometryMethod]
+    approximate: bool
     timeline: Timeline
-    opportunity_priority: Priority
+    # Set by ranking (Phase 6); absent on raw overlap-engine output.
+    opportunity_priority: Priority | None = None
     coordination_playbook: list[str] = Field(default_factory=list)
     evidence: Evidence
 

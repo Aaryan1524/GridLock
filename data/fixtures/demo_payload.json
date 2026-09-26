@@ -76,6 +76,8 @@
         {"lat": 32.32, "lon": -80.87}
       ],
       "spatialTier": "SITE_LOGISTICS",
+      "geometryMethods": ["verified_endpoints_straight_line", "verified_single_endpoint"],
+      "approximate": true,
       "timeline": {
         "type": "IN_SERVICE_GAP",
         "gapDays": 152,

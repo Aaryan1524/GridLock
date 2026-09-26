@@ -148,10 +148,33 @@ evidence:
     unresolved: 0
   timeline: {construction_window: 15, start_and_in_service: 15, in_service_date: 10, unknown: 0}
   levels: {high: 80, medium: 50}
+overlap:
+  prefilter_slack_ratio: 0.05
+  distance_decimals: 3
+  coordinate_decimals: 7
+  # Handoff section 11: deterministic coordination themes per spatial tier (no AI).
+  playbooks:
+    CROSSING: [crossing_structures, outage_sequencing]
+    SHARED_CORRIDOR: [right_of_way, access_roads, permitting]
+    SITE_LOGISTICS: [staging_yards, deliveries, site_logistics]
+    CREWS_EQUIPMENT: [crews, contractors, heavy_equipment]
+  playbook_labels:
+    crossing_structures: Crossing structures
+    outage_sequencing: Outage timing and sequencing
+    right_of_way: Right-of-way
+    access_roads: Access roads
+    permitting: Permitting and corridor coordination
+    staging_yards: Staging and laydown yards
+    deliveries: Deliveries
+    site_logistics: Site logistics
+    crews: Crews
+    contractors: Contractors
+    heavy_equipment: Heavy equipment and mobilization
 # The sponsor's Projects_Overlaps.xlsx (in the raw folder): a sanity check only, never pipeline input.
 oracle:
   file: Projects_Overlaps.xlsx
   sheet: projects
+  overlaps_sheet: overlaps
   project_ids:
     DESC_1: DESC-6809-E
     DESC_2: DESC-6810-A
