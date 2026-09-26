@@ -2,11 +2,14 @@ import type { GridlockPayload, Metadata, Project } from "./contract";
 
 const KM_PER_MILE = 1.609344;
 
-/** Format a distance in the payload's display unit; the stored value is always kilometres. */
+/**
+ * Format a distance in the payload's display unit. Kilometres are shown exactly as stored in the
+ * payload (it is already rounded by the backend); miles are a display conversion.
+ */
 export function formatDistance(km: number, metadata: Metadata): string {
   const unit = metadata.distanceUnit ?? "km";
   const value = unit === "mi" ? km / KM_PER_MILE : km;
-  const digits = value === 0 ? 0 : value < 10 ? 2 : 1;
+  const digits = unit === "mi" ? 2 : 3;
   return `${value.toLocaleString("en-US", { maximumFractionDigits: digits, minimumFractionDigits: 0 })} ${unit}`;
 }
 

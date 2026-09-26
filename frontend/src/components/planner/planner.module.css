@@ -93,14 +93,6 @@
   background: var(--bg-sunken);
 }
 
-.mapPlaceholder {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  gap: 12px;
-  text-align: center;
-}
 
 /* ---------- Zone rail ---------- */
 

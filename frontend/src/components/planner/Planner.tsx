@@ -9,6 +9,7 @@ import type { GridlockPayload } from "@/lib/contract";
 import { formatNumber, utilityName } from "@/lib/format";
 
 import { StatusNotice } from "../shared/StatusNotice";
+import { MapView } from "./MapView";
 import styles from "./planner.module.css";
 import { ZoneRail } from "./ZoneRail";
 
@@ -20,6 +21,7 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
   const zones = payload.zones;
   const selected = useMemo(() => zones.find((zone) => zone.id === requested) ?? zones[0] ?? null, [zones, requested]);
   const [showAll, setShowAll] = useState(false);
+  const [inspecting, setInspecting] = useState<string | null>(null);
 
   const select = useCallback(
     (zoneId: string) => {
@@ -33,15 +35,11 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
     <div className={styles.workspace}>
       <ZoneRail zones={zones} metadata={payload.metadata} selectedId={selected?.id ?? null} onSelect={select} />
       <section className={styles.mapRegion} aria-label="Map">
-        <div className={styles.mapPlaceholder}>
-          <span className="mono">Map · {selected?.name ?? "No zone"}</span>
-          <label className="mono-plain">
-            <input type="checkbox" checked={showAll} onChange={(event) => setShowAll(event.target.checked)} /> Show all relationships
-          </label>
-        </div>
+        <MapView payload={payload} zone={selected} showAll={showAll} onShowAllChange={setShowAll} onProjectClick={setInspecting} />
       </section>
       <aside className={styles.panel} aria-label="Selected zone">
         {selected ? <h2 className="display">{selected.name}</h2> : <p className="muted">No coordination zones in this payload.</p>}
+        {inspecting && <p className="mono-plain">Inspecting {inspecting}</p>}
       </aside>
     </div>
   );
