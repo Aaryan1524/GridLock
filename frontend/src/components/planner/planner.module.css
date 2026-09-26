@@ -2,6 +2,8 @@
   height: 100vh;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
+  /* minmax(0, …) lets wide children (the zone list on phones) scroll instead of widening the page. */
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* ---------- Header ---------- */
@@ -90,6 +92,7 @@
 .mapRegion {
   position: relative;
   min-height: 0;
+  overflow: hidden; /* markers and controls never widen the page */
   background: var(--bg-sunken);
 }
 
@@ -169,7 +172,7 @@
   }
 
   .workspace {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .rail,
@@ -196,7 +199,18 @@
     min-height: 360px;
   }
 
-  .headerSource {
+  .headerStats > .headerSource {
     display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .headerStats > div {
+    padding: 0 12px;
+  }
+
+  .headerStats > div:first-child {
+    padding-left: 0;
+    border-left: 0;
   }
 }

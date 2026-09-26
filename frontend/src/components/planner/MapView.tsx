@@ -196,6 +196,14 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
       });
       mapRef.current = map;
       map.touchZoomRotate.disableRotation();
+      // Keep the canvas matched to its region (layout changes, narrow screens) and re-frame the zone.
+      const observer = new ResizeObserver(() => {
+        map.resize();
+        fittedZone.current = null;
+        sync();
+      });
+      observer.observe(container.current);
+      map.once("remove", () => observer.disconnect());
 
       let settled = !online;
       const useBundled = () => {

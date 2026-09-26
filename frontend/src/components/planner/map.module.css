@@ -128,3 +128,15 @@
 .frame :global(.maplibregl-ctrl-attrib a) {
   color: var(--muted);
 }
+
+/* Small maps: keep only the utility colours in the legend so the geometry stays visible. */
+@media (max-width: 640px) {
+  .legendItem:nth-child(n + 3) {
+    display: none;
+  }
+
+  .legend {
+    bottom: 36px;
+    padding: 6px 8px;
+  }
+}

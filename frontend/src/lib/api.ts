@@ -60,7 +60,9 @@ export function usePayload(): PayloadState {
         setState({
           status: "error",
           message: "GridLock data is unavailable.",
-          detail: message.includes("Failed to fetch") ? `Could not reach ${runtimeConfig.apiBaseUrl}. Start it with \`uv run gridlock serve\`.` : message,
+          detail: message.includes("Failed to fetch")
+            ? `Could not reach a GridLock API at ${runtimeConfig.apiBaseUrl} (not running, or a different server that blocks this origin). Start it with \`uv run gridlock serve\`.`
+            : message,
         });
       },
     );
