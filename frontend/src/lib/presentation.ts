@@ -11,7 +11,7 @@ const SAME_POINT_DEGREES = 1e-6;
 
 /**
  * When a 0 km relationship touches at an endpoint both projects matched to the same public
- * feature (e.g. both end at Thurmond Substation), return that feature's name; otherwise null.
+ * feature (both end at the same substation, say), return that feature's name; otherwise null.
  */
 export function sharedEndpointName(relationship: Relationship, projects: Map<string, Project>): string | null {
   if (relationship.distanceKm !== 0) return null;

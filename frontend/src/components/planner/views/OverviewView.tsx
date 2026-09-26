@@ -104,7 +104,7 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
         <aside className={styles.overviewSide}>
           {top && (
             <section className={styles.sideSection}>
-              <ZoneSummary payload={payload} zone={top} eyebrow="Top opportunity · backend rank 1" onInvestigate={onInvestigate} />
+              <ZoneSummary payload={payload} zone={top} eyebrow={`Top opportunity · backend rank ${top.rank}`} onInvestigate={onInvestigate} />
             </section>
           )}
 
