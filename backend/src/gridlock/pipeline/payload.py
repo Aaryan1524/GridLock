@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from gridlock.graph import build_graph
+from gridlock.logs import get_logger
 from gridlock.metrics import compute_metrics
 from gridlock.models.domain import Metadata, Payload, Project, Relationship, SourceSnapshot
 from gridlock.ranking import rank_relationships
@@ -52,6 +53,10 @@ def assemble_payload(bundle: ConfigBundle, repository_root: Path, projects: list
     )
 
 
+log = get_logger("payload")
+METRICS_FILE = "metrics.json"
+
+
 @dataclass(frozen=True)
 class PayloadResult:
     payload: Payload
@@ -72,4 +77,9 @@ def build_payload(bundle: ConfigBundle, repository_root: Path, output_path: Path
     output_path = output_path or repository_root / paths.output_dir / bundle.root.api.payload_file
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(payload.model_dump(mode="json", by_alias=True), indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # Handoff section 28 metrics on their own, for reports and the demo; same numbers as payload.metrics.
+    metrics_path = output_path.parent / METRICS_FILE
+    metrics_path.write_text(json.dumps(payload.metrics.model_dump(mode="json", by_alias=True), indent=2) + "\n", encoding="utf-8")
+    log.info("zones=%d relationships=%d compression=%s payload=%s", len(payload.zones), len(payload.relationships),
+             payload.metrics.attention_compression_ratio, output_path)
     return PayloadResult(payload, output_path)

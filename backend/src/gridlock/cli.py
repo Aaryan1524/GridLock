@@ -16,19 +16,22 @@ from .pipeline import PipelineError, build_payload, run_pipeline, summarize
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
+from .envfile import load_root_env, repository_path
+from .logs import configure_logging
 from .settings.loader import ConfigBundle, ConfigError, load_settings
 
 
 def _default_config_path() -> Path:
     configured = os.environ.get("GRIDLOCK_CONFIG")
     if configured:
-        return Path(configured)
+        return repository_path(configured)
     return Path(__file__).resolve().parents[3] / "config" / "gridlock.yaml"
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="gridlock")
     parser.add_argument("--config", type=Path, default=_default_config_path())
+    parser.add_argument("--log-level", choices=["DEBUG", "INFO", "WARNING", "ERROR"], help="default: logging.level in config")
     commands = parser.add_subparsers(dest="command", required=True)
     config_parser = commands.add_parser("config", help="inspect resolved configuration")
     config_parser.add_argument("action", choices=["show"])
@@ -78,7 +81,12 @@ def _inspect(bundle: ConfigBundle, project_id: str, resolved: bool, include_raw_
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    load_root_env()
     args = build_parser().parse_args(argv)
+    try:
+        configure_logging(args.log_level or load_settings(args.config).root.logging.level)
+    except ConfigError:
+        configure_logging(args.log_level or "INFO")  # the command itself reports the config error
     if args.command == "config" and args.action == "show":
         try:
             bundle = load_settings(args.config)

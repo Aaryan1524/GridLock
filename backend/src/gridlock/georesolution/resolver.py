@@ -10,6 +10,7 @@ from itertools import combinations
 from pathlib import Path
 
 from gridlock.evidence import score_evidence
+from gridlock.logs import get_logger
 from gridlock.metrics.summary import (
     LOCATED_AUTOMATICALLY,
     LOCATED_HUMAN_VERIFIED_ONLY,
@@ -31,6 +32,7 @@ from gridlock.settings.models import GeometryOverride, ResolutionConfig, Utility
 from .matching import IndexedFeature, build_index, distance_km, match_project_endpoints
 
 RESOLVED = {EndpointMatchStatus.MATCHED, EndpointMatchStatus.OVERRIDE}
+log = get_logger("resolve")
 
 
 def _geometry(
@@ -84,11 +86,17 @@ def resolve_project(
     rules = bundle.root.resolution
     matches = match_project_endpoints(project, utility, index, rules, overrides)
     geometry, resolution = _geometry(project, matches, rules)
+    evidence = score_evidence(project, resolution, bundle.root.evidence)
+    log.debug(
+        "project=%s method=%s evidence=%s/%d matches=%s",
+        project.id, resolution.method.value, evidence.level.value, evidence.score,
+        {match.endpoint: match.status.value for match in resolution.matches},
+    )
     return project.model_copy(
         update={
             "geometry": geometry,
             "geometry_resolution": resolution,
-            "evidence": score_evidence(project, resolution, bundle.root.evidence),
+            "evidence": evidence,
         }
     )
 
@@ -157,6 +165,8 @@ def resolve_projects(
                     writer.writerow([project.id, project.project_name, match.endpoint, match.status.value, candidate, " | ".join(match.notes)])
 
     all_matches = [match for project in resolved for match in project.geometry_resolution.matches]
+    log.info("projects=%d located=%d unresolved_endpoints=%d", len(resolved), sum(p.geometry is not None for p in resolved),
+             sum(match.status not in RESOLVED for match in all_matches))
     return ResolutionReport(
         output_path=output_path,
         review_path=review_path,

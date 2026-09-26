@@ -21,10 +21,15 @@ from gridlock.normalization import (
     normalize_project_id,
     parse_filed_date,
 )
+from gridlock.envfile import repository_path
+from gridlock.logs import get_logger
 from gridlock.settings.loader import ConfigBundle
-from gridlock.settings.models import NormalizationConfig, SourceConfig, UtilityConfig
+from gridlock.settings.models import LimitsConfig, NormalizationConfig, SourceConfig, UtilityConfig
 
 RAW_DIR_ENV = "GRIDLOCK_RAW_DIR"
+PDF_SIGNATURE = b"%PDF-"
+_CONTROL_CHARACTERS = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+log = get_logger("ingest.plans")
 
 
 class IngestionError(ValueError):
@@ -58,6 +63,7 @@ class ParseContext:
     source: SourceConfig
     utility: UtilityConfig
     normalization: NormalizationConfig
+    max_raw_text_chars: int
 
     def label(self, key: str) -> str:
         try:
@@ -72,6 +78,32 @@ Parser = Callable[[ParseContext], list[Project]]
 def _field(text: str, label: str, next_label: str) -> str | None:
     match = re.search(rf"{re.escape(label)}\s*\n?(.*?)(?=\n\s*{re.escape(next_label)}\b)", text, re.S | re.I)
     return " ".join(match.group(1).split()) if match else None
+
+
+def untrusted_text(text: str, max_chars: int) -> str:
+    """Extracted document text is data, never instructions: strip control characters and cap its length."""
+    text = _CONTROL_CHARACTERS.sub("", text)
+    return text if len(text) <= max_chars else text[:max_chars] + " …[truncated]"
+
+
+def check_source_file(source_dir: Path, relative: str, limits: LimitsConfig) -> Path:
+    """Allow only configured, in-folder files of an allowed type and size (handoff section 22)."""
+    candidate = Path(relative)
+    if candidate.is_absolute() or ".." in candidate.parts:
+        raise IngestionError(f"source path {relative!r} must be a plain path inside the raw folder")
+    path = source_dir / candidate
+    if not path.is_file():
+        raise IngestionError(f"configured source file is missing: {path}")
+    if path.suffix.lower() not in {suffix.lower() for suffix in limits.allowed_document_extensions}:
+        raise IngestionError(f"{path.name}: file type {path.suffix or '(none)'} is not allowed")
+    size = path.stat().st_size
+    if size > limits.max_document_bytes:
+        raise IngestionError(f"{path.name}: {size} bytes exceeds the {limits.max_document_bytes}-byte limit")
+    if path.suffix.lower() == ".pdf":
+        with path.open("rb") as handle:
+            if handle.read(len(PDF_SIGNATURE)) != PDF_SIGNATURE:
+                raise IngestionError(f"{path.name}: not a PDF (missing %PDF- signature)")
+    return path
 
 
 def _clean_source_text(text: str, source: SourceConfig) -> str:
@@ -112,7 +144,7 @@ def _project(
             document=context.source.path,
             project_id_raw=raw_id,
             page=page,
-            raw_text=_clean_source_text(text, context.source),
+            raw_text=untrusted_text(_clean_source_text(text, context.source), context.max_raw_text_chars),
             raw_fields=raw_fields,
         ),
         warnings=warnings + extraction.warnings,
@@ -308,23 +340,32 @@ PARSERS: dict[str, Parser] = {
 
 def raw_dir(bundle: ConfigBundle, repository_root: Path) -> Path:
     """The raw source folder: GRIDLOCK_RAW_DIR if set, otherwise the configured path."""
-    configured = Path(os.environ.get(RAW_DIR_ENV) or bundle.root.paths.raw_dir)
-    return configured if configured.is_absolute() else repository_root / configured
+    return repository_path(os.environ.get(RAW_DIR_ENV) or bundle.root.paths.raw_dir, repository_root)
 
 
 def parse_plans(bundle: ConfigBundle, repository_root: Path) -> list[Project]:
     """Parse every configured planning source into normalized, provenance-rich projects."""
     projects: list[Project] = []
     source_dir = raw_dir(bundle, repository_root)
+    limits = bundle.root.limits
     for utility in bundle.utilities:
+        utility_projects: list[Project] = []
         for source in utility.sources:
-            source_path = source_dir / source.path
-            if not source_path.is_file():
-                raise IngestionError(f"configured source file is missing: {source_path}")
             parser = PARSERS.get(source.parser)
             if parser is None:
                 raise IngestionError(f"unsupported parser {source.parser!r}; known parsers: {sorted(PARSERS)}")
-            projects.extend(parser(ParseContext(source_path, source, utility, bundle.root.normalization)))
+            source_path = check_source_file(source_dir, source.path, limits)
+            parsed = parser(ParseContext(source_path, source, utility, bundle.root.normalization, limits.max_raw_text_chars))
+            log.info("source=%s utility=%s parser=%s projects=%d", source.id, utility.code, source.parser, len(parsed))
+            for project in parsed:
+                if project.warnings:
+                    log.debug("project=%s endpoint_status=%s warnings=%s", project.id, project.endpoint_status.value, project.warnings)
+            utility_projects.extend(parsed)
+        if len(utility_projects) > limits.max_projects_per_utility:
+            raise IngestionError(
+                f"{utility.code} has {len(utility_projects)} projects, above the {limits.max_projects_per_utility} limit"
+            )
+        projects.extend(utility_projects)
     ids = [project.id for project in projects]
     if len(ids) != len(set(ids)):
         duplicate_ids = sorted(identifier for identifier, count in Counter(ids).items() if count > 1)
