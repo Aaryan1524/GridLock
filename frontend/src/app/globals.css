@@ -42,7 +42,7 @@
   --map-tint-land: ;
   --map-tint-water: ;
 
-  --font-display: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-display: var(--font-instrument-serif), "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --font-sans: var(--font-geist-sans), "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, monospace;
 
@@ -306,6 +306,50 @@ a {
 .tag.plain::before {
   display: none;
 }
+
+/* ---------- Page entrance ---------- */
+
+/* As a page or planner section opens, its blocks drift in from the left and come into focus, each a
+   beat after the one before: a light gust across the page. Mark a block with data-gust="<order>".
+   Maps use the plain variant: blurring a WebGL canvas is costly and adds nothing. */
+@keyframes gust {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes gust-plain {
+  from {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+[data-gust] {
+  animation: gust 680ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+[data-gust][data-gust-plain] {
+  animation-name: gust-plain;
+}
+
+[data-gust="1"] { animation-delay: 60ms; }
+[data-gust="2"] { animation-delay: 120ms; }
+[data-gust="3"] { animation-delay: 180ms; }
+[data-gust="4"] { animation-delay: 240ms; }
+[data-gust="5"] { animation-delay: 300ms; }
+[data-gust="6"] { animation-delay: 360ms; }
 
 @media (prefers-reduced-motion: reduce) {
   *,

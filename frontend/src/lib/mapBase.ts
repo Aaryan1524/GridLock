@@ -15,6 +15,26 @@ export function isStyleFetchFailure(error: unknown, styleUrl: string): boolean {
   return detail?.url === styleUrl || detail?.name === "AJAXError" || error instanceof TypeError;
 }
 
+// Longest a map stays hidden waiting for its first complete draw (slow tiles still show up).
+const FIRST_DRAW_WAIT_MS = 1500;
+
+/** Calls back once, when the map has first drawn everything it can (or after FIRST_DRAW_WAIT_MS). Returns a cancel. */
+export function whenFirstDrawn(map: MapLibreMap, callback: () => void): () => void {
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    clearTimeout(timer);
+    callback();
+  };
+  const timer = setTimeout(finish, FIRST_DRAW_WAIT_MS);
+  map.once("idle", finish);
+  return () => {
+    done = true;
+    clearTimeout(timer);
+  };
+}
+
 export function token(name: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 }

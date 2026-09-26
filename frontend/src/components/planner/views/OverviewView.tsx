@@ -97,7 +97,7 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
 
   const statsStrip = (
     <>
-      <section className={styles.stats} aria-label="Analysis summary">
+      <section className={styles.stats} aria-label="Analysis summary" data-gust="3">
         {stats.map((stat) => (
           <div key={stat.caption} className={styles.stat}>
             <span className={`display ${styles.statValue}`}>{stat.value}</span>
@@ -106,7 +106,7 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
           </div>
         ))}
       </section>
-      <p className={styles.coverageLine}>
+      <p className={styles.coverageLine} data-gust="4">
         Of all {formatNumber(metrics.projects)} projects, {formatNumber(metrics.locatedProjects)} are spatially assessed and{" "}
         {formatNumber(notAssessed)} have an unresolved location ({formatNumber(r.notLocatedUnresolved)} with named sites not yet
         resolved, {formatNumber(r.notLocatedNoNamedSite)} whose titles name no site). Unresolved means unknown — never “no overlap”.
@@ -117,12 +117,12 @@ export function OverviewView({ payload, selectedZoneId, onSelectZone, onInvestig
   return (
     <div className={styles.overview}>
       <div className={styles.overviewBody} data-details={detailsOpen ? "open" : "closed"}>
-        <section className={styles.overviewMap} aria-label="Where the coordination situations are">
+        <section className={styles.overviewMap} aria-label="Where the coordination situations are" data-gust="1" data-gust-plain>
           <OverviewMap payload={payload} selectedId={selected?.id ?? null} onSelect={selectZone} />
           <PanelToggle open={detailsOpen} controls="overview-details" onToggle={() => setDetailsOpen((open) => !open)} />
         </section>
 
-        <aside id="overview-details" className={styles.overviewSide} aria-label="Overview details">
+        <aside id="overview-details" className={styles.overviewSide} aria-label="Overview details" data-gust="2">
           {selected && (
             <section className={styles.sideSection}>
               <ZoneSummary

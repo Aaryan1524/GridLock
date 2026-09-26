@@ -8,12 +8,14 @@ export function Team() {
     <main className={styles.page}>
       <SiteNav />
       <section className={`frame guides ${styles.hero}`}>
-        <p className="eyebrow">Team</p>
-        <h1 className={`display ${styles.title}`}>
+        <p className="eyebrow" data-gust="0">
+          Team
+        </p>
+        <h1 className={`display ${styles.title}`} data-gust="1">
           The people behind <em>GridLock.</em>
         </h1>
       </section>
-      <section className={`frame rule-top ${styles.members}`} aria-label="Team members">
+      <section className={`frame rule-top ${styles.members}`} aria-label="Team members" data-gust="2">
         {TEAM.length === 0 ? (
           <p className={`mono ${styles.empty}`}>Team members will be listed here.</p>
         ) : (

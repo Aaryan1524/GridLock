@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 
 import type { GridlockPayload, Zone } from "@/lib/contract";
 import { countOf, formatDistance, label, utilityColor, utilityName } from "@/lib/format";
-import { type Basemap, createBaseMap, token } from "@/lib/mapBase";
+import { type Basemap, createBaseMap, token, whenFirstDrawn } from "@/lib/mapBase";
 import { closestPointFeatures, connectorFeatures, projectFeatures, topRelationship } from "@/lib/mapData";
 
 import styles from "./map.module.css";
@@ -173,6 +173,7 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
   useEffect(() => {
     let cancelled = false;
     let disposeBase = () => {};
+    let revealing: (() => void) | null = null;
 
     (async () => {
       const lib: MapLibre = await import("maplibre-gl");
@@ -196,7 +197,8 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
         fittedZone.current = null;
         addLayers(map);
         sync();
-        setReady(true);
+        // Reveal once the first style has drawn, so the map fades in whole rather than assembling.
+        if (!revealing) revealing = whenFirstDrawn(map, () => setReady(true));
       });
       for (const layer of CLICKABLE) {
         map.on("click", layer, (event: MapLayerMouseEvent) => {
@@ -213,6 +215,7 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
 
     return () => {
       cancelled = true;
+      revealing?.();
       disposeBase();
       markerRef.current?.remove();
       mapRef.current?.remove();
@@ -227,7 +230,7 @@ export function MapView({ payload, zone, showAll, onShowAllChange, onProjectClic
   const top = topRelationship(payload, zone);
   return (
     <div className={styles.frame}>
-      <div ref={container} className={styles.map} aria-label="Map of the selected coordination zone" role="region" />
+      <div ref={container} className={styles.map} data-ready={ready} aria-label="Map of the selected coordination zone" role="region" />
       {failure ? (
         <div className={styles.loading} role="alert">
           <p className="mono" style={{ color: "var(--accent)", margin: 0 }}>

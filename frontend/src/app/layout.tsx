@@ -1,5 +1,3 @@
-import "@fontsource/instrument-serif/400.css";
-import "@fontsource/instrument-serif/400-italic.css";
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
 
@@ -10,6 +8,8 @@ import type { ReactNode } from "react";
 
 import { DEFAULT_THEME, THEME_INIT_SCRIPT } from "@/lib/themeScript";
 
+import { instrumentSerif } from "./fonts";
+
 export const metadata: Metadata = {
   title: "GridLock — cross-utility transmission coordination",
   description:
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     // The init script may change data-theme before hydration, hence suppressHydrationWarning on <html> only.
-    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable}`} data-theme={DEFAULT_THEME} suppressHydrationWarning>
+    <html lang="en" className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`} data-theme={DEFAULT_THEME} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>

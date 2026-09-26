@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 
 import type { GridlockPayload } from "@/lib/contract";
 import { utilityColor, utilityName } from "@/lib/format";
-import { type Basemap, createBaseMap, token } from "@/lib/mapBase";
+import { type Basemap, createBaseMap, token, whenFirstDrawn } from "@/lib/mapBase";
 import { projectFeatures } from "@/lib/mapData";
 
 import styles from "./map.module.css";
@@ -188,6 +188,7 @@ export function OverviewMap({ payload, selectedId, onSelect }: Props) {
   useEffect(() => {
     let cancelled = false;
     let disposeBase = () => {};
+    let revealing: (() => void) | null = null;
     (async () => {
       const lib: MapLibre = await import("maplibre-gl");
       if (cancelled || !container.current) return;
@@ -206,7 +207,8 @@ export function OverviewMap({ payload, selectedId, onSelect }: Props) {
         addLayers(map);
         sync();
         frameAllZones(map);
-        setReady(true);
+        // Reveal once the first style has drawn, so the map fades in whole rather than assembling.
+        if (!revealing) revealing = whenFirstDrawn(map, () => setReady(true));
       });
       map.on("click", "ov-zone-fill", (event: MapLayerMouseEvent) => {
         const id = event.features?.[0]?.properties?.id;
@@ -220,6 +222,7 @@ export function OverviewMap({ payload, selectedId, onSelect }: Props) {
     });
     return () => {
       cancelled = true;
+      revealing?.();
       disposeBase();
       markers.current.forEach((marker) => marker.remove());
       mapRef.current?.remove();
@@ -232,7 +235,7 @@ export function OverviewMap({ payload, selectedId, onSelect }: Props) {
   const { metadata } = payload;
   return (
     <div className={styles.frame}>
-      <div ref={container} className={styles.map} role="region" aria-label="Map of all coordination zones" />
+      <div ref={container} className={styles.map} data-ready={ready} role="region" aria-label="Map of all coordination zones" />
       {failure ? (
         <div className={styles.loading} role="alert">
           <p className="mono" style={{ color: "var(--accent)", margin: 0 }}>
