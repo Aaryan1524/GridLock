@@ -10,7 +10,7 @@ export function ThemeToggle() {
   return (
     <div className={styles.toggle} role="group" aria-label="Color theme">
       {[...THEMES].reverse().map((option) => (
-        <button key={option} type="button" aria-pressed={theme === option} onClick={() => setTheme(option)}>
+        <button key={option} type="button" data-option={option} aria-pressed={theme === option} onClick={() => setTheme(option)}>
           {option}
         </button>
       ))}

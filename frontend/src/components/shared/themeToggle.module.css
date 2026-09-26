@@ -25,7 +25,9 @@
   color: var(--text);
 }
 
-.toggle button[aria-pressed="true"] {
+/* Keyed to <html data-theme>, which is set before paint, so the prerendered switch is right before hydration. */
+:root[data-theme="dark"] .toggle button[data-option="dark"],
+:root[data-theme="light"] .toggle button[data-option="light"] {
   color: var(--bg);
   background: var(--text);
 }

@@ -66,15 +66,15 @@
   --muted: #58544c;
   --faint: #7a756b;
 
-  --accent: #ad552a;
-  --accent-soft: rgba(173, 85, 42, 0.1);
+  --accent: #a24e28;
+  --accent-soft: rgba(162, 78, 40, 0.1);
   --amber: #86651c;
   --amber-soft: rgba(134, 101, 28, 0.1);
   --neutral: #67635a;
   --neutral-soft: rgba(103, 99, 90, 0.1);
   --positive: #56693a;
   --caution: #86651c;
-  --accent-line: rgba(173, 85, 42, 0.4);
+  --accent-line: rgba(162, 78, 40, 0.4);
   --amber-line: rgba(134, 101, 28, 0.38);
 
   --overlay-rgb: 246, 243, 236;
@@ -178,7 +178,7 @@ a {
 }
 
 :root[data-theme="light"] .utility-ink {
-  color: color-mix(in srgb, var(--utility) 55%, var(--text));
+  color: color-mix(in srgb, var(--utility) 50%, var(--text));
 }
 
 /* ---------- Grid framework ---------- */

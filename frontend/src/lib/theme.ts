@@ -33,8 +33,8 @@ export function onThemeChange(callback: () => void): () => void {
   const fromStorage = (event: StorageEvent) => {
     if (event.key !== STORAGE_KEY) return;
     const next = event.newValue === "light" || event.newValue === "dark" ? event.newValue : DEFAULT_THEME;
-    if (next === currentTheme()) return;
-    document.documentElement.dataset.theme = next;
+    // Every subscriber hears the event; the first applies it, all of them react.
+    if (next !== currentTheme()) document.documentElement.dataset.theme = next;
     callback();
   };
   window.addEventListener(CHANGE_EVENT, callback);
