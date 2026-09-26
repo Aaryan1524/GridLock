@@ -88,3 +88,70 @@ def oracle_check(
         writer.writerow(HEADER)
         writer.writerows(row.as_list() for row in results)
     return results
+
+
+KM_PER_MILE = 1.609344
+OVERLAP_HEADER = ["overlap_id", "pair", "sheet_km", "sheet_gap_days", "our_tier", "our_km", "our_gap_days", "our_timeline"]
+
+
+@dataclass(frozen=True)
+class OverlapOracleRow:
+    overlap_id: str
+    pair: str
+    sheet_km: float | None
+    sheet_gap_days: int | None
+    our_tier: str
+    our_km: float | None
+    our_gap_days: int | None
+    our_timeline: str
+
+    def as_list(self) -> list[object]:
+        def show(value: object) -> object:
+            return "" if value is None else value
+
+        sheet_km = f"{self.sheet_km:.2f}" if self.sheet_km is not None else ""
+        return [self.overlap_id, self.pair, sheet_km, show(self.sheet_gap_days), self.our_tier, show(self.our_km), show(self.our_gap_days), self.our_timeline]
+
+
+def overlap_oracle_check(
+    bundle: ConfigBundle, repository_root: Path, relationships_path: Path | None = None, output_path: Path | None = None
+) -> list[OverlapOracleRow]:
+    """Look up each sponsor overlap pair among our relationships (the sheet measures centre to centre, in miles)."""
+    oracle = bundle.root.oracle
+    if oracle is None:
+        raise ValueError("no oracle is configured")
+    relationships_path = relationships_path or repository_root / bundle.root.paths.output_dir / "relationships.json"
+    relationships = {item["id"]: item for item in json.loads(relationships_path.read_text(encoding="utf-8"))}
+    sheet = load_workbook(raw_dir(bundle, repository_root) / oracle.file, read_only=True, data_only=True)[oracle.overlaps_sheet]
+    rows = sheet.iter_rows(values_only=True)
+    header = [str(value) for value in next(rows)]
+
+    results: list[OverlapOracleRow] = []
+    for values in rows:
+        record = dict(zip(header, values))
+        a = oracle.project_ids.get(str(record.get("project_id_a")))
+        b = oracle.project_ids.get(str(record.get("project_id_b")))
+        if not a or not b:
+            continue
+        found = relationships.get(f"REL-{a}-{b}") or relationships.get(f"REL-{b}-{a}")
+        miles, gap = record.get("distance_mi"), record.get("time_gap (day)")
+        results.append(
+            OverlapOracleRow(
+                overlap_id=str(record.get("overlap_id")),
+                pair=f"{a} x {b}",
+                sheet_km=float(miles) * KM_PER_MILE if miles is not None else None,
+                sheet_gap_days=int(gap) if gap is not None else None,
+                our_tier=found["spatialTier"] if found else "not_detected",
+                our_km=found["distanceKm"] if found else None,
+                our_gap_days=found["timeline"]["gapDays"] if found else None,
+                our_timeline=found["timeline"]["type"] if found else "",
+            )
+        )
+
+    output_path = output_path or repository_root / bundle.root.paths.review_dir / "oracle_overlaps.csv"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    with output_path.open("w", newline="", encoding="utf-8") as output:
+        writer = csv.writer(output)
+        writer.writerow(OVERLAP_HEADER)
+        writer.writerows(row.as_list() for row in results)
+    return results

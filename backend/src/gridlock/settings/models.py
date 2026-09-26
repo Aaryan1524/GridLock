@@ -7,7 +7,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from gridlock.models.domain import GeometryMethod, ProjectType
+from gridlock.models.domain import GeometryMethod, ProjectType, SpatialTier
 
 
 class PathsConfig(BaseModel):
@@ -211,11 +211,34 @@ class EvidenceConfig(BaseModel):
         return self
 
 
+class OverlapConfig(BaseModel):
+    """Overlap-engine settings; spatial and timeline cutoffs live in thresholds_km and timeline_gap_days."""
+
+    # A pair is measured exactly only if its projected bounding boxes are within maximum km * (1 + slack).
+    prefilter_slack_ratio: float = Field(ge=0)
+    distance_decimals: int = Field(ge=0)
+    coordinate_decimals: int = Field(ge=0)
+    # Handoff section 11: likely coordination themes per spatial tier.
+    playbooks: dict[SpatialTier, tuple[str, ...]]
+    playbook_labels: dict[str, str]
+
+    @model_validator(mode="after")
+    def playbooks_cover_every_tier(self) -> "OverlapConfig":
+        missing = set(SpatialTier) - set(self.playbooks)
+        if missing:
+            raise ValueError(f"overlap.playbooks is missing tiers {sorted(missing)}")
+        unlabeled = {key for keys in self.playbooks.values() for key in keys} - set(self.playbook_labels)
+        if unlabeled:
+            raise ValueError(f"overlap.playbook_labels is missing {sorted(unlabeled)}")
+        return self
+
+
 class OracleConfig(BaseModel):
     """The sponsor's worked example, used only to sanity-check our output, never as input."""
 
     file: str
     sheet: str
+    overlaps_sheet: str
     project_ids: dict[str, str]
 
 
@@ -232,6 +255,7 @@ class GridlockConfig(BaseModel):
     normalization: NormalizationConfig
     resolution: ResolutionConfig
     evidence: EvidenceConfig
+    overlap: OverlapConfig
     oracle: OracleConfig | None = None
 
     @model_validator(mode="after")
