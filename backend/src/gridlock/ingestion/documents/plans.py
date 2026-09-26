@@ -21,6 +21,7 @@ from gridlock.normalization import (
     normalize_project_id,
     parse_filed_date,
 )
+from gridlock.envfile import repository_path
 from gridlock.logs import get_logger
 from gridlock.settings.loader import ConfigBundle
 from gridlock.settings.models import LimitsConfig, NormalizationConfig, SourceConfig, UtilityConfig
@@ -339,8 +340,7 @@ PARSERS: dict[str, Parser] = {
 
 def raw_dir(bundle: ConfigBundle, repository_root: Path) -> Path:
     """The raw source folder: GRIDLOCK_RAW_DIR if set, otherwise the configured path."""
-    configured = Path(os.environ.get(RAW_DIR_ENV) or bundle.root.paths.raw_dir)
-    return configured if configured.is_absolute() else repository_root / configured
+    return repository_path(os.environ.get(RAW_DIR_ENV) or bundle.root.paths.raw_dir, repository_root)
 
 
 def parse_plans(bundle: ConfigBundle, repository_root: Path) -> list[Project]:

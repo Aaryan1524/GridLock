@@ -10,6 +10,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
+from gridlock.envfile import load_root_env, repository_path
 from gridlock.settings.loader import ConfigBundle, load_settings
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[4]
@@ -76,7 +77,9 @@ def create_app(bundle: ConfigBundle, repository_root: Path = REPOSITORY_ROOT) ->
 
 
 def _default_bundle() -> ConfigBundle:
-    return load_settings(os.environ.get(CONFIG_ENV) or REPOSITORY_ROOT / "config" / "gridlock.yaml")
+    load_root_env(REPOSITORY_ROOT)  # also when started directly with uvicorn
+    configured = os.environ.get(CONFIG_ENV)
+    return load_settings(repository_path(configured, REPOSITORY_ROOT) if configured else REPOSITORY_ROOT / "config" / "gridlock.yaml")
 
 
 app = create_app(_default_bundle())

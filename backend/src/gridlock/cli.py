@@ -16,6 +16,7 @@ from .pipeline import PipelineError, build_payload, run_pipeline, summarize
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
+from .envfile import load_root_env, repository_path
 from .logs import configure_logging
 from .settings.loader import ConfigBundle, ConfigError, load_settings
 
@@ -23,7 +24,7 @@ from .settings.loader import ConfigBundle, ConfigError, load_settings
 def _default_config_path() -> Path:
     configured = os.environ.get("GRIDLOCK_CONFIG")
     if configured:
-        return Path(configured)
+        return repository_path(configured)
     return Path(__file__).resolve().parents[3] / "config" / "gridlock.yaml"
 
 
@@ -80,6 +81,7 @@ def _inspect(bundle: ConfigBundle, project_id: str, resolved: bool, include_raw_
 
 
 def main(argv: Sequence[str] | None = None) -> int:
+    load_root_env()
     args = build_parser().parse_args(argv)
     try:
         configure_logging(args.log_level or load_settings(args.config).root.logging.level)

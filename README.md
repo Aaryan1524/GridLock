@@ -31,8 +31,9 @@ reproducible and every result links back to its filing page.
 
 ```bash
 cp .env.example .env
-cd backend && uv run gridlock run --offline --skip-ingest && uv run gridlock serve   # API on :8010
-cd frontend && pnpm install && pnpm dev                                              # UI on :3000
+(cd backend && uv run gridlock run --offline --skip-ingest)   # build the payload
+(cd backend && uv run gridlock serve)                         # terminal 1: API on :8010
+(cd frontend && pnpm install && pnpm dev)                     # terminal 2: UI on :3000
 ```
 
 > [!NOTE]
@@ -102,7 +103,7 @@ GridLock/
 │   │   ├── pipeline/         stage runner and payload assembly
 │   │   ├── api/              read-only FastAPI
 │   │   └── cli.py            the `gridlock` command
-│   └── tests/                unit and integration (221 tests)
+│   └── tests/                unit and integration (224 tests)
 ├── contract/                 generated JSON Schema of the payload
 ├── data/
 │   ├── raw/                  source PDFs (gitignored; see Setup step 4)
@@ -138,7 +139,8 @@ gitignored so they always match the installed version.
 ## Setup
 
 Requires [uv](https://docs.astral.sh/uv/) (Python 3.12 is fetched for
-you), Node 20+ and pnpm.
+you), Node 20.12 or newer (the frontend config uses `node:util`
+`parseEnv`) and pnpm. Run every block from the repository root.
 
 ### 1. Settings
 
@@ -146,15 +148,16 @@ you), Node 20+ and pnpm.
 cp .env.example .env
 ```
 
-One `.env` at the repository root serves both halves; the frontend reads
-it through `frontend/next.config.ts` and passes only `NEXT_PUBLIC_*`
-values to the browser. **Never commit `.env`.**
+One `.env` at the repository root serves both halves: the backend loads
+it on start, and the frontend reads it through `frontend/next.config.ts`,
+passing only `NEXT_PUBLIC_*` values to the browser. Real environment
+variables win over the file; blank values mean "use the config default".
+**Never commit `.env`.**
 
 ### 2. Build the payload
 
 ```bash
-cd backend
-uv run gridlock run --offline --skip-ingest
+(cd backend && uv run gridlock run --offline --skip-ingest)
 ```
 
 The summary ends with the zones and the reconciled coverage line
@@ -163,10 +166,15 @@ should stay clean** — the run reproduces the committed outputs.
 
 ### 3. Start the API and the planner
 
+`gridlock serve` keeps running, so use two terminals:
+
 ```bash
-cd backend && uv run gridlock serve          # :8010
-curl localhost:8010/api/health               # {"service":"gridlock","status":"ok",…}
-cd frontend && pnpm install && pnpm dev      # http://localhost:3000
+# terminal 1
+(cd backend && uv run gridlock serve)            # API on :8010
+
+# terminal 2
+curl localhost:8010/api/health                   # {"service":"gridlock","status":"ok",…}
+(cd frontend && pnpm install && pnpm dev)        # http://localhost:3000
 ```
 
 ### 4. (Optional) Re-ingest from the source PDFs
@@ -175,7 +183,7 @@ Place the two filings in `data/raw/` (or point `GRIDLOCK_RAW_DIR` at their
 folder), then run without `--skip-ingest`:
 
 ```bash
-uv run gridlock run --offline
+(cd backend && uv run gridlock run --offline)
 ```
 
 To refresh the OSM snapshot from Overpass (a live, rate-limited public
@@ -184,11 +192,17 @@ service), drop `--offline`.
 ### 5. Verify
 
 ```bash
-cd backend && uv run pytest                  # 221 passed
-cd frontend && pnpm exec tsc --noEmit && pnpm build
+(cd backend && uv run pytest)                    # 224 passed
+(cd frontend && pnpm exec tsc --noEmit)
 ```
 
+**Stop `pnpm dev` before `pnpm build`** — both write `frontend/.next`, and
+a build under a running dev server breaks it ([symptom](#troubleshooting)).
+To build alongside, prefix the build with `NEXT_DIST_DIR=.next-build`.
+
 ## Usage
+
+Run these from `backend/` with `uv run`, e.g. `uv run gridlock inspect GPC-20277`.
 
 | Command | When to use it | What it does |
 |---|---|---|
@@ -201,7 +215,7 @@ cd frontend && pnpm exec tsc --noEmit && pnpm build
 | `gridlock oracle` | Sanity check | Compares with the sponsor's worked example |
 | `gridlock inspect <id> [--resolved]` | Debugging a record | Prints one project |
 | `gridlock contract export` | After model changes | Regenerates the schema and `contract.ts` |
-| `gridlock serve` | Running the UI | Read-only API on `api.port` |
+| `gridlock serve` | Running the UI | Read-only API on `api.port` (or `GRIDLOCK_API_PORT`) |
 
 Add `--log-level DEBUG` to any command for per-project match and evidence
 lines on stderr.
@@ -235,10 +249,10 @@ lines on stderr.
 ## Troubleshooting
 
 ```bash
-curl localhost:8010/api/health               # is the API up, and is it GridLock?
-lsof -nP -iTCP:8010 -sTCP:LISTEN             # what owns the port?
-uv run gridlock config show                  # does config load?
-uv run gridlock --log-level DEBUG resolve    # per-project matching detail
+curl localhost:8010/api/health                              # is the API up, and is it GridLock?
+lsof -nP -iTCP:8010 -sTCP:LISTEN                            # what owns the port?
+(cd backend && uv run gridlock config show)                 # does config load?
+(cd backend && uv run gridlock --log-level DEBUG resolve)   # per-project matching detail
 ```
 
 **`GridLock data is unavailable. Could not reach a GridLock API at …`** —
