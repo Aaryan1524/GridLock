@@ -1,2 +1,6 @@
 allowBuilds:
   sharp: set this to true or false
+
+# Next.js pins postcss 8.4.31, which has open advisories; 8.5.23+ is API-compatible.
+overrides:
+  postcss: ">=8.5.23 <9"

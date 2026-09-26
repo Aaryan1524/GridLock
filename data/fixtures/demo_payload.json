@@ -51,10 +51,8 @@
       "endpoints": [
         {"name": "McIntosh", "role": "single"}
       ],
-      "constructionWindow": {
-        "startDate": "2024-01-01",
-        "endDate": "2026-06-01"
-      },
+      "plannedInServiceDate": "2026-06-01",
+      "filedStartDate": "2024-01-01",
       "source": {
         "document": "2025 IRP Volume 3 PUBLIC DISCLOSURE.pdf",
         "projectIdRaw": "20277",
@@ -80,7 +78,7 @@
       "spatialTier": "SITE_LOGISTICS",
       "timeline": {
         "type": "IN_SERVICE_GAP",
-        "gapDays": 213,
+        "gapDays": 152,
         "relevance": "MEANINGFUL",
         "isdWithinFiledSpan": true
       },

@@ -63,6 +63,13 @@
           "title": "Name",
           "type": "string"
         },
+        "qualifiers": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Qualifiers",
+          "type": "array"
+        },
         "role": {
           "$ref": "#/$defs/EndpointRole",
           "default": "unknown"
@@ -78,10 +85,22 @@
       "enum": [
         "from",
         "to",
+        "via",
         "single",
         "unknown"
       ],
       "title": "EndpointRole",
+      "type": "string"
+    },
+    "EndpointStatus": {
+      "description": "How endpoints were read from a project title; anything but a clean pair/site needs review.",
+      "enum": [
+        "explicit_pair",
+        "chain",
+        "single_site",
+        "none"
+      ],
+      "title": "EndpointStatus",
       "type": "string"
     },
     "Evidence": {
@@ -266,6 +285,10 @@
           "default": null,
           "title": "Description"
         },
+        "endpointStatus": {
+          "$ref": "#/$defs/EndpointStatus",
+          "default": "none"
+        },
         "endpoints": {
           "items": {
             "$ref": "#/$defs/Endpoint"
@@ -296,6 +319,19 @@
             }
           ],
           "default": null
+        },
+        "filedStartDate": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Filedstartdate"
         },
         "geometry": {
           "anyOf": [
@@ -375,13 +411,23 @@
           "title": "Status"
         },
         "utility": {
-          "$ref": "#/$defs/UtilityId"
+          "minLength": 1,
+          "pattern": "^[A-Z][A-Z0-9_]*$",
+          "title": "Utility",
+          "type": "string"
         },
         "voltageKv": {
           "items": {
-            "type": "integer"
+            "type": "number"
           },
           "title": "Voltagekv",
+          "type": "array"
+        },
+        "warnings": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Warnings",
           "type": "array"
         }
       },
@@ -492,6 +538,13 @@
           "title": "Projectidraw",
           "type": "string"
         },
+        "rawFields": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Rawfields",
+          "type": "object"
+        },
         "rawText": {
           "anyOf": [
             {
@@ -516,8 +569,9 @@
     "SpatialTier": {
       "enum": [
         "CROSSING",
+        "SHARED_CORRIDOR",
         "SITE_LOGISTICS",
-        "REGIONAL_COORDINATION"
+        "CREWS_EQUIPMENT"
       ],
       "title": "SpatialTier",
       "type": "string"
@@ -557,10 +611,13 @@
       "type": "object"
     },
     "TimelineRelevance": {
+      "description": "Window overlap, then one bucket per configured timeline_gap_days cutoff, then beyond them.",
       "enum": [
-        "IMMEDIATE",
+        "OVERLAPPING",
+        "STRONG",
         "MEANINGFUL",
-        "WATCH",
+        "POSSIBLE",
+        "WEAK",
         "UNKNOWN"
       ],
       "title": "TimelineRelevance",
@@ -573,14 +630,6 @@
         "UNRESOLVED"
       ],
       "title": "TimelineType",
-      "type": "string"
-    },
-    "UtilityId": {
-      "enum": [
-        "DESC",
-        "GPC"
-      ],
-      "title": "UtilityId",
       "type": "string"
     },
     "Zone": {
@@ -632,7 +681,9 @@
         },
         "utilities": {
           "items": {
-            "$ref": "#/$defs/UtilityId"
+            "minLength": 1,
+            "pattern": "^[A-Z][A-Z0-9_]*$",
+            "type": "string"
           },
           "title": "Utilities",
           "type": "array"

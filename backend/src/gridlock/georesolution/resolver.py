@@ -77,7 +77,8 @@ def _resolve_project(project: Project, features: list[dict[str, Any]], operator_
 
     source_score = 20
     geometry_score = 30 if len(resolved) >= 2 else 15 if len(resolved) == 1 else 0
-    timeline_score = 15 if project.construction_window else 10 if project.planned_in_service_date else 0
+    has_start_and_in_service = project.filed_start_date is not None and project.planned_in_service_date is not None
+    timeline_score = 15 if project.construction_window or has_start_and_in_service else 10 if project.planned_in_service_date else 0
     score = source_score + geometry_score + timeline_score
     level = EvidenceLevel.HIGH if score >= 80 else EvidenceLevel.MEDIUM if score >= 50 else EvidenceLevel.LOW
     evidence = Evidence(level=level, score=score, reasons=["Official public filing with project identifier"], warnings=warnings)
@@ -130,8 +131,8 @@ def resolve_projects(bundle: ConfigBundle, repository_root: Path) -> ResolutionR
     cache_path = repository_root / bundle.root.paths.cache_dir / "osm_power.geojson"
     projects = [Project.model_validate(item) for item in json.loads(normalized_path.read_text(encoding="utf-8"))]
     features = json.loads(cache_path.read_text(encoding="utf-8"))["features"]
-    aliases = {utility.id.casefold(): utility.operator_aliases for utility in bundle.utilities}
-    resolved_projects = [_resolve_project(project, features, aliases[project.utility.value.casefold()]) for project in projects]
+    aliases = {utility.code: utility.operator_aliases for utility in bundle.utilities}
+    resolved_projects = [_resolve_project(project, features, aliases[project.utility]) for project in projects]
     output_path = repository_root / bundle.root.paths.normalized_dir / "projects_resolved.json"
     output_path.write_text(json.dumps([item.model_dump(mode="json", by_alias=True) for item in resolved_projects], indent=2) + "\n", encoding="utf-8")
     review_path = repository_root / bundle.root.paths.review_dir / "unresolved.csv"

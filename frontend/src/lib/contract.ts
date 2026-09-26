@@ -13,8 +13,10 @@ export interface ConstructionWindow {
 export interface Endpoint {
   name: string;
   role?: EndpointRole;
+  qualifiers?: Array<string>;
 }
-export type EndpointRole = "from" | "to" | "single" | "unknown";
+export type EndpointRole = "from" | "to" | "via" | "single" | "unknown";
+export type EndpointStatus = "explicit_pair" | "chain" | "single_site" | "none";
 export interface Evidence {
   level: EvidenceLevel;
   score: number;
@@ -43,21 +45,24 @@ export interface Point {
 export type Priority = "HIGH" | "MEDIUM" | "LOW";
 export interface Project {
   id: string;
-  utility: UtilityId;
+  utility: string;
   projectName: string;
   projectType: ProjectType;
   sponsor?: string | null;
   description?: string | null;
   voltageKv?: Array<number>;
   endpoints?: Array<Endpoint>;
+  endpointStatus?: EndpointStatus;
   status?: string | null;
   plannedInServiceDate?: string | null;
+  filedStartDate?: string | null;
   constructionWindow?: ConstructionWindow | null;
   estimatedCostUsd?: number | null;
   source: SourceRef;
   geometry?: Record<string, unknown> | null;
   geometryResolution?: GeometryResolution | null;
   evidence?: Evidence | null;
+  warnings?: Array<string>;
 }
 export type ProjectType = "transmission_line" | "substation" | "reactor" | "other";
 export interface Relationship {
@@ -77,28 +82,34 @@ export interface SourceRef {
   projectIdRaw: string;
   page: number;
   rawText?: string | null;
+  rawFields?: Record<string, unknown>;
 }
-export type SpatialTier = "CROSSING" | "SITE_LOGISTICS" | "REGIONAL_COORDINATION";
+export type SpatialTier = "CROSSING" | "SHARED_CORRIDOR" | "SITE_LOGISTICS" | "CREWS_EQUIPMENT";
 export interface Timeline {
   type: TimelineType;
   gapDays?: number | null;
   relevance: TimelineRelevance;
   isdWithinFiledSpan?: boolean;
 }
-export type TimelineRelevance = "IMMEDIATE" | "MEANINGFUL" | "WATCH" | "UNKNOWN";
+export type TimelineRelevance = "OVERLAPPING" | "STRONG" | "MEANINGFUL" | "POSSIBLE" | "WEAK" | "UNKNOWN";
 export type TimelineType = "IN_SERVICE_GAP" | "WINDOW_OVERLAP" | "UNRESOLVED";
-export type UtilityId = "DESC" | "GPC";
 export interface Zone {
   id: string;
   name: string;
   projectIds?: Array<string>;
   relationshipIds?: Array<string>;
-  utilities?: Array<UtilityId>;
+  utilities?: Array<string>;
   closestDistanceKm: number;
   opportunityPriority: Priority;
   evidenceLevel: EvidenceLevel;
   coordinationThemes?: Array<string>;
   bounds: Bounds;
+}
+export interface Payload {
+  metadata: Metadata;
+  projects?: Array<Project>;
+  relationships?: Array<Relationship>;
+  zones?: Array<Zone>;
 }
 
 export type GridlockPayload = Payload;

@@ -1,0 +1,42 @@
+project_id,project_name,endpoint_status,endpoints,warnings
+DESC-6807-B,Queensboro - Ft Johnson 115 kV & Queensboro-Bayfront 115kV (Queensboro-James Island Sect),explicit_pair,from:Queensboro | to:Ft Johnson,Title may name more than one circuit or site; only the first is used
+DESC-0139-M-N,"Okatie 230-115kV Substation, Jasper – Yemassee 230kV #1 Fold-in",single_site,single:Okatie,Title may name more than one circuit or site; only the first is used
+DESC-6808-N-O,VCS1-Denny Terrace 230kV & VCS1-Pineland 230kV: Rebuild Single Circuit Sections,explicit_pair,from:VCS1 | to:Denny Terrace,Title may name more than one circuit or site; only the first is used
+DESC-6809-E,Stevens Creek - Hooks 115kV/LR Plumb Branch 46kV Rebuilds,explicit_pair,from:Stevens Creek | to:Hooks,Title may name more than one circuit or site; only the first is used
+DESC-6809-G,Stevens Creek - Hooks 115kV/LR Plumb Branch 46kV,explicit_pair,from:Stevens Creek | to:Hooks,Title may name more than one circuit or site; only the first is used
+DESC-6805-G,"Edenwood Sub: #1 & #2 230-115kV Autobanks, Replace with 336MVA",single_site,single:Edenwood,Title may name more than one circuit or site; only the first is used
+DESC-1060A-I-L,"Williams St Sub: Replace Sw House & Relays, AM Williams Sub: Replace Sw House, and McMeekin Sub: Add Sw House",single_site,single:Williams St,Title may name more than one circuit or site; only the first is used
+DESC-6359,Yemassee– Ritter 230kV #1 & #2: Construct SPDC with B-1272,explicit_pair,from:Yemassee | to:Ritter,Title may name more than one circuit or site; only the first is used
+DESC-6809-M,St George - Sumter 230kV Tie: Rebuild Line from Santee Substation - Duke/Progress Energy Tie,explicit_pair,from:St George | to:Sumter,Title may name more than one circuit or site; only the first is used
+DESC-6859,Dawson 230kV Sub and Fold-in: Construct and Rebuild,single_site,single:Dawson,Planned in-service date is not a single parseable date: '10/1/2025 (phase 1) and 10/1/2026 (phase 2)'
+DESC-6847-A-B-D-H,Church Creek – Faber Place – Charleston Transmission: Add 230kV Line,chain,from:Church Creek | via:Faber Place | to:Charleston,Title names 3 sites; intermediate sites marked as via
+DESC-6810-T,Cameron Jct – Cameron – St Matthews 46 kV Rebuild,chain,from:Cameron Jct | via:Cameron | to:St Matthews,Title names 3 sites; intermediate sites marked as via
+GPC-16007,FENWICK STREET - SAND BAR FERRY 115KV (RECONDUCTOR/REBUILD),explicit_pair,from:FENWICK STREET | to:SAND BAR FERRY,Title may name more than one circuit or site; only the first is used
+GPC-17900,UNION CITY - YATES 230 KV WHITE LINE REBUILD,explicit_pair,from:UNION CITY | to:YATES,Summary table need date 2026-04-01 differs from detail page need date 2026-06-01; detail value used per configured precedence
+GPC-18736,CC - MICROSOFT - SHUGART (CCO06),explicit_pair,from:MICROSOFT | to:SHUGART,Customer-connection title; named sites may be customer facilities
+GPC-18848,"BAINBRIDGE TRANSMISSION: EAST RIVER ROAD, EAST BAINBRIDGE",single_site,single:BAINBRIDGE,Title may name more than one circuit or site; only the first is used
+GPC-19248,SANDERSVILLE #1 - WADLEY PRI. 115KV REBUILD/RECONDUCTOR,explicit_pair,from:SANDERSVILLE #1 | to:WADLEY PRI,Title may name more than one circuit or site; only the first is used
+GPC-19523,SAV: CC - HYUNDAI MOTORS SAVANNAH AKA. PROJECT EA,single_site,single:HYUNDAI MOTORS SAVANNAH,Summary table need date 2025-01-01 differs from detail page need date 2025-04-25; detail value used per configured precedence | Customer-connection title; named sites may be customer facilities
+GPC-19966,SAV: CC - BIG OGEECHEE 500/230KV (CC NETWORK IMPROVEMENTS),single_site,single:BIG OGEECHEE,Customer-connection title; named sites may be customer facilities
+GPC-20018,CC - QTS FAYETTEVILLE TRANSMISSION NEEDS,single_site,single:QTS FAYETTEVILLE,Customer-connection title; named sites may be customer facilities
+GPC-20150,CC - HILL VIEW & GRASSY HOLLOW SUB - CC IMPROVEMENTS,single_site,single:HILL VIEW & GRASSY HOLLOW,Customer-connection title; named sites may be customer facilities | Title may name more than one circuit or site; only the first is used
+GPC-20151,CC - CASS PINE 230/25 NEW SUB - QCELLS - CC IMPROVEMENTS,explicit_pair,from:CASS PINE | to:QCELLS,Customer-connection title; named sites may be customer facilities | Title may name more than one circuit or site; only the first is used
+GPC-20152,CC - CASS PINE- HILL VIEW 230 KV LINE- CC IMPROVEMENTS,explicit_pair,from:CASS PINE | to:HILL VIEW,Customer-connection title; named sites may be customer facilities
+GPC-20175,CC - PROJECT CHRONOS- SK/HYUNDAI,single_site,single:SK/HYUNDAI,Customer-connection title; named sites may be customer facilities | Title may name more than one circuit or site; only the first is used
+GPC-20216,CC - STONEWALL TELL ROAD (TA REALTY),single_site,single:STONEWALL TELL ROAD,Customer-connection title; named sites may be customer facilities
+GPC-20223,CC - PROJECT PAYTON BAINBRIDGE,none,,Customer-connection title; named sites may be customer facilities | No named site found in title
+GPC-20243,CC - GARRETT ROAD SWITCHING STATION - TRAE LANE,explicit_pair,from:GARRETT ROAD | to:TRAE LANE,Customer-connection title; named sites may be customer facilities
+GPC-20466,SMART VALVE INSTALLATION,none,,No named site found in title
+GPC-20509,CC - EMBLEM RIVERSIDE CUSTOMER SUB (FLEXENTIAL),single_site,single:EMBLEM RIVERSIDE,Customer-connection title; named sites may be customer facilities
+GPC-20516,"GOAT ROCK 230KV SWITCH, JUMPER, & LINE TRAP REPLACEMENT",single_site,single:GOAT ROCK,Title may name more than one circuit or site; only the first is used
+GPC-20684,CAMDEN INDUSTRIAL PARK (GPC),single_site,single:CAMDEN INDUSTRIAL PARK,Summary table need date 2025-06-01 differs from detail page need date 2025-06-30; detail value used per configured precedence
+GPC-20717,CC - TOMOCHICHI 500/230KV SOLUTION (CC NETWORK IMPROVEMENTS),single_site,single:TOMOCHICHI,Customer-connection title; named sites may be customer facilities
+GPC-20736,CC - TA REALTY ELLENWOOD NETWORK IMPROVEMENTS,single_site,single:TA REALTY ELLENWOOD,Customer-connection title; named sites may be customer facilities
+GPC-20768,SOUTH MACON 115KV BUSES 1 & 2 REPLACEMENT,single_site,single:SOUTH MACON,Title may name more than one circuit or site; only the first is used
+GPC-20771,CC - GULLATT ROAD TRANSMISSION IMPROVEMENTS,single_site,single:GULLATT ROAD,Customer-connection title; named sites may be customer facilities
+GPC-20774,CC - VILLA RICA UPGRADES (CC NETWORK IMPROVEMENTS),single_site,single:VILLA RICA,Customer-connection title; named sites may be customer facilities
+GPC-20781,CC - SUMMER LAKE - VILLA RICA 230KV REBUILD (CC IMPROVEMENT),explicit_pair,from:SUMMER LAKE | to:VILLA RICA,Customer-connection title; named sites may be customer facilities
+GPC-20797,CC - EAST VILLA RICA AREA SWITCHING STATION (CC IMPROVEMENT),single_site,single:EAST VILLA RICA,Customer-connection title; named sites may be customer facilities
+GPC-21046,THALMANN AND COLERAIN 23O KV LINE RELAY PANEL UPGRADES,single_site,single:THALMANN AND COLERAIN 23O KV,Site name may include title residue; source title may be malformed: ['THALMANN AND COLERAIN 23O KV']
+GPC-21069,SMART VALVES AT EAST VILLA RICA SWITCHING STATION,none,,No named site found in title
+GPC-21130,CC - NORTH GEORGIA DATA NETWORK UPGRADES,single_site,single:NORTH GEORGIA DATA,Customer-connection title; named sites may be customer facilities

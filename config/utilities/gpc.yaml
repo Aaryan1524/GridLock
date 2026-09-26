@@ -1,4 +1,5 @@
 id: gpc
+code: GPC
 display_name: Georgia Power
 color: "#F9A825"
 states: [GA, SC]
@@ -12,3 +13,16 @@ sources:
     summary_page_end: 190
     detail_page_start: 214
     detail_page_end: 425
+    labels:
+      project_number: "Teams #"
+      need_date: Need Date
+      start_date: Start Date
+      description_after: parity forecast purposes only
+      redacted: REDACTED
+    # The CEII notice printed on every page of the public-disclosure copy; not stored with records.
+    strip_blocks:
+      - start: CRITICAL ENERGY INFRASTRUCTURE INFORMATION
+        end: Marketing Function employees.
+    ignored_line_patterns:
+      - '^\d{4} GA ITS Ten-Year Plan .*Page \d+ of \d+$'
+    date_precedence: detail

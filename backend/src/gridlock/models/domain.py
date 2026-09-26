@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import date
 from enum import StrEnum
-from typing import Any
+from typing import Annotated, Any
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -20,9 +20,8 @@ class ContractModel(BaseModel):
     model_config = ConfigDict(alias_generator=_camel_case, populate_by_name=True)
 
 
-class UtilityId(StrEnum):
-    DESC = "DESC"
-    GPC = "GPC"
+# Utility codes come from config/utilities/*.yaml, so a new utility needs no model change.
+UtilityCode = Annotated[str, Field(min_length=1, pattern=r"^[A-Z][A-Z0-9_]*$")]
 
 
 class ProjectType(StrEnum):
@@ -35,8 +34,18 @@ class ProjectType(StrEnum):
 class EndpointRole(StrEnum):
     FROM = "from"
     TO = "to"
+    VIA = "via"
     SINGLE = "single"
     UNKNOWN = "unknown"
+
+
+class EndpointStatus(StrEnum):
+    """How endpoints were read from a project title; anything but a clean pair/site needs review."""
+
+    EXPLICIT_PAIR = "explicit_pair"
+    CHAIN = "chain"
+    SINGLE_SITE = "single_site"
+    NONE = "none"
 
 
 class GeometryMethod(StrEnum):
@@ -58,8 +67,9 @@ class EvidenceLevel(StrEnum):
 
 class SpatialTier(StrEnum):
     CROSSING = "CROSSING"
+    SHARED_CORRIDOR = "SHARED_CORRIDOR"
     SITE_LOGISTICS = "SITE_LOGISTICS"
-    REGIONAL_COORDINATION = "REGIONAL_COORDINATION"
+    CREWS_EQUIPMENT = "CREWS_EQUIPMENT"
 
 
 class TimelineType(StrEnum):
@@ -69,9 +79,13 @@ class TimelineType(StrEnum):
 
 
 class TimelineRelevance(StrEnum):
-    IMMEDIATE = "IMMEDIATE"
+    """Window overlap, then one bucket per configured timeline_gap_days cutoff, then beyond them."""
+
+    OVERLAPPING = "OVERLAPPING"
+    STRONG = "STRONG"
     MEANINGFUL = "MEANINGFUL"
-    WATCH = "WATCH"
+    POSSIBLE = "POSSIBLE"
+    WEAK = "WEAK"
     UNKNOWN = "UNKNOWN"
 
 
@@ -84,6 +98,8 @@ class Priority(StrEnum):
 class Endpoint(ContractModel):
     name: str = Field(min_length=1)
     role: EndpointRole = EndpointRole.UNKNOWN
+    # Parenthetical title qualifiers such as owner or circuit markers: "(APC)", "(USA)", "(WHITE)".
+    qualifiers: list[str] = Field(default_factory=list)
 
 
 class ConstructionWindow(ContractModel):
@@ -96,6 +112,8 @@ class SourceRef(ContractModel):
     project_id_raw: str = Field(min_length=1)
     page: int = Field(ge=1)
     raw_text: str | None = None
+    # Source strings kept verbatim, e.g. an unparseable date or a REDACTED cost.
+    raw_fields: dict[str, str] = Field(default_factory=dict)
 
 
 class Point(ContractModel):
@@ -119,21 +137,25 @@ class Evidence(ContractModel):
 
 class Project(ContractModel):
     id: str = Field(min_length=1)
-    utility: UtilityId
+    utility: UtilityCode
     project_name: str = Field(min_length=1)
     project_type: ProjectType
     sponsor: str | None = None
     description: str | None = None
-    voltage_kv: list[int] = Field(default_factory=list)
+    voltage_kv: list[float] = Field(default_factory=list)
     endpoints: list[Endpoint] = Field(default_factory=list)
+    endpoint_status: EndpointStatus = EndpointStatus.NONE
     status: str | None = None
     planned_in_service_date: date | None = None
+    # A project start date as filed by the utility; never treated as a construction window.
+    filed_start_date: date | None = None
     construction_window: ConstructionWindow | None = None
     estimated_cost_usd: int | None = Field(default=None, ge=0)
     source: SourceRef
     geometry: dict[str, Any] | None = None
     geometry_resolution: GeometryResolution | None = None
     evidence: Evidence | None = None
+    warnings: list[str] = Field(default_factory=list)
 
 
 class Timeline(ContractModel):
@@ -168,7 +190,7 @@ class Zone(ContractModel):
     name: str = Field(min_length=1)
     project_ids: list[str] = Field(default_factory=list)
     relationship_ids: list[str] = Field(default_factory=list)
-    utilities: list[UtilityId] = Field(default_factory=list)
+    utilities: list[UtilityCode] = Field(default_factory=list)
     closest_distance_km: float = Field(ge=0)
     opportunity_priority: Priority
     evidence_level: EvidenceLevel

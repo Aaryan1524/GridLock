@@ -11,3 +11,4 @@ node_modules/
 .next/
 data/raw/
 Sperry-Tech-Challenge/
+*.tsbuildinfo

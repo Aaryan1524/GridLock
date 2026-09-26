@@ -13,7 +13,7 @@ from .georesolution import resolve_projects
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
-from .settings.loader import ConfigError, load_settings
+from .settings.loader import ConfigBundle, ConfigError, load_settings
 
 
 def _default_config_path() -> Path:
@@ -36,7 +36,29 @@ def build_parser() -> argparse.ArgumentParser:
     ingest_parser.add_argument("source", choices=["plans", "osm"])
     ingest_parser.add_argument("--offline", action="store_true")
     commands.add_parser("resolve", help="resolve projects to public OSM geometry")
+    inspect_parser = commands.add_parser("inspect", help="print one normalized project record")
+    inspect_parser.add_argument("project_id")
+    inspect_parser.add_argument("--resolved", action="store_true", help="read the geometry-resolved output instead")
+    inspect_parser.add_argument("--raw-text", action="store_true", help="include the stored source page text")
     return parser
+
+
+def _inspect(bundle: ConfigBundle, project_id: str, resolved: bool, include_raw_text: bool) -> int:
+    file_name = "projects_resolved.json" if resolved else "projects.json"
+    path = Path(__file__).resolve().parents[3] / bundle.root.paths.normalized_dir / file_name
+    try:
+        projects = json.loads(path.read_text(encoding="utf-8"))
+    except OSError as error:
+        print(f"Cannot read {path}: {error}")
+        return 2
+    match = next((project for project in projects if project["id"] == project_id), None)
+    if match is None:
+        print(f"No project {project_id!r} in {path}")
+        return 1
+    if not include_raw_text:
+        match["source"].pop("rawText", None)
+    print(json.dumps(match, indent=2, ensure_ascii=False))
+    return 0
 
 
 def main(argv: Sequence[str] | None = None) -> int:
@@ -84,6 +106,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             return 2
         print(json.dumps(report.as_dict(), indent=2, sort_keys=True))
         return 0
+    if args.command == "inspect":
+        try:
+            bundle = load_settings(args.config)
+        except ConfigError as error:
+            print(f"Configuration error: {error}")
+            return 2
+        return _inspect(bundle, args.project_id, args.resolved, args.raw_text)
     if args.command == "resolve":
         try:
             bundle = load_settings(args.config)
