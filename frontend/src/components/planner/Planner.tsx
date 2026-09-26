@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 
 import { usePayload } from "@/lib/api";
 import type { GridlockPayload } from "@/lib/contract";
-import { formatNumber, utilityName } from "@/lib/format";
 import { usePlannerState } from "@/lib/plannerState";
 
+import { SiteNav } from "../shared/SiteNav";
 import { StatusNotice } from "../shared/StatusNotice";
-import { ThemeToggle } from "../shared/ThemeToggle";
 import { EvidenceDrawer } from "./EvidenceDrawer";
 import styles from "./planner.module.css";
 import { PlannerNav } from "./PlannerNav";
@@ -51,47 +49,10 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
 
 export function Planner() {
   const state = usePayload();
-  const payload = state.status === "ready" ? state.payload : null;
-  const metrics = payload?.metrics;
 
   return (
     <main className={styles.page}>
-      <header className={styles.header}>
-        <div className={styles.brand}>
-          <Link href="/" className={styles.wordmark}>
-            GridLock
-          </Link>
-          <span className="muted">Cross-utility coordination planner</span>
-        </div>
-        <div className={styles.headerActions}>
-          {payload && metrics && (
-            <dl className={styles.headerStats}>
-              <div>
-                <dt className="mono">Zones</dt>
-                <dd>{formatNumber(metrics.zones)}</dd>
-              </div>
-              <div>
-                <dt className="mono">Relationships</dt>
-                <dd>{formatNumber(metrics.relationships)}</dd>
-              </div>
-              <div>
-                <dt className="mono">Compression</dt>
-                <dd>{metrics.attentionCompressionRatio != null ? `${metrics.attentionCompressionRatio}×` : "—"}</dd>
-              </div>
-              <div className={styles.headerSource}>
-                <dt className="mono">Sources</dt>
-                <dd className="mono-plain">
-                  {Object.keys(metrics.projectsByUtility)
-                    .map((code) => utilityName(payload.metadata, code))
-                    .join(" + ")}{" "}
-                  · public planning data
-                </dd>
-              </div>
-            </dl>
-          )}
-          <ThemeToggle />
-        </div>
-      </header>
+      <SiteNav />
       {state.status === "ready" ? (
         <Workspace payload={state.payload} />
       ) : (

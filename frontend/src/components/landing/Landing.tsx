@@ -7,8 +7,8 @@ import type { GridlockPayload, Zone } from "@/lib/contract";
 import { formatDays, formatDistance, formatNumber, label, projectIndex, utilityName } from "@/lib/format";
 
 import { Coverage } from "../shared/Coverage";
+import { SiteNav } from "../shared/SiteNav";
 import { StatusNotice } from "../shared/StatusNotice";
-import { ThemeToggle } from "../shared/ThemeToggle";
 import styles from "./landing.module.css";
 
 const OLD_WAY = ["Utility A plan", "Utility B plan", "Separate PDFs", "Separate timelines", "Manual comparison", "Dozens of possible project pairs"];
@@ -83,17 +83,9 @@ export function Landing() {
 
   return (
     <main className={styles.page}>
-      <header className={`frame ${styles.nav}`}>
-        <span className={styles.wordmark}>GridLock</span>
-        <span className={styles.navActions}>
-          <ThemeToggle />
-          <Link className="mono" href="/planner">
-            Planner →
-          </Link>
-        </span>
-      </header>
+      <SiteNav />
 
-      <section className={`frame guides rule-top ${styles.hero}`}>
+      <section className={`frame guides ${styles.hero}`}>
         <p className="eyebrow">Cross-utility transmission intelligence</p>
         <h1 className={`display ${styles.heroTitle}`}>
           Infrastructure plans,
