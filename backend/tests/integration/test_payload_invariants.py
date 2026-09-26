@@ -169,6 +169,18 @@ def test_zones_partition_every_relationship_and_metrics_agree(payload: Payload) 
     assert metrics.located_projects + sum(metrics.not_assessed_by_utility.values()) == metrics.projects
 
 
+def test_resolution_buckets_reconcile_every_denominator(payload: Payload) -> None:
+    metrics, breakdown = payload.metrics, payload.metrics.resolution
+    projects = {project.id: project for project in payload.projects}
+
+    assert breakdown.total == metrics.projects == len(projects)
+    assert breakdown.located == metrics.located_projects == sum(p.geometry is not None for p in projects.values())
+    assert breakdown.not_located_no_named_site == sum(not p.endpoints for p in projects.values())
+    assert metrics.projects_with_named_endpoints == metrics.projects - breakdown.not_located_no_named_site
+    assert metrics.automatic_resolution_rate == round(breakdown.located_automatically / metrics.projects_with_named_endpoints, 3)
+    assert sum(part.total for part in metrics.resolution_by_utility.values()) == metrics.projects
+
+
 def test_api_serves_the_payload_read_only(built) -> None:
     _, path = built
     bundle = type(BUNDLE)(

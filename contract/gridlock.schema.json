@@ -432,7 +432,7 @@
       "type": "object"
     },
     "Metrics": {
-      "description": "Handoff section 28 metrics, computed from the real run; nothing here is estimated.",
+      "description": "Handoff section 28 metrics, computed from the real run; nothing here is estimated.\n\nDenominators are stated per field: \"of all projects\" or \"of projects that name a site\".",
       "properties": {
         "attentionCompressionRatio": {
           "anyOf": [
@@ -512,6 +512,16 @@
           "title": "Relationshipsbytier",
           "type": "object"
         },
+        "resolution": {
+          "$ref": "#/$defs/ResolutionBreakdown"
+        },
+        "resolutionByUtility": {
+          "additionalProperties": {
+            "$ref": "#/$defs/ResolutionBreakdown"
+          },
+          "title": "Resolutionbyutility",
+          "type": "object"
+        },
         "zones": {
           "minimum": 0,
           "title": "Zones",
@@ -523,6 +533,8 @@
         "projectsByUtility",
         "locatedProjects",
         "notAssessedByUtility",
+        "resolution",
+        "resolutionByUtility",
         "projectsWithNamedEndpoints",
         "automaticResolutionRate",
         "humanVerifiedEndpoints",
@@ -865,6 +877,39 @@
         "evidence"
       ],
       "title": "Relationship",
+      "type": "object"
+    },
+    "ResolutionBreakdown": {
+      "description": "Where every project ended up; the four buckets always add up to the project count.",
+      "properties": {
+        "locatedAutomatically": {
+          "minimum": 0,
+          "title": "Locatedautomatically",
+          "type": "integer"
+        },
+        "locatedHumanVerifiedOnly": {
+          "minimum": 0,
+          "title": "Locatedhumanverifiedonly",
+          "type": "integer"
+        },
+        "notLocatedNoNamedSite": {
+          "minimum": 0,
+          "title": "Notlocatednonamedsite",
+          "type": "integer"
+        },
+        "notLocatedUnresolved": {
+          "minimum": 0,
+          "title": "Notlocatedunresolved",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "locatedAutomatically",
+        "locatedHumanVerifiedOnly",
+        "notLocatedUnresolved",
+        "notLocatedNoNamedSite"
+      ],
+      "title": "ResolutionBreakdown",
       "type": "object"
     },
     "SourceRef": {

@@ -6,7 +6,7 @@ from datetime import date
 from enum import StrEnum
 from typing import Annotated, Any
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 
 def _camel_case(value: str) -> str:
@@ -292,15 +292,47 @@ class Metadata(ContractModel):
     sources: list[SourceSnapshot] = Field(default_factory=list)
 
 
+class ResolutionBreakdown(ContractModel):
+    """Where every project ended up; the four buckets always add up to the project count."""
+
+    located_automatically: int = Field(ge=0)
+    # Located only through human-verified override points, with no automatic OSM match.
+    located_human_verified_only: int = Field(ge=0)
+    # The title names sites, but none could be linked to public geometry.
+    not_located_unresolved: int = Field(ge=0)
+    # The title names no site at all ("SMART VALVE INSTALLATION"), so there is nothing to locate.
+    not_located_no_named_site: int = Field(ge=0)
+
+    @property
+    def total(self) -> int:
+        return self.located + self.not_located
+
+    @property
+    def located(self) -> int:
+        return self.located_automatically + self.located_human_verified_only
+
+    @property
+    def not_located(self) -> int:
+        return self.not_located_unresolved + self.not_located_no_named_site
+
+
 class Metrics(ContractModel):
-    """Handoff section 28 metrics, computed from the real run; nothing here is estimated."""
+    """Handoff section 28 metrics, computed from the real run; nothing here is estimated.
+
+    Denominators are stated per field: "of all projects" or "of projects that name a site".
+    """
 
     projects: int = Field(ge=0)
     projects_by_utility: dict[str, int]
+    # Of all projects.
     located_projects: int = Field(ge=0)
-    # Projects without geometry were not assessed for overlap; that is not the same as "no overlap".
+    # Of all projects: not located, so not assessed for overlap ("unknown", not "no overlap").
     not_assessed_by_utility: dict[str, int]
+    resolution: ResolutionBreakdown
+    resolution_by_utility: dict[str, ResolutionBreakdown]
+    # Projects whose title names at least one site; the denominator of automatic_resolution_rate.
     projects_with_named_endpoints: int = Field(ge=0)
+    # located_automatically / projects_with_named_endpoints; human-verified points are excluded.
     automatic_resolution_rate: float = Field(ge=0, le=1)
     human_verified_endpoints: int = Field(ge=0)
     relationships: int = Field(ge=0)
@@ -309,6 +341,28 @@ class Metrics(ContractModel):
     attention_compression_ratio: float | None = None
     evidence_distribution: dict[str, int]
     geometry_distribution: dict[str, int]
+
+    @model_validator(mode="after")
+    def counts_reconcile(self) -> "Metrics":
+        breakdown = self.resolution
+        problems = []
+        if breakdown.total != self.projects:
+            problems.append(f"resolution buckets add up to {breakdown.total}, not {self.projects} projects")
+        if breakdown.located != self.located_projects:
+            problems.append(f"located buckets add up to {breakdown.located}, not {self.located_projects}")
+        if breakdown.not_located != sum(self.not_assessed_by_utility.values()):
+            problems.append("not-located buckets disagree with not_assessed_by_utility")
+        if self.projects - breakdown.not_located_no_named_site != self.projects_with_named_endpoints:
+            problems.append("projects_with_named_endpoints disagrees with the no-named-site bucket")
+        expected_rate = round(breakdown.located_automatically / self.projects_with_named_endpoints, 3) if self.projects_with_named_endpoints else 0.0
+        if self.automatic_resolution_rate != expected_rate:
+            problems.append(f"automatic_resolution_rate should be {expected_rate}")
+        for code, part in self.resolution_by_utility.items():
+            if part.total != self.projects_by_utility.get(code) or part.not_located != self.not_assessed_by_utility.get(code):
+                problems.append(f"{code} breakdown does not reconcile")
+        if problems:
+            raise ValueError("metrics do not reconcile: " + "; ".join(problems))
+        return self
 
 
 class Payload(ContractModel):

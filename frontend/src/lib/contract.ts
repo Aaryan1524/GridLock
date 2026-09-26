@@ -68,6 +68,8 @@ export interface Metrics {
   projectsByUtility: Record<string, unknown>;
   locatedProjects: number;
   notAssessedByUtility: Record<string, unknown>;
+  resolution: ResolutionBreakdown;
+  resolutionByUtility: Record<string, unknown>;
   projectsWithNamedEndpoints: number;
   automaticResolutionRate: number;
   humanVerifiedEndpoints: number;
@@ -119,6 +121,12 @@ export interface Relationship {
   rank?: number | null;
   coordinationPlaybook?: Array<string>;
   evidence: Evidence;
+}
+export interface ResolutionBreakdown {
+  locatedAutomatically: number;
+  locatedHumanVerifiedOnly: number;
+  notLocatedUnresolved: number;
+  notLocatedNoNamedSite: number;
 }
 export interface SourceRef {
   document: string;

@@ -10,6 +10,13 @@ from itertools import combinations
 from pathlib import Path
 
 from gridlock.evidence import score_evidence
+from gridlock.metrics.summary import (
+    LOCATED_AUTOMATICALLY,
+    LOCATED_HUMAN_VERIFIED_ONLY,
+    NOT_LOCATED_NO_NAMED_SITE,
+    NOT_LOCATED_UNRESOLVED,
+    resolution_bucket,
+)
 from gridlock.models.domain import (
     EndpointMatch,
     EndpointMatchStatus,
@@ -91,19 +98,22 @@ class ResolutionReport:
     output_path: Path
     review_path: Path
     projects: int
-    projects_with_endpoints: int
-    projects_with_geometry: int
+    resolution: dict[str, int]
     endpoint_status: dict[str, int]
     geometry_methods: dict[str, int]
     evidence_levels: dict[str, int]
 
     def as_dict(self) -> dict[str, object]:
-        rate = self.projects_with_geometry / self.projects_with_endpoints if self.projects_with_endpoints else 0.0
+        """Same buckets and definitions as the payload metrics, so the two never disagree."""
+        named = self.projects - self.resolution[NOT_LOCATED_NO_NAMED_SITE]
+        located = self.resolution[LOCATED_AUTOMATICALLY] + self.resolution[LOCATED_HUMAN_VERIFIED_ONLY]
         return {
             "projects": self.projects,
-            "projects_with_named_endpoints": self.projects_with_endpoints,
-            "projects_with_geometry": self.projects_with_geometry,
-            "automatic_resolution_rate": round(rate, 3),
+            "resolution": self.resolution,
+            "located_projects": located,
+            "not_assessed_projects": self.projects - located,
+            "projects_with_named_endpoints": named,
+            "automatic_resolution_rate": round(self.resolution[LOCATED_AUTOMATICALLY] / named, 3) if named else 0.0,
             "endpoint_status": self.endpoint_status,
             "geometry_methods": self.geometry_methods,
             "evidence_levels": self.evidence_levels,
@@ -151,8 +161,10 @@ def resolve_projects(
         output_path=output_path,
         review_path=review_path,
         projects=len(resolved),
-        projects_with_endpoints=sum(bool(project.endpoints) for project in resolved),
-        projects_with_geometry=sum(project.geometry is not None for project in resolved),
+        resolution={
+            bucket: sum(resolution_bucket(project) == bucket for project in resolved)
+            for bucket in (LOCATED_AUTOMATICALLY, LOCATED_HUMAN_VERIFIED_ONLY, NOT_LOCATED_UNRESOLVED, NOT_LOCATED_NO_NAMED_SITE)
+        },
         endpoint_status=dict(sorted(Counter(match.status.value for match in all_matches).items())),
         geometry_methods=dict(sorted(Counter(p.geometry_resolution.method.value for p in resolved).items())),
         evidence_levels=dict(sorted(Counter(p.evidence.level.value for p in resolved).items())),

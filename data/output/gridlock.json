@@ -114,6 +114,26 @@
       "DESC": 15,
       "GPC": 47
     },
+    "resolution": {
+      "locatedAutomatically": 119,
+      "locatedHumanVerifiedOnly": 1,
+      "notLocatedUnresolved": 59,
+      "notLocatedNoNamedSite": 3
+    },
+    "resolutionByUtility": {
+      "DESC": {
+        "locatedAutomatically": 28,
+        "locatedHumanVerifiedOnly": 1,
+        "notLocatedUnresolved": 15,
+        "notLocatedNoNamedSite": 0
+      },
+      "GPC": {
+        "locatedAutomatically": 91,
+        "locatedHumanVerifiedOnly": 0,
+        "notLocatedUnresolved": 44,
+        "notLocatedNoNamedSite": 3
+      }
+    },
     "projectsWithNamedEndpoints": 179,
     "automaticResolutionRate": 0.665,
     "humanVerifiedEndpoints": 3,
