@@ -1,15 +1,20 @@
 {
   "source": "OpenStreetMap via Overpass",
-  "retrieved_at": "2026-09-26T10:29:05.003917+00:00",
+  "license": "ODbL 1.0, \u00a9 OpenStreetMap contributors",
+  "retrieved_at": "2026-09-26T11:11:22.338829+00:00",
+  "overpass_url": "https://overpass-api.de/api/interpreter",
   "bbox": [
-    -85.0,
+    -86.0,
     30.0,
     -78.0,
     36.0
   ],
-  "query_version": "v1",
+  "query_version": "v2",
+  "query": "[out:json][timeout:300];\n(\n  node[\"power\"~\"^(line|substation)$\"](30.0,-86.0,36.0,-78.0);\n  way[\"power\"~\"^(line|substation)$\"](30.0,-86.0,36.0,-78.0);\n  relation[\"power\"~\"^(line|substation)$\"](30.0,-86.0,36.0,-78.0);\n);\nout body geom;",
   "feature_types": [
     "substation",
     "line"
-  ]
+  ],
+  "feature_count": 29945,
+  "sha256": "3b2b3dac5e25ae6940bcccb5fde8ef8beb004328340111f159f25fc29b959c55"
 }

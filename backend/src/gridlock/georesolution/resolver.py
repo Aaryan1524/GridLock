@@ -1,151 +1,159 @@
-"""Resolve only high-confidence public OSM matches; preserve every unresolved record."""
+"""Resolve projects to public OSM geometry; every unresolved endpoint is kept and queued for review."""
 
 from __future__ import annotations
 
 import csv
 import json
-import re
 from collections import Counter
 from dataclasses import dataclass
+from itertools import combinations
 from pathlib import Path
-from typing import Any
 
-from rapidfuzz.fuzz import ratio
-
-from gridlock.models.domain import Evidence, EvidenceLevel, GeometryMethod, GeometryResolution, Project
+from gridlock.evidence import score_evidence
+from gridlock.models.domain import (
+    EndpointMatch,
+    EndpointMatchStatus,
+    EndpointStatus,
+    GeometryMethod,
+    GeometryResolution,
+    Project,
+)
 from gridlock.settings.loader import ConfigBundle
+from gridlock.settings.models import GeometryOverride, ResolutionConfig, UtilityConfig
+
+from .matching import IndexedFeature, build_index, distance_km, match_project_endpoints
+
+RESOLVED = {EndpointMatchStatus.MATCHED, EndpointMatchStatus.OVERRIDE}
 
 
-def _name(value: str) -> str:
-    value = value.casefold()
-    value = re.sub(r"\b(substation|sub|primary|station|usa)\b", " ", value)
-    return re.sub(r"[^a-z0-9]+", " ", value).strip()
-
-
-@dataclass(frozen=True)
-class Candidate:
-    feature_id: str
-    name: str
-    score: int
-    geometry: dict[str, Any]
-
-
-def _candidates(endpoint_name: str, features: list[dict[str, Any]], operator_aliases: tuple[str, ...] = ()) -> list[Candidate]:
-    target = _name(endpoint_name)
-    candidates: list[Candidate] = []
-    for feature in features:
-        properties = feature.get("properties", {})
-        feature_name = properties.get("name")
-        if properties.get("power") != "substation" or not isinstance(feature_name, str):
-            continue
-        operator = properties.get("operator")
-        if operator and operator_aliases and _name(str(operator)) not in {_name(alias) for alias in operator_aliases}:
-            continue
-        score = ratio(target, _name(feature_name))
-        if score >= 88:
-            candidates.append(Candidate(feature["id"], feature_name, score, feature["geometry"]))
-    return sorted(candidates, key=lambda candidate: (-candidate.score, candidate.feature_id))
-
-
-def _point_for_feature(feature: Candidate) -> list[float] | None:
-    geometry = feature.geometry
-    if geometry.get("type") == "Point":
-        return geometry["coordinates"]
-    if geometry.get("type") == "Polygon":
-        ring = geometry["coordinates"][0]
-        return [sum(point[0] for point in ring) / len(ring), sum(point[1] for point in ring) / len(ring)]
-    return None
-
-
-def _resolve_project(project: Project, features: list[dict[str, Any]], operator_aliases: tuple[str, ...]) -> Project:
-    resolved = []
+def _geometry(
+    project: Project, matches: list[EndpointMatch], rules: ResolutionConfig
+) -> tuple[dict | None, GeometryResolution]:
+    """Apply the handoff section 9 ladder to the resolved endpoints, in title order."""
+    resolved = [match for match in matches if match.status in RESOLVED]
     warnings: list[str] = []
-    for endpoint in project.endpoints:
-        candidates = _candidates(endpoint.name, features, operator_aliases)
-        if not candidates:
-            warnings.append(f"No public OSM substation candidate for endpoint {endpoint.name}")
-            continue
-        best = candidates[0]
-        if len(candidates) > 1 and candidates[1].score == best.score:
-            warnings.append(f"Ambiguous OSM candidates for endpoint {endpoint.name}")
-            continue
-        point = _point_for_feature(best)
-        if point is None:
-            warnings.append(f"Unsupported public OSM geometry for endpoint {endpoint.name}")
-            continue
-        resolved.append((best, point))
-
-    source_score = 20
-    geometry_score = 30 if len(resolved) >= 2 else 15 if len(resolved) == 1 else 0
-    has_start_and_in_service = project.filed_start_date is not None and project.planned_in_service_date is not None
-    timeline_score = 15 if project.construction_window or has_start_and_in_service else 10 if project.planned_in_service_date else 0
-    score = source_score + geometry_score + timeline_score
-    level = EvidenceLevel.HIGH if score >= 80 else EvidenceLevel.MEDIUM if score >= 50 else EvidenceLevel.LOW
-    evidence = Evidence(level=level, score=score, reasons=["Official public filing with project identifier"], warnings=warnings)
-
     if len(resolved) >= 2:
-        project.geometry = {"type": "LineString", "coordinates": [point for _, point in resolved]}
-        project.geometry_resolution = GeometryResolution(
-            method=GeometryMethod.VERIFIED_ENDPOINTS_STRAIGHT_LINE,
-            is_approximation=True,
-            feature_ids=[candidate.feature_id for candidate, _ in resolved],
-            warnings=warnings,
-        )
+        spread = max(distance_km(a.point, b.point) for a, b in combinations(resolved, 2))
+        if spread > rules.max_endpoint_separation_km:
+            warnings.append(
+                f"Resolved endpoints are {spread:.1f} km apart, beyond the {rules.max_endpoint_separation_km:g} km limit; "
+                "geometry withheld"
+            )
+            matches = [
+                match.model_copy(update={"status": EndpointMatchStatus.SEPARATION_REJECTED, "point": None})
+                if match.status in RESOLVED
+                else match
+                for match in matches
+            ]
+            resolved = []
+
+    feature_ids = [match.feature_id or f"override/{project.utility}/{match.endpoint}" for match in resolved]
+    only_overrides = bool(resolved) and all(match.status is EndpointMatchStatus.OVERRIDE for match in resolved)
+    if len(resolved) >= 2:
+        method = GeometryMethod.HUMAN_VERIFIED_OVERRIDE if only_overrides else GeometryMethod.VERIFIED_ENDPOINTS_STRAIGHT_LINE
+        geometry = {"type": "LineString", "coordinates": [[match.point.lon, match.point.lat] for match in resolved]}
+        is_approximation = True
+        if len(resolved) < len(matches):
+            warnings.append("Line drawn through the resolved endpoints only")
     elif len(resolved) == 1:
-        candidate, point = resolved[0]
-        project.geometry = {"type": "Point", "coordinates": point}
-        project.geometry_resolution = GeometryResolution(
-            method=GeometryMethod.VERIFIED_SINGLE_ENDPOINT,
-            is_approximation=True,
-            feature_ids=[candidate.feature_id],
-            warnings=warnings,
-        )
+        method = GeometryMethod.HUMAN_VERIFIED_OVERRIDE if only_overrides else GeometryMethod.VERIFIED_SINGLE_ENDPOINT
+        geometry = {"type": "Point", "coordinates": [resolved[0].point.lon, resolved[0].point.lat]}
+        # A single-site project is fully located by its site; a line located by one end is not.
+        is_approximation = project.endpoint_status is not EndpointStatus.SINGLE_SITE
     else:
-        project.geometry_resolution = GeometryResolution(
-            method=GeometryMethod.UNRESOLVED,
-            is_approximation=False,
-            warnings=warnings,
-        )
-    project.evidence = evidence
-    return project
+        method, geometry, is_approximation = GeometryMethod.UNRESOLVED, None, False
+    return geometry, GeometryResolution(
+        method=method, is_approximation=is_approximation, feature_ids=feature_ids, matches=matches, warnings=warnings
+    )
+
+
+def resolve_project(
+    project: Project,
+    utility: UtilityConfig,
+    index: list[IndexedFeature],
+    bundle: ConfigBundle,
+    overrides: tuple[GeometryOverride, ...] = (),
+) -> Project:
+    rules = bundle.root.resolution
+    matches = match_project_endpoints(project, utility, index, rules, overrides)
+    geometry, resolution = _geometry(project, matches, rules)
+    return project.model_copy(
+        update={
+            "geometry": geometry,
+            "geometry_resolution": resolution,
+            "evidence": score_evidence(project, resolution, bundle.root.evidence),
+        }
+    )
 
 
 @dataclass(frozen=True)
 class ResolutionReport:
     output_path: Path
     review_path: Path
+    projects: int
+    projects_with_endpoints: int
+    projects_with_geometry: int
+    endpoint_status: dict[str, int]
     geometry_methods: dict[str, int]
     evidence_levels: dict[str, int]
 
     def as_dict(self) -> dict[str, object]:
+        rate = self.projects_with_geometry / self.projects_with_endpoints if self.projects_with_endpoints else 0.0
         return {
-            "output_path": str(self.output_path),
-            "review_path": str(self.review_path),
+            "projects": self.projects,
+            "projects_with_named_endpoints": self.projects_with_endpoints,
+            "projects_with_geometry": self.projects_with_geometry,
+            "automatic_resolution_rate": round(rate, 3),
+            "endpoint_status": self.endpoint_status,
             "geometry_methods": self.geometry_methods,
             "evidence_levels": self.evidence_levels,
+            "output_path": str(self.output_path),
+            "review_path": str(self.review_path),
         }
 
 
-def resolve_projects(bundle: ConfigBundle, repository_root: Path) -> ResolutionReport:
-    normalized_path = repository_root / bundle.root.paths.normalized_dir / "projects.json"
-    cache_path = repository_root / bundle.root.paths.cache_dir / "osm_power.geojson"
+def resolve_projects(
+    bundle: ConfigBundle,
+    repository_root: Path,
+    output_path: Path | None = None,
+    review_path: Path | None = None,
+) -> ResolutionReport:
+    paths = bundle.root.paths
+    normalized_path = repository_root / paths.normalized_dir / "projects.json"
+    cache_path = repository_root / paths.cache_dir / "osm_power.geojson"
     projects = [Project.model_validate(item) for item in json.loads(normalized_path.read_text(encoding="utf-8"))]
-    features = json.loads(cache_path.read_text(encoding="utf-8"))["features"]
-    aliases = {utility.code: utility.operator_aliases for utility in bundle.utilities}
-    resolved_projects = [_resolve_project(project, features, aliases[project.utility]) for project in projects]
-    output_path = repository_root / bundle.root.paths.normalized_dir / "projects_resolved.json"
-    output_path.write_text(json.dumps([item.model_dump(mode="json", by_alias=True) for item in resolved_projects], indent=2) + "\n", encoding="utf-8")
-    review_path = repository_root / bundle.root.paths.review_dir / "unresolved.csv"
+    index = build_index(json.loads(cache_path.read_text(encoding="utf-8"))["features"], bundle.root.resolution)
+    resolved = [
+        resolve_project(project, bundle.utility(project.utility), index, bundle, bundle.overrides) for project in projects
+    ]
+
+    output_path = output_path or repository_root / paths.normalized_dir / "projects_resolved.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    output_path.write_text(
+        json.dumps([project.model_dump(mode="json", by_alias=True) for project in resolved], indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    review_path = review_path or repository_root / paths.review_dir / "unresolved.csv"
     review_path.parent.mkdir(parents=True, exist_ok=True)
     with review_path.open("w", newline="", encoding="utf-8") as output:
         writer = csv.writer(output)
-        writer.writerow(["project_id", "project_name", "warnings"])
-        for project in resolved_projects:
-            if project.geometry_resolution and project.geometry_resolution.method == GeometryMethod.UNRESOLVED:
-                writer.writerow([project.id, project.project_name, " | ".join(project.geometry_resolution.warnings)])
+        writer.writerow(["project_id", "project_name", "endpoint", "status", "best_candidate", "notes"])
+        for project in resolved:
+            if not project.endpoints:
+                writer.writerow([project.id, project.project_name, "", "no_named_endpoint", "", " | ".join(project.warnings)])
+            for match in project.geometry_resolution.matches:
+                if match.status not in RESOLVED:
+                    candidate = f"{match.feature_name} ({match.feature_id})" if match.feature_id else ""
+                    writer.writerow([project.id, project.project_name, match.endpoint, match.status.value, candidate, " | ".join(match.notes)])
+
+    all_matches = [match for project in resolved for match in project.geometry_resolution.matches]
     return ResolutionReport(
         output_path=output_path,
         review_path=review_path,
-        geometry_methods=dict(Counter(item.geometry_resolution.method.value for item in resolved_projects if item.geometry_resolution)),
-        evidence_levels=dict(Counter(item.evidence.level.value for item in resolved_projects if item.evidence)),
+        projects=len(resolved),
+        projects_with_endpoints=sum(bool(project.endpoints) for project in resolved),
+        projects_with_geometry=sum(project.geometry is not None for project in resolved),
+        endpoint_status=dict(sorted(Counter(match.status.value for match in all_matches).items())),
+        geometry_methods=dict(sorted(Counter(p.geometry_resolution.method.value for p in resolved).items())),
+        evidence_levels=dict(sorted(Counter(p.evidence.level.value for p in resolved).items())),
     )

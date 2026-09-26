@@ -72,6 +72,7 @@ def _utility(identifier: str, code: str) -> dict[str, Any]:
         "display_name": "Test Utility",
         "color": "#000000",
         "states": ["GA"],
+        "service_area_bbox": [-86.0, 30.0, -80.0, 35.0],
         "sources": [{"id": "test", "parser": "test", "path": "test.pdf"}],
     }
 
@@ -88,4 +89,25 @@ def test_duplicate_utility_codes_are_rejected(tmp_path: Path) -> None:
     root = _write_config(tmp_path, {"a.yaml": _utility("a", "SAME"), "b.yaml": _utility("b", "SAME")})
 
     with pytest.raises(ConfigError, match="utility codes must not contain duplicates"):
+        load_settings(root)
+
+
+def test_evidence_weights_must_total_one_hundred() -> None:
+    config = _repository_config()
+    config["evidence"]["identity"]["name"] = 11
+
+    with pytest.raises(ValueError, match="must total 100"):
+        GridlockConfig.model_validate(config)
+
+
+def test_overrides_for_unknown_utilities_are_rejected(tmp_path: Path) -> None:
+    root = _write_config(tmp_path, {"a.yaml": _utility("a", "ALPHA")})
+    config = yaml.safe_load(root.read_text(encoding="utf-8"))
+    (tmp_path / "overrides").mkdir()
+    (tmp_path / config["resolution"]["overrides_file"]).write_text(
+        yaml.safe_dump({"overrides": [{"utility": "BETA", "endpoint": "X", "lat": 32, "lon": -81, "source": "s", "reviewer": "r", "note": "n"}]}),
+        encoding="utf-8",
+    )
+
+    with pytest.raises(ConfigError, match="unknown utility codes"):
         load_settings(root)

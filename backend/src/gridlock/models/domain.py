@@ -121,16 +121,44 @@ class Point(ContractModel):
     lon: float = Field(ge=-180, le=180)
 
 
+class EndpointMatchStatus(StrEnum):
+    MATCHED = "matched"
+    OVERRIDE = "override"
+    NO_CANDIDATE = "no_candidate"
+    AMBIGUOUS = "ambiguous"
+    VETOED = "vetoed"
+    SEPARATION_REJECTED = "separation_rejected"
+
+
+class EndpointMatch(ContractModel):
+    """How one named endpoint was (or was not) linked to public infrastructure."""
+
+    endpoint: str = Field(min_length=1)
+    role: EndpointRole
+    status: EndpointMatchStatus
+    feature_id: str | None = None
+    feature_name: str | None = None
+    operator: str | None = None
+    operator_relation: str | None = None
+    voltage_kv: list[float] = Field(default_factory=list)
+    name_score: float | None = None
+    point: Point | None = None
+    notes: list[str] = Field(default_factory=list)
+
+
 class GeometryResolution(ContractModel):
     method: GeometryMethod
     is_approximation: bool
     feature_ids: list[str] = Field(default_factory=list)
+    matches: list[EndpointMatch] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 
 
 class Evidence(ContractModel):
     level: EvidenceLevel
     score: int = Field(ge=0, le=100)
+    # Points per handoff section 10 part: source, identity, geometry, timeline.
+    breakdown: dict[str, int] = Field(default_factory=dict)
     reasons: list[str] = Field(default_factory=list)
     warnings: list[str] = Field(default_factory=list)
 

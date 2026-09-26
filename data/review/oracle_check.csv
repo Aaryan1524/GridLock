@@ -1,0 +1,21 @@
+sponsor_id,project_id,sheet_endpoint,sheet_lat_lon,our_status,our_feature,distance_km
+DESC_1,DESC-6809-E,Stevens Creek Sub,"33.56260,-82.05136",matched,Stevens Creek Dam Substation (way/52102616),0.20
+DESC_1,DESC-6809-E,Hooks Sub,,no_candidate,,
+DESC_2,DESC-6810-A,Hooks Sub,,no_candidate,,
+DESC_2,DESC-6810-A,Thurmond Sub,"33.66013,-82.19593",matched,Thurmond Substation (way/52102019),0.00
+DESC_3,DESC-06367-D-G,Jasper Sub,"32.35912,-81.12460",matched,Jasper Substation (way/185380597),0.18
+DESC_3,DESC-06367-D-G,Okatie Sub,"32.33376,-81.03249",override,human-verified (way/1064022697),0.01
+DESC_4,DESC-6807-B,Queensboro Sub,"32.72279,-79.96733",matched,Queensborough Substation (way/290264139),0.00
+DESC_4,DESC-6807-B,Ft Johnson Sub,,no_candidate,,
+DESC_5,DESC-6808-S,Okatie Sub,"32.33376,-81.03249",override,human-verified (way/1064022697),0.01
+DESC_5,DESC-6808-S,Bluffton Sub,"32.23503,-80.85338",matched,Bluffton Substation (way/498967268),0.00
+GPC_1,GPC-20793,EVANS PRIMARY,"33.54399,-82.16865",matched,Evans Primary Substation (way/52103255),0.00
+GPC_1,GPC-20793,THURMOND DAM #5,"33.66013,-82.19593",matched,Thurmond Substation (way/52102019),0.00
+GPC_2,GPC-20277,MCINTOSH,"32.35212,-81.17511",matched,McIntosh Substation (way/121624352),0.00
+GPC_2,GPC-20277,PURRYSBURG,,no_candidate,,
+GPC_3,GPC-20065,GOSHEN,"32.24870,-81.20947",matched,Goshen Substation (way/1008141064),0.00
+GPC_3,GPC-20065,MCINTOSH,"32.35212,-81.18211",matched,McIntosh Substation (way/121624352),0.66
+GPC_4,GPC-18492,Mitchell Substation,"31.44712,-84.13384",matched,Mitchell Substation (230kV) (way/656743294),0.00
+GPC_4,GPC-18492,North Tifton Substation,"31.47809,-83.54913",matched,North Tifton Substation (500kV) (way/53154820),0.04
+GPC_5,GPC-11821,JESUP,"31.60311,-81.92495",matched,Jesup Substation (way/103029795),0.00
+GPC_5,GPC-11821,LUDOWICI PRIMARY,"31.72160,-81.74370",matched,Ludowici Primary Substation (way/358894868),0.00

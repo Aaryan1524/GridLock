@@ -10,6 +10,7 @@ from typing import Sequence
 
 from .contract import export_contract, validate_payload
 from .georesolution import resolve_projects
+from .georesolution.oracle import HEADER, oracle_check
 from .ingestion.documents import IngestionError, ingest_plans
 from .ingestion.osm import ingest_osm
 from .ingestion.osm.cache import OsmIngestionError
@@ -36,6 +37,7 @@ def build_parser() -> argparse.ArgumentParser:
     ingest_parser.add_argument("source", choices=["plans", "osm"])
     ingest_parser.add_argument("--offline", action="store_true")
     commands.add_parser("resolve", help="resolve projects to public OSM geometry")
+    commands.add_parser("oracle", help="compare resolved endpoints with the sponsor's worked example")
     inspect_parser = commands.add_parser("inspect", help="print one normalized project record")
     inspect_parser.add_argument("project_id")
     inspect_parser.add_argument("--resolved", action="store_true", help="read the geometry-resolved output instead")
@@ -113,6 +115,18 @@ def main(argv: Sequence[str] | None = None) -> int:
             print(f"Configuration error: {error}")
             return 2
         return _inspect(bundle, args.project_id, args.resolved, args.raw_text)
+    if args.command == "oracle":
+        try:
+            bundle = load_settings(args.config)
+            rows = oracle_check(bundle, Path(__file__).resolve().parents[3])
+        except (ConfigError, OSError, ValueError, KeyError) as error:
+            print(f"Oracle check error: {error}")
+            return 2
+        widths = [10, 16, 20, 20, 20, 44, 11]
+        print("  ".join(title.ljust(width) for title, width in zip(HEADER, widths)))
+        for row in rows:
+            print("  ".join(str(value)[:width].ljust(width) for value, width in zip(row.as_list(), widths)))
+        return 0
     if args.command == "resolve":
         try:
             bundle = load_settings(args.config)

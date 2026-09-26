@@ -1,15 +1,20 @@
 operator,count
-Georgia Power,2459
-Duke Energy,700
-Tennessee Valley Authority,526
-Jacksonville Electric Authority,483
-Florida Power & Light,177
+Georgia Power,2590
+Tennessee Valley Authority,805
+Duke Energy,708
+Jacksonville Electric Authority,494
+Florida Power & Light,305
+Alabama Power,268
+Electric Power Board of Chattanooga,171
+PowerSouth Energy Cooperative,131
 Duke Energy Progress,128
-Georgia Transmission Corporation,116
-Knoxville Utilities Board,108
+Georgia Transmission Corporation,117
+Knoxville Utilities Board,110
 Clay Electric Cooperative,79
 Fayetteville Public Works,71
+EPB,68
 Dominion Energy South Carolina,60
+Sequachee Valley Electric Cooperative,57
 City of Tallahassee,45
 Four County EMC,42
 South Carolina Gas & Electric,40
@@ -20,52 +25,63 @@ South River Electric Membership Corporation,26
 Lumbee River EMC,23
 City of Concord,22
 Fayetteville Public Works Commission,20
+TVA,19
 City of Lexington,18
 Lockhart Power,18
+Sand Mountain Electric Cooperative,18
 "Consolidated Nuclear Security, LLC",17
 South Carolina Electric & Gas,16
 Flint Energies,15
 Energy United,14
 Newport Utilities,14
 South Carolina Electric & Gas Company,14
+Fort Payne Improvement Authority,13
 City of Maryville Electric Department,12
 Dominion Energy,12
+Volunteer Energy Cooperative,12
+Cherokee Electric Cooperative,11
 Cleveland Utilities,11
+Dothan Utilities,10
 MEAG,10
 Sevier County Electric System,9
 Thomasville Utilities,9
-Volunteer Energy Cooperative,9
 Randolph EMC,8
 Brunswick EMC,7
+Colonial Pipeline Company,7
 Grady EMC,7
-TVA,7
+Marshall-DeKalb Electric Cooperative,7
 MCEC,6
 Mitchell EMC,6
 Municipal Electric Authority of Georgia,6
+North Georgia EMC,6
 Pee Dee Electric Cooperative,6
 Fort Loudoun Electric Cooperative,5
 Haywood EMC,5
 JEA,5
 Progress Energy Carolinas,5
+Caney Fork Electric Cooperative,4
 Clay Electric Cooperative;JEA,4
+Duck River Electric Membership Corporation,4
 Duke Power,4
 EnergyUnited,4
 Pee Dee Electric Coorperative,4
+Products (SE) Pipe Line Corporation,4
 Santee Cooper,4
 Santee Electric Cooperative,4
 "SR Clay, LLC",4
-Alabama Power,3
+Tennessee Valley Authority;Electric Power Board of Chattanooga,4
+Three Notch EMC,4
 Altamaha EMC,3
 Athens Utilities Board,3
 Berkeley Electric Cooperative,3
-Colonial Pipeline Company,3
 Colquitt EMC,3
 Loudon Utilities Board,3
 Marlboro Electric Coorperative,3
 Nutrien,3
-Products (SE) Pipe Line Corporation,3
 Rockwood Electric Utility,3
+United States Army,3
 University of South Carolina,3
+WestRock,3
 Auria Solutions,2
 Blue Ridge EMC,2
 City of Maryville,2
@@ -78,26 +94,30 @@ Oak Ridge National Laboratory,2
 Pee Dee Electic Coorperative,2
 Satilla EMC,2
 Sweetwater Utilities Board,2
-Three Notch EMC,2
 Tri-County Electric Cooperative,2
+Wiregrass Electric Cooperative,2
 Active Minerals International LLC,1
 AES Corporation,1
 Albany Utilities,1
 "Allora Solar, LLC",1
 Americus Solar LLC,1
+"Anniston Plating & Metal Finishing, Inc.",1
 Appalachian Power Company,1
 Arconic Corporation,1
 "Arvinmeritor, Inc.",1
 Athens Utilites Board,1
 Athens Utility Board,1
+"Bae Systems, Inc.",1
 Baker Furniture,1
 "Blackwater Solar, LLC",1
 Blue Ridge Electric Cooperative,1
 Camp South V to Albion Sub 46 kV,1
+"Carbo Ceramics, Inc.",1
 "Carlex Glass America, LLC",1
 Caroll EMC,1
 Central Electric Power Cooperative,1
 City of Alcoa,1
+Colonial Pipeline,1
 "Columbia Forest Products, Inc.",1
 Crane Resistoflex Company,1
 "Crestwood Midstream Partners, LP",1
@@ -113,8 +133,13 @@ Facebook,1
 Fairfield Electric,1
 FlintEnergies,1
 Fort Loudon Electric Cooperative,1
+Forte Power Systems,1
+Georgia Power;Tennessee Valley Authority,1
 Georgia Transmission,1
 Geprgia Power,1
+"GKN Aerospace, Inc.",1
+Goodyear,1
+Google LLC,1
 GTC Georgia Transmission Corporation,1
 "Hanesbrands, Inc.",1
 Harriman Utility Board,1
@@ -130,22 +155,26 @@ Kimberley-Clark Corp.,1
 Langdale Forest Products Co.,1
 Little Ogmulgee EMC,1
 Lumbee River Substation,1
+M&H Valve,1
 Marietta Power & Georgia Transmission,1
 MEAG Power,1
 Metropolitan Atlanta Rapid Transit Authority,1
+Mohawk Industries,1
 Moody Air Force Base,1
 "New Horizon Electric Cooperative, Inc.",1
-North Georgia EMC,1
 Oglethorpe Power Corporation,1
 Okefenoke Rural Electric Membership Corporation,1
 Piedmont Electric,1
 Pine Gate Renewables,1
-PowerSouth Energy Cooperative,1
+PSEC,1
 PWR,1
+Resolute Forest Products,1
 Santee Electric Coorperative,1
 Savannah Electric and Power Company,1
 SCE&G,1
 "SGL Carbon, LLC",1
+SL Alabama,1
+Smithville Electric System,1
 South River EMC,1
 Southern Power,1
 "SR Arlington, LLC",1
@@ -153,12 +182,17 @@ Southern Power,1
 "SR Perry, LLC",1
 SVEC Suwannee Valley Electric Cooperative,1
 Talquin Electric Cooperative,1
+Tennessee Alloys Corporation,1
+Tennessee Valley Authority;Duck River Electric Membership Corporation,1
 Town of Huntersville,1
 Tri-County EMC,1
+Tyson Foods,1
+Union Foundry Co.,1
+United States Gypsum Company,1
 Valdese Textiles,1
 Valdese Weavers,1
 W.R. Grace & Co.,1
 "Washington County Solar, LLC",1
+"Wellborn Cabinet, Inc.",1
 Western Carolina University Power,1
-WestRock,1
 WestRock CP LLC,1

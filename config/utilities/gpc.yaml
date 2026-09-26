@@ -3,7 +3,32 @@ code: GPC
 display_name: Georgia Power
 color: "#F9A825"
 states: [GA, SC]
-operator_aliases: [Georgia Power]
+# Operator spellings seen in data/cache/osm_operators.csv; Savannah Electric merged into Georgia Power.
+operator_aliases:
+  - Georgia Power
+  - Georgia Power Company
+  - Savannah Electric and Power Company
+interconnections:
+  # Co-owners of Georgia's Integrated Transmission System and Southern Company generation.
+  - operators: [Georgia Transmission Corporation, Georgia Transmission Cooperative, Georgia Transmission,
+                GTC Georgia Transmission Corporation, Municipal Electric Authority of Georgia, MEAG, MEAG Power,
+                Oglethorpe Power Corporation, Southern Power]
+    qualifiers: [GTC, MEAG, OPC]
+    always_allowed: true
+  - operators: [Alabama Power]
+    qualifiers: [APC]
+  - operators: [Florida Power & Light]
+    qualifiers: [FPL]
+  - operators: [Tennessee Valley Authority]
+    qualifiers: [TVA]
+  - operators: [Dominion Energy South Carolina, South Carolina Electric & Gas, South Carolina Electric & Gas Company,
+                South Carolina Gas & Electric, SCE&G]
+    qualifiers: [DESC, SCEG, SCE&G]
+# Georgia plus margins for Alabama Power and South Carolina tie-line endpoints.
+service_area_bbox: [-86.0, 30.25, -80.75, 35.1]
+# The Savannah zone (sponsor SAV, formerly Savannah Electric) around Chatham, Effingham and Bryan counties.
+sponsor_service_areas:
+  SAV: [-81.9, 31.7, -80.75, 32.65]
 included_sponsors: [GPC, SAV]
 sources:
   - id: gpc_irp_ten_year

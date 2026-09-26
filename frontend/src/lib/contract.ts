@@ -15,11 +15,26 @@ export interface Endpoint {
   role?: EndpointRole;
   qualifiers?: Array<string>;
 }
+export interface EndpointMatch {
+  endpoint: string;
+  role: EndpointRole;
+  status: EndpointMatchStatus;
+  featureId?: string | null;
+  featureName?: string | null;
+  operator?: string | null;
+  operatorRelation?: string | null;
+  voltageKv?: Array<number>;
+  nameScore?: number | null;
+  point?: Point | null;
+  notes?: Array<string>;
+}
+export type EndpointMatchStatus = "matched" | "override" | "no_candidate" | "ambiguous" | "vetoed" | "separation_rejected";
 export type EndpointRole = "from" | "to" | "via" | "single" | "unknown";
 export type EndpointStatus = "explicit_pair" | "chain" | "single_site" | "none";
 export interface Evidence {
   level: EvidenceLevel;
   score: number;
+  breakdown?: Record<string, unknown>;
   reasons?: Array<string>;
   warnings?: Array<string>;
 }
@@ -29,6 +44,7 @@ export interface GeometryResolution {
   method: GeometryMethod;
   isApproximation: boolean;
   featureIds?: Array<string>;
+  matches?: Array<EndpointMatch>;
   warnings?: Array<string>;
 }
 export interface Metadata {
