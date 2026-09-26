@@ -13,3 +13,4 @@ data/raw/
 Sperry-Tech-Challenge/
 *.tsbuildinfo
 frontend/public/vendor/
+.next-*/

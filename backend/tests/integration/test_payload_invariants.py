@@ -200,3 +200,12 @@ def test_api_serves_the_payload_read_only(built) -> None:
     assert client.get(f"/api/zones/{first_zone}").json()["zone"]["id"] == first_zone
     assert client.get("/api/zones/NOPE").status_code == 404
     assert client.post("/api/payload").status_code == 405
+
+
+def test_cors_origins_env_override(monkeypatch: pytest.MonkeyPatch) -> None:
+    from gridlock.api.app import cors_origins
+
+    monkeypatch.delenv("GRIDLOCK_API_CORS_ORIGINS", raising=False)
+    assert cors_origins(("http://localhost:3000",)) == ["http://localhost:3000"]
+    monkeypatch.setenv("GRIDLOCK_API_CORS_ORIGINS", "http://localhost:3020, http://example.test ")
+    assert cors_origins(("http://localhost:3000",)) == ["http://localhost:3020", "http://example.test"]

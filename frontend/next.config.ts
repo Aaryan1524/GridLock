@@ -19,6 +19,8 @@ const publicEnv = Object.fromEntries(
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   env: publicEnv,
+  // Lets a second build or server run beside an existing one without sharing .next (e.g. verification).
+  distDir: process.env.NEXT_DIST_DIR || ".next",
 };
 
 export default nextConfig;
