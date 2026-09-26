@@ -6,6 +6,13 @@
 .map {
   position: absolute;
   inset: 0;
+  /* Hidden until the first draw is complete, then faded in whole (see whenFirstDrawn). */
+  opacity: 0;
+  transition: opacity 500ms var(--ease);
+}
+
+.map[data-ready="true"] {
+  opacity: 1;
 }
 
 .loading {

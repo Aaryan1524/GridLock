@@ -15,7 +15,7 @@ const ITEMS: { view: PlannerView; label: string; count: (payload: GridlockPayloa
 
 export function PlannerNav({ payload, view, onChange }: { payload: GridlockPayload; view: PlannerView; onChange: (view: PlannerView) => void }) {
   return (
-    <nav className={styles.plannerNav} aria-label="Planner sections">
+    <nav className={styles.plannerNav} aria-label="Planner sections" data-gust="0">
       <ol>
         {ITEMS.map((item, index) => {
           const count = item.count(payload);

@@ -18,7 +18,7 @@ export function ZoneRail({ payload, selectedId, onSelect }: Props) {
   const { metadata, zones } = payload;
   const projects = projectIndex(payload);
   return (
-    <nav className={styles.rail} aria-label="Coordination zones">
+    <nav className={styles.rail} aria-label="Coordination zones" data-gust="1">
       <div className={styles.railHead}>
         <p className="eyebrow">Ranked by opportunity priority</p>
         <h2 className={`display ${styles.railTitle}`}>

@@ -93,7 +93,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
 
   return (
     <div className={styles.page}>
-      <header className={styles.pageHeader}>
+      <header className={styles.pageHeader} data-gust="1">
         <p className="eyebrow">Data quality</p>
         <h2 className={`display ${styles.pageTitle}`}>GridLock preserves uncertainty instead of guessing.</h2>
         <p className={styles.pageLede}>
@@ -102,7 +102,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
         </p>
       </header>
 
-      <section className={styles.qualitySection} aria-labelledby="coverage-heading">
+      <section className={styles.qualitySection} aria-labelledby="coverage-heading" data-gust="2">
         <div className={styles.qualityHead}>
           <h3 id="coverage-heading" className="eyebrow">
             Spatial coverage
@@ -154,7 +154,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
         </div>
       </section>
 
-      <section className={styles.qualitySection} aria-labelledby="geometry-heading">
+      <section className={styles.qualitySection} aria-labelledby="geometry-heading" data-gust="3">
         <div className={styles.qualityHead}>
           <h3 id="geometry-heading" className="eyebrow">
             Geometry method
@@ -166,7 +166,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
         </div>
       </section>
 
-      <section className={styles.qualitySection} aria-labelledby="evidence-heading">
+      <section className={styles.qualitySection} aria-labelledby="evidence-heading" data-gust="4">
         <div className={styles.qualityHead}>
           <h3 id="evidence-heading" className="eyebrow">
             Evidence Quality
@@ -178,7 +178,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
         </div>
       </section>
 
-      <section className={styles.qualitySection} aria-labelledby="endpoints-heading">
+      <section className={styles.qualitySection} aria-labelledby="endpoints-heading" data-gust="5">
         <div className={styles.qualityHead}>
           <h3 id="endpoints-heading" className="eyebrow">
             Endpoint matching
@@ -193,7 +193,7 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
         </div>
       </section>
 
-      <section className={styles.qualitySection} aria-labelledby="sources-heading">
+      <section className={styles.qualitySection} aria-labelledby="sources-heading" data-gust="6">
         <div className={styles.qualityHead}>
           <h3 id="sources-heading" className="eyebrow">
             Source provenance

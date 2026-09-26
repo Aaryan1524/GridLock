@@ -18,7 +18,10 @@ const FLOW = ["Public plans", "Verified geography", "Overlap engine", "Coordinat
 function Stat({ value, caption }: { value: string; caption: string }) {
   return (
     <div className={styles.stat}>
-      <div className={`display ${styles.statValue}`}>{value}</div>
+      {/* Keyed by value so the figure sweeps in again when the real number replaces the dash. */}
+      <div key={value} className={`display ${styles.statValue}`} data-gust="4">
+        {value}
+      </div>
       <div className="eyebrow">{caption}</div>
     </div>
   );
@@ -86,17 +89,19 @@ export function Landing() {
       <SiteNav />
 
       <section className={`frame guides ${styles.hero}`}>
-        <p className="eyebrow">Cross-utility transmission intelligence</p>
-        <h1 className={`display ${styles.heroTitle}`}>
+        <p className="eyebrow" data-gust="0">
+          Cross-utility transmission intelligence
+        </p>
+        <h1 className={`display ${styles.heroTitle}`} data-gust="1">
           Infrastructure plans,
           <br />
           <em>finally seen together.</em>
         </h1>
-        <p className={styles.heroCopy}>
+        <p className={styles.heroCopy} data-gust="2">
           Utilities plan transmission projects years in advance, often across separate planning systems. GridLock compares those
           public plans, verifies where projects actually sit, and surfaces the coordination opportunities worth acting on.
         </p>
-        <Link className="button" href="/planner">
+        <Link className="button" href="/planner" data-gust="3">
           Open coordination planner <span aria-hidden>→</span>
         </Link>
       </section>

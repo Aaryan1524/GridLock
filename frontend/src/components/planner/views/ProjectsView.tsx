@@ -52,7 +52,7 @@ export function ProjectsView({ payload, onInspect, onOpenZone }: Props) {
 
   return (
     <div className={styles.page}>
-      <header className={styles.pageHeader}>
+      <header className={styles.pageHeader} data-gust="1">
         <p className="eyebrow">Projects</p>
         <h2 className={`display ${styles.pageTitle}`}>Every project analyzed</h2>
         <p className={styles.pageLede}>
@@ -61,7 +61,7 @@ export function ProjectsView({ payload, onInspect, onOpenZone }: Props) {
         </p>
       </header>
 
-      <div className={styles.filters} role="search">
+      <div className={styles.filters} role="search" data-gust="2">
         <input
           type="search"
           className={styles.search}
@@ -123,7 +123,7 @@ export function ProjectsView({ payload, onInspect, onOpenZone }: Props) {
         )}
       </div>
 
-      <div className={styles.tableWrap}>
+      <div className={styles.tableWrap} data-gust="3">
         <table className={styles.table}>
           <thead>
             <tr>
