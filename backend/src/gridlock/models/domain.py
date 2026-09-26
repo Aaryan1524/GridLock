@@ -230,6 +230,20 @@ class DateRange(ContractModel):
     end: date | None = None
 
 
+class ZoneHeadline(ContractModel):
+    """Card figures, all from the zone's single top relationship so they describe one real pair."""
+
+    relationship_id: str = Field(min_length=1)
+    project_a: str = Field(min_length=1)
+    project_b: str = Field(min_length=1)
+    distance_km: float = Field(ge=0)
+    spatial_tier: SpatialTier
+    timeline_type: TimelineType
+    gap_days: int | None = Field(default=None, ge=0)
+    timeline_relevance: TimelineRelevance
+    opportunity_priority: Priority
+
+
 class Zone(ContractModel):
     """A regional coordination situation: a guarded group of related cross-utility relationships."""
 
@@ -240,10 +254,10 @@ class Zone(ContractModel):
     relationship_ids: list[str] = Field(default_factory=list)
     # The relationship the zone is ranked by; its closest points name the zone.
     top_relationship_id: str | None = None
+    headline: ZoneHeadline | None = None
     utilities: list[UtilityCode] = Field(default_factory=list)
+    # Closest approach across all of the zone's relationships (not necessarily the headline pair).
     closest_distance_km: float = Field(ge=0)
-    # Smallest date gap among the zone's relationships.
-    best_gap_days: int | None = Field(default=None, ge=0)
     in_service_range: DateRange = Field(default_factory=DateRange)
     geographic_span_km: float | None = Field(default=None, ge=0)
     timeline_span_days: int | None = Field(default=None, ge=0)

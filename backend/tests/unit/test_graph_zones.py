@@ -140,9 +140,10 @@ def test_zone_names_are_unique() -> None:
 # --- Priority and ranking ----------------------------------------------------------------------
 
 
-def _relationship(tier: SpatialTier, relevance: TimelineRelevance):
+def _relationship(tier: SpatialTier, relevance: TimelineRelevance, gap_days: int | None = 0):
     [relationship], _ = find_relationships([site("DESC-A", "DESC", 0), site("GPC-B", "GPC", 5)], BUNDLE)
-    return relationship.model_copy(update={"spatial_tier": tier, "timeline": relationship.timeline.model_copy(update={"relevance": relevance})})
+    timeline = relationship.timeline.model_copy(update={"relevance": relevance, "gap_days": gap_days})
+    return relationship.model_copy(update={"spatial_tier": tier, "timeline": timeline})
 
 
 @pytest.mark.parametrize(
@@ -158,6 +159,32 @@ def _relationship(tier: SpatialTier, relevance: TimelineRelevance):
 )
 def test_priority_rules(tier: SpatialTier, relevance: TimelineRelevance, expected: Priority) -> None:
     assert opportunity_priority(_relationship(tier, relevance), BUNDLE.root.priority) is expected
+
+
+@pytest.mark.parametrize(
+    ("gap_days", "expected"),
+    [(730, Priority.HIGH), (731, Priority.MEDIUM), (3074, Priority.MEDIUM), (None, Priority.HIGH)],
+)
+def test_untimely_crossings_drop_to_medium_but_stay_crossings(gap_days: int | None, expected: Priority) -> None:
+    relationship = _relationship(SpatialTier.CROSSING, TimelineRelevance.WEAK, gap_days)
+
+    assert opportunity_priority(relationship, BUNDLE.root.priority) is expected
+    assert relationship.spatial_tier is SpatialTier.CROSSING
+
+
+def test_timely_zone_outranks_a_zone_led_by_an_untimely_crossing() -> None:
+    old = date(2024, 1, 1)
+    touching_a = site("DESC-A", "DESC", 0).model_copy(update={"planned_in_service_date": old})
+    touching_b = site("GPC-B", "GPC", 0).model_copy(update={"planned_in_service_date": date(2033, 1, 1)})
+    timely_c = site("DESC-C", "DESC", 200)
+    timely_d = site("GPC-D", "GPC", 205)
+    projects = [touching_a, touching_b, timely_c, timely_d]
+
+    payload = assemble_payload(BUNDLE, REPOSITORY_ROOT, projects, find_relationships(projects, BUNDLE)[0])
+
+    first, second = payload.zones
+    assert first.headline.spatial_tier is SpatialTier.SITE_LOGISTICS and first.opportunity_priority is Priority.HIGH
+    assert second.headline.spatial_tier is SpatialTier.CROSSING and second.opportunity_priority is Priority.MEDIUM
 
 
 def test_low_evidence_crossing_still_ranks_first_with_a_warning() -> None:

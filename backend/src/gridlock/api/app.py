@@ -44,7 +44,7 @@ def create_app(bundle: ConfigBundle, repository_root: Path = REPOSITORY_ROOT) ->
 
     @app.get("/api/health")
     def health() -> dict[str, Any]:
-        return {"status": "ok", "payloadAvailable": payload.path.is_file()}
+        return {"service": api.service_name, "status": "ok", "payloadAvailable": payload.path.is_file()}
 
     @app.get("/api/payload")
     def full_payload() -> dict[str, Any]:

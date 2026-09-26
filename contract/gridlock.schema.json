@@ -1041,19 +1041,6 @@
     "Zone": {
       "description": "A regional coordination situation: a guarded group of related cross-utility relationships.",
       "properties": {
-        "bestGapDays": {
-          "anyOf": [
-            {
-              "minimum": 0,
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Bestgapdays"
-        },
         "bounds": {
           "$ref": "#/$defs/Bounds"
         },
@@ -1084,6 +1071,17 @@
           ],
           "default": null,
           "title": "Geographicspankm"
+        },
+        "headline": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ZoneHeadline"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
         },
         "id": {
           "minLength": 1,
@@ -1179,6 +1177,68 @@
         "bounds"
       ],
       "title": "Zone",
+      "type": "object"
+    },
+    "ZoneHeadline": {
+      "description": "Card figures, all from the zone's single top relationship so they describe one real pair.",
+      "properties": {
+        "distanceKm": {
+          "minimum": 0,
+          "title": "Distancekm",
+          "type": "number"
+        },
+        "gapDays": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Gapdays"
+        },
+        "opportunityPriority": {
+          "$ref": "#/$defs/Priority"
+        },
+        "projectA": {
+          "minLength": 1,
+          "title": "Projecta",
+          "type": "string"
+        },
+        "projectB": {
+          "minLength": 1,
+          "title": "Projectb",
+          "type": "string"
+        },
+        "relationshipId": {
+          "minLength": 1,
+          "title": "Relationshipid",
+          "type": "string"
+        },
+        "spatialTier": {
+          "$ref": "#/$defs/SpatialTier"
+        },
+        "timelineRelevance": {
+          "$ref": "#/$defs/TimelineRelevance"
+        },
+        "timelineType": {
+          "$ref": "#/$defs/TimelineType"
+        }
+      },
+      "required": [
+        "relationshipId",
+        "projectA",
+        "projectB",
+        "distanceKm",
+        "spatialTier",
+        "timelineType",
+        "timelineRelevance",
+        "opportunityPriority"
+      ],
+      "title": "ZoneHeadline",
       "type": "object"
     }
   },

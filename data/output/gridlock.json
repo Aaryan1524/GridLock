@@ -19270,6 +19270,59 @@
   ],
   "relationships": [
     {
+      "id": "REL-DESC-06367-D-G-GPC-20277",
+      "projectA": "DESC-06367-D-G",
+      "projectB": "GPC-20277",
+      "distanceKm": 4.89,
+      "closestPoints": [
+        {
+          "lat": 32.3606993,
+          "lon": -81.1241558
+        },
+        {
+          "lat": 32.3521285,
+          "lon": -81.1751191
+        }
+      ],
+      "spatialTier": "SITE_LOGISTICS",
+      "geometryMethods": [
+        "verified_endpoints_straight_line",
+        "verified_single_endpoint"
+      ],
+      "approximate": true,
+      "timeline": {
+        "type": "IN_SERVICE_GAP",
+        "gapDays": 152,
+        "overlapDays": null,
+        "relevance": "MEANINGFUL",
+        "isdWithinFiledSpan": true
+      },
+      "opportunityPriority": "HIGH",
+      "rank": 1,
+      "coordinationPlaybook": [
+        "staging_yards",
+        "deliveries",
+        "site_logistics"
+      ],
+      "evidence": {
+        "level": "MEDIUM",
+        "score": 75,
+        "breakdown": {
+          "project_a": 75,
+          "project_b": 80
+        },
+        "reasons": [
+          "✓ Closest approach 4.89 km between public geometries",
+          "DESC-06367-D-G: MEDIUM evidence (75)",
+          "GPC-20277: HIGH evidence (80)"
+        ],
+        "warnings": [
+          "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
+          "△ GPC-20277 geometry is approximate (verified single endpoint)"
+        ]
+      }
+    },
+    {
       "id": "REL-DESC-6810-A-GPC-20793",
       "projectA": "DESC-6810-A",
       "projectB": "GPC-20793",
@@ -19297,8 +19350,8 @@
         "relevance": "WEAK",
         "isdWithinFiledSpan": false
       },
-      "opportunityPriority": "HIGH",
-      "rank": 1,
+      "opportunityPriority": "MEDIUM",
+      "rank": 2,
       "coordinationPlaybook": [
         "crossing_structures",
         "outage_sequencing"
@@ -19350,8 +19403,8 @@
         "relevance": "WEAK",
         "isdWithinFiledSpan": false
       },
-      "opportunityPriority": "HIGH",
-      "rank": 2,
+      "opportunityPriority": "MEDIUM",
+      "rank": 3,
       "coordinationPlaybook": [
         "crossing_structures",
         "outage_sequencing"
@@ -19372,59 +19425,6 @@
         "warnings": [
           "△ DESC-6810-A geometry is approximate (verified single endpoint)",
           "△ GPC-20794 geometry is approximate (verified endpoints straight line)"
-        ]
-      }
-    },
-    {
-      "id": "REL-DESC-06367-D-G-GPC-20277",
-      "projectA": "DESC-06367-D-G",
-      "projectB": "GPC-20277",
-      "distanceKm": 4.89,
-      "closestPoints": [
-        {
-          "lat": 32.3606993,
-          "lon": -81.1241558
-        },
-        {
-          "lat": 32.3521285,
-          "lon": -81.1751191
-        }
-      ],
-      "spatialTier": "SITE_LOGISTICS",
-      "geometryMethods": [
-        "verified_endpoints_straight_line",
-        "verified_single_endpoint"
-      ],
-      "approximate": true,
-      "timeline": {
-        "type": "IN_SERVICE_GAP",
-        "gapDays": 152,
-        "overlapDays": null,
-        "relevance": "MEANINGFUL",
-        "isdWithinFiledSpan": true
-      },
-      "opportunityPriority": "HIGH",
-      "rank": 3,
-      "coordinationPlaybook": [
-        "staging_yards",
-        "deliveries",
-        "site_logistics"
-      ],
-      "evidence": {
-        "level": "MEDIUM",
-        "score": 75,
-        "breakdown": {
-          "project_a": 75,
-          "project_b": 80
-        },
-        "reasons": [
-          "✓ Closest approach 4.89 km between public geometries",
-          "DESC-06367-D-G: MEDIUM evidence (75)",
-          "GPC-20277: HIGH evidence (80)"
-        ],
-        "warnings": [
-          "△ DESC-06367-D-G geometry is approximate (verified endpoints straight line)",
-          "△ GPC-20277 geometry is approximate (verified single endpoint)"
         ]
       }
     },
@@ -22167,69 +22167,6 @@
     {
       "id": "ZONE-01",
       "rank": 1,
-      "name": "Thurmond",
-      "projectIds": [
-        "DESC-6809-E",
-        "DESC-6809-G",
-        "DESC-6810-A",
-        "DESC-6810-O",
-        "DESC-6852",
-        "GPC-20793",
-        "GPC-20794",
-        "GPC-21116"
-      ],
-      "relationshipIds": [
-        "REL-DESC-6810-A-GPC-20793",
-        "REL-DESC-6810-A-GPC-20794",
-        "REL-DESC-6810-O-GPC-21116",
-        "REL-DESC-6852-GPC-21116",
-        "REL-DESC-6809-G-GPC-21116",
-        "REL-DESC-6809-E-GPC-21116",
-        "REL-DESC-6810-O-GPC-20793",
-        "REL-DESC-6810-O-GPC-20794",
-        "REL-DESC-6852-GPC-20793",
-        "REL-DESC-6852-GPC-20794",
-        "REL-DESC-6809-G-GPC-20793",
-        "REL-DESC-6809-G-GPC-20794",
-        "REL-DESC-6809-E-GPC-20793",
-        "REL-DESC-6809-E-GPC-20794"
-      ],
-      "topRelationshipId": "REL-DESC-6810-A-GPC-20793",
-      "utilities": [
-        "DESC",
-        "GPC"
-      ],
-      "closestDistanceKm": 0.0,
-      "bestGapDays": 883,
-      "inServiceRange": {
-        "start": "2024-12-31",
-        "end": "2033-06-01"
-      },
-      "geographicSpanKm": 50.82,
-      "timelineSpanDays": 3074,
-      "opportunityPriority": "HIGH",
-      "evidenceLevel": "MEDIUM",
-      "coordinationThemes": [
-        "crossing_structures",
-        "outage_sequencing",
-        "crews",
-        "contractors",
-        "heavy_equipment"
-      ],
-      "bounds": {
-        "west": -82.19595,
-        "south": 33.3197655,
-        "east": -81.6693419,
-        "north": 33.6601141
-      },
-      "warnings": [
-        "In-service dates span 3074 days (2024-12-31 to 2033-06-01), beyond the 730-day guideline; coordinate in stages",
-        "14 of 14 relationships use approximate geometry"
-      ]
-    },
-    {
-      "id": "ZONE-02",
-      "rank": 2,
       "name": "Jasper – McIntosh",
       "projectIds": [
         "DESC-0139-M-N",
@@ -22283,12 +22220,22 @@
         "REL-DESC-0139-M-N-GPC-20796"
       ],
       "topRelationshipId": "REL-DESC-06367-D-G-GPC-20277",
+      "headline": {
+        "relationshipId": "REL-DESC-06367-D-G-GPC-20277",
+        "projectA": "DESC-06367-D-G",
+        "projectB": "GPC-20277",
+        "distanceKm": 4.89,
+        "spatialTier": "SITE_LOGISTICS",
+        "timelineType": "IN_SERVICE_GAP",
+        "gapDays": 152,
+        "timelineRelevance": "MEANINGFUL",
+        "opportunityPriority": "HIGH"
+      },
       "utilities": [
         "DESC",
         "GPC"
       ],
       "closestDistanceKm": 4.89,
-      "bestGapDays": 0,
       "inServiceRange": {
         "start": "2024-12-31",
         "end": "2033-06-01"
@@ -22317,6 +22264,79 @@
       ]
     },
     {
+      "id": "ZONE-02",
+      "rank": 2,
+      "name": "Thurmond",
+      "projectIds": [
+        "DESC-6809-E",
+        "DESC-6809-G",
+        "DESC-6810-A",
+        "DESC-6810-O",
+        "DESC-6852",
+        "GPC-20793",
+        "GPC-20794",
+        "GPC-21116"
+      ],
+      "relationshipIds": [
+        "REL-DESC-6810-A-GPC-20793",
+        "REL-DESC-6810-A-GPC-20794",
+        "REL-DESC-6810-O-GPC-21116",
+        "REL-DESC-6852-GPC-21116",
+        "REL-DESC-6809-G-GPC-21116",
+        "REL-DESC-6809-E-GPC-21116",
+        "REL-DESC-6810-O-GPC-20793",
+        "REL-DESC-6810-O-GPC-20794",
+        "REL-DESC-6852-GPC-20793",
+        "REL-DESC-6852-GPC-20794",
+        "REL-DESC-6809-G-GPC-20793",
+        "REL-DESC-6809-G-GPC-20794",
+        "REL-DESC-6809-E-GPC-20793",
+        "REL-DESC-6809-E-GPC-20794"
+      ],
+      "topRelationshipId": "REL-DESC-6810-A-GPC-20793",
+      "headline": {
+        "relationshipId": "REL-DESC-6810-A-GPC-20793",
+        "projectA": "DESC-6810-A",
+        "projectB": "GPC-20793",
+        "distanceKm": 0.0,
+        "spatialTier": "CROSSING",
+        "timelineType": "IN_SERVICE_GAP",
+        "gapDays": 3074,
+        "timelineRelevance": "WEAK",
+        "opportunityPriority": "MEDIUM"
+      },
+      "utilities": [
+        "DESC",
+        "GPC"
+      ],
+      "closestDistanceKm": 0.0,
+      "inServiceRange": {
+        "start": "2024-12-31",
+        "end": "2033-06-01"
+      },
+      "geographicSpanKm": 50.82,
+      "timelineSpanDays": 3074,
+      "opportunityPriority": "MEDIUM",
+      "evidenceLevel": "MEDIUM",
+      "coordinationThemes": [
+        "crossing_structures",
+        "outage_sequencing",
+        "crews",
+        "contractors",
+        "heavy_equipment"
+      ],
+      "bounds": {
+        "west": -82.19595,
+        "south": 33.3197655,
+        "east": -81.6693419,
+        "north": 33.6601141
+      },
+      "warnings": [
+        "In-service dates span 3074 days (2024-12-31 to 2033-06-01), beyond the 730-day guideline; coordinate in stages",
+        "14 of 14 relationships use approximate geometry"
+      ]
+    },
+    {
       "id": "ZONE-03",
       "rank": 3,
       "name": "Urquhart – Evans Primary",
@@ -22338,12 +22358,22 @@
         "REL-DESC-6810-A-GPC-17993"
       ],
       "topRelationshipId": "REL-DESC-6810-O-GPC-17993",
+      "headline": {
+        "relationshipId": "REL-DESC-6810-O-GPC-17993",
+        "projectA": "DESC-6810-O",
+        "projectB": "GPC-17993",
+        "distanceKm": 26.905,
+        "spatialTier": "CREWS_EQUIPMENT",
+        "timelineType": "IN_SERVICE_GAP",
+        "gapDays": 2557,
+        "timelineRelevance": "WEAK",
+        "opportunityPriority": "LOW"
+      },
       "utilities": [
         "DESC",
         "GPC"
       ],
       "closestDistanceKm": 10.893,
-      "bestGapDays": 2557,
       "inServiceRange": {
         "start": "2024-12-31",
         "end": "2034-12-31"
@@ -22380,12 +22410,22 @@
         "REL-DESC-6852-GPC-17993"
       ],
       "topRelationshipId": "REL-DESC-6852-GPC-17993",
+      "headline": {
+        "relationshipId": "REL-DESC-6852-GPC-17993",
+        "projectA": "DESC-6852",
+        "projectB": "GPC-17993",
+        "distanceKm": 26.905,
+        "spatialTier": "CREWS_EQUIPMENT",
+        "timelineType": "IN_SERVICE_GAP",
+        "gapDays": 3063,
+        "timelineRelevance": "WEAK",
+        "opportunityPriority": "LOW"
+      },
       "utilities": [
         "DESC",
         "GPC"
       ],
       "closestDistanceKm": 26.905,
-      "bestGapDays": 3063,
       "inServiceRange": {
         "start": "2026-08-12",
         "end": "2034-12-31"

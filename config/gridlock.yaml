@@ -183,9 +183,13 @@ zones:
   name_strip_words: [Substation, Switching Station, Switchyard]
   name_separator: " – "
 # Handoff section 15: spatial tier first, timeline relevance second; evidence never changes priority.
+# Tiers are never changed here. A crossing or shared corridor whose dates are more than max_gap_days
+# apart is MEDIUM, so it cannot automatically outrank a timely zone (decided 2026-09-26).
+# Unknown dates still pass, so a critical crossing is never hidden for lack of a date.
 priority:
   rules:
-    - {priority: HIGH, tiers: [CROSSING, SHARED_CORRIDOR]}
+    - {priority: HIGH, tiers: [CROSSING, SHARED_CORRIDOR], max_gap_days: 730}
+    - {priority: MEDIUM, tiers: [CROSSING, SHARED_CORRIDOR]}
     - {priority: HIGH, tiers: [SITE_LOGISTICS], relevance: [OVERLAPPING, STRONG, MEANINGFUL]}
     - {priority: MEDIUM, tiers: [SITE_LOGISTICS]}
     - {priority: MEDIUM, tiers: [CREWS_EQUIPMENT], relevance: [OVERLAPPING, STRONG]}
@@ -219,8 +223,9 @@ labels:
     approximate_area_centroid: Approximate area
     unresolved: Not located
 api:
+  service_name: gridlock
   host: 127.0.0.1
-  port: 8000
+  port: 8010
   cors_origins: [http://localhost:3000]
   payload_file: gridlock.json
 # The sponsor's Projects_Overlaps.xlsx (in the raw folder): a sanity check only, never pipeline input.

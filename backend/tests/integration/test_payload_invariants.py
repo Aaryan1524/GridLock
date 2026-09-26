@@ -14,6 +14,7 @@ from gridlock.models.domain import Payload
 from gridlock.overlap.classify import spatial_tier
 from gridlock.overlap.geometry import Projector, measure
 from gridlock.pipeline import build_payload
+from gridlock.ranking import opportunity_priority
 from gridlock.settings.loader import load_settings
 
 
@@ -117,10 +118,34 @@ def test_i8_edges_join_different_utilities(payload: Payload) -> None:
         assert utilities[relationship.project_a] != utilities[relationship.project_b]
 
 
-def test_i9_evidence_never_lowers_a_crossing(payload: Payload) -> None:
+def test_i9_evidence_never_changes_tier_or_priority(payload: Payload) -> None:
     for relationship in payload.relationships:
+        assert relationship.spatial_tier is spatial_tier(relationship.distance_km, relationship.distance_km == 0, BUNDLE.root.thresholds_km)
+        assert relationship.opportunity_priority is opportunity_priority(relationship, BUNDLE.root.priority)
         if relationship.spatial_tier.value == "CROSSING":
-            assert relationship.opportunity_priority.value == "HIGH"
+            gap = relationship.timeline.gap_days
+            assert relationship.opportunity_priority.value == ("HIGH" if gap is None or gap <= 730 else "MEDIUM")
+
+
+def test_zone_headline_figures_all_come_from_the_top_relationship(payload: Payload) -> None:
+    relationships = {relationship.id: relationship for relationship in payload.relationships}
+    for zone in payload.zones:
+        top = relationships[zone.top_relationship_id]
+        headline = zone.headline
+        assert headline.relationship_id == top.id
+        assert (headline.project_a, headline.project_b) == (top.project_a, top.project_b)
+        assert (headline.distance_km, headline.spatial_tier) == (top.distance_km, top.spatial_tier)
+        assert (headline.gap_days, headline.timeline_type, headline.timeline_relevance) == (top.timeline.gap_days, top.timeline.type, top.timeline.relevance)
+        assert headline.opportunity_priority is top.opportunity_priority
+        assert top.id == min(zone.relationship_ids, key=lambda rid: relationships[rid].rank)
+
+
+def test_savannah_leads_and_thurmond_stays_a_crossing(payload: Payload) -> None:
+    first, second = payload.zones[0], payload.zones[1]
+    assert first.headline.relationship_id == "REL-DESC-06367-D-G-GPC-20277"
+    assert first.opportunity_priority.value == "HIGH"
+    assert second.headline.spatial_tier.value == "CROSSING" and second.headline.distance_km == 0
+    assert second.opportunity_priority.value == "MEDIUM"
 
 
 def test_i10_approximations_are_disclosed(payload: Payload) -> None:
@@ -157,7 +182,7 @@ def test_api_serves_the_payload_read_only(built) -> None:
     (root / BUNDLE.root.paths.output_dir / path.name).write_bytes(path.read_bytes())
     client = TestClient(create_app(bundle, root))
 
-    assert client.get("/api/health").json() == {"status": "ok", "payloadAvailable": True}
+    assert client.get("/api/health").json() == {"service": BUNDLE.root.api.service_name, "status": "ok", "payloadAvailable": True}
     assert client.get("/api/payload").json() == json.loads(path.read_text(encoding="utf-8"))
     first_zone = json.loads(path.read_text(encoding="utf-8"))["zones"][0]["id"]
     assert client.get(f"/api/zones/{first_zone}").json()["zone"]["id"] == first_zone

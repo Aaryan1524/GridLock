@@ -150,9 +150,9 @@ export interface Zone {
   projectIds?: Array<string>;
   relationshipIds?: Array<string>;
   topRelationshipId?: string | null;
+  headline?: ZoneHeadline | null;
   utilities?: Array<string>;
   closestDistanceKm: number;
-  bestGapDays?: number | null;
   inServiceRange?: DateRange;
   geographicSpanKm?: number | null;
   timelineSpanDays?: number | null;
@@ -161,6 +161,17 @@ export interface Zone {
   coordinationThemes?: Array<string>;
   bounds: Bounds;
   warnings?: Array<string>;
+}
+export interface ZoneHeadline {
+  relationshipId: string;
+  projectA: string;
+  projectB: string;
+  distanceKm: number;
+  spatialTier: SpatialTier;
+  timelineType: TimelineType;
+  gapDays?: number | null;
+  timelineRelevance: TimelineRelevance;
+  opportunityPriority: Priority;
 }
 export interface Payload {
   metadata: Metadata;

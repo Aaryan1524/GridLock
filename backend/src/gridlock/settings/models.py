@@ -248,6 +248,8 @@ class PriorityRule(BaseModel):
     tiers: tuple[SpatialTier, ...] = Field(min_length=1)
     # Empty means any timeline relevance.
     relevance: tuple[TimelineRelevance, ...] = ()
+    # Matches only when the date gap is at most this many days; an unknown gap still matches.
+    max_gap_days: int | None = Field(default=None, ge=0)
 
 
 class PriorityConfig(BaseModel):
@@ -256,6 +258,8 @@ class PriorityConfig(BaseModel):
 
 
 class ApiConfig(BaseModel):
+    # Returned by /api/health so a client can tell it reached GridLock and not another local server.
+    service_name: str = Field(min_length=1)
     host: str
     port: int = Field(gt=0, lt=65536)
     cors_origins: tuple[str, ...] = ()

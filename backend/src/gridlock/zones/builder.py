@@ -24,8 +24,9 @@ from gridlock.models.domain import (
     Project,
     Relationship,
     Zone,
+    ZoneHeadline,
 )
-from gridlock.ranking import PRIORITY_ORDER, relationship_key
+from gridlock.ranking import PRIORITY_ORDER, priority_key, relationship_key
 from gridlock.settings.loader import ConfigBundle
 from gridlock.settings.models import ZonesConfig
 
@@ -132,7 +133,8 @@ def _name_candidates(top: Relationship, projects: dict[str, Project], config: Zo
 def _describe(group: _Group, projects: dict[str, Project], bundle: ConfigBundle, decimals: int) -> Zone:
     config = bundle.root.zones
     members = [projects[project_id] for project_id in sorted(group.project_ids)]
-    relationships = sorted(group.relationships, key=relationship_key)
+    # Membership is geography-first; presentation (the top relationship) is priority-first.
+    relationships = sorted(group.relationships, key=priority_key)
     top = relationships[0]
     dates = in_service_range(members)
     span_days = _timeline_span(dates)
@@ -157,7 +159,6 @@ def _describe(group: _Group, projects: dict[str, Project], bundle: ConfigBundle,
                 themes += [theme for theme in relationship.coordination_playbook if theme not in themes]
     utility_order = [utility.code for utility in bundle.utilities]
     points = [point for member in members for point in _coordinates(member)]
-    gaps = [relationship.timeline.gap_days for relationship in relationships if relationship.timeline.gap_days is not None]
     return Zone(
         # Provisional; build_zones renumbers zones in rank order.
         id=f"{config.id_prefix}-{top.id}",
@@ -165,9 +166,19 @@ def _describe(group: _Group, projects: dict[str, Project], bundle: ConfigBundle,
         project_ids=[member.id for member in members],
         relationship_ids=[relationship.id for relationship in relationships],
         top_relationship_id=top.id,
+        headline=ZoneHeadline(
+            relationship_id=top.id,
+            project_a=top.project_a,
+            project_b=top.project_b,
+            distance_km=top.distance_km,
+            spatial_tier=top.spatial_tier,
+            timeline_type=top.timeline.type,
+            gap_days=top.timeline.gap_days,
+            timeline_relevance=top.timeline.relevance,
+            opportunity_priority=top.opportunity_priority,
+        ),
         utilities=sorted({member.utility for member in members}, key=utility_order.index),
         closest_distance_km=min(relationship.distance_km for relationship in relationships),
-        best_gap_days=min(gaps) if gaps else None,
         in_service_range=dates,
         geographic_span_km=span_km,
         timeline_span_days=span_days,
@@ -195,7 +206,7 @@ def build_zones(graph: nx.Graph, projects: list[Project], bundle: ConfigBundle) 
 
     def zone_key(zone: Zone) -> tuple:
         top = ranked_by_id[zone.top_relationship_id]
-        return (PRIORITY_ORDER[zone.opportunity_priority], relationship_key(top), -len(zone.relationship_ids), zone.top_relationship_id)
+        return (PRIORITY_ORDER[zone.opportunity_priority], priority_key(top), -len(zone.relationship_ids), zone.top_relationship_id)
 
     ordered = sorted(zones, key=zone_key)
     prefix = bundle.root.zones.id_prefix
