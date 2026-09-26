@@ -15,6 +15,9 @@ type MapLibre = typeof import("maplibre-gl");
 const PROJECTS = "ov-projects";
 const ZONES = "ov-zones";
 const CHIP_GAP = 4;
+// Room above the zones for the basemap badge and for zone labels stacked on shared edges.
+const BADGE_ROOM = 56;
+const CHIP_ROOM = 30;
 // Priority tones reuse the design tokens that style the priority tags.
 const PRIORITY_TOKEN: Record<string, string> = { HIGH: "--accent", MEDIUM: "--amber", LOW: "--neutral" };
 
@@ -159,7 +162,11 @@ export function OverviewMap({ payload, selectedId, onSelect }: Props) {
         [Math.min(...zones.map((zone) => zone.bounds.west)), Math.min(...zones.map((zone) => zone.bounds.south))],
         [Math.max(...zones.map((zone) => zone.bounds.east)), Math.max(...zones.map((zone) => zone.bounds.north))],
       ],
-      { padding: { top: 80, bottom: 60, left: 60, right: 60 }, duration: 0, maxZoom: 9 },
+      {
+        padding: { top: Math.min(BADGE_ROOM + zones.length * CHIP_ROOM, map.getContainer().clientHeight * 0.4), bottom: 60, left: 60, right: 60 },
+        duration: 0,
+        maxZoom: 9,
+      },
     );
   }
 

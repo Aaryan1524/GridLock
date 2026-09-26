@@ -308,6 +308,20 @@
 }
 
 @media (max-width: 560px) {
+  .plannerNav button {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 12px 8px;
+    text-align: center;
+  }
+
+  .plannerNav button > span:last-child:not(.navLabel) {
+    display: none;
+  }
+
+  .navLabel {
+    letter-spacing: 0.08em;
+  }
+
   .headerStats > div {
     padding: 0 12px;
   }
