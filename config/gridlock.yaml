@@ -1,0 +1,33 @@
+paths:
+  raw_dir: data/raw
+  cache_dir: data/cache
+  normalized_dir: data/normalized
+  output_dir: data/output
+  review_dir: data/review
+
+utilities:
+  - desc
+  - gpc
+utility_files:
+  - utilities/desc.yaml
+  - utilities/gpc.yaml
+
+thresholds_km:
+  near: 1.6
+  local: 8.0
+  maximum: 40.0
+timeline_gap_days:
+  near: 90
+  moderate: 180
+  distant: 365
+display:
+  distance_unit: km
+  timezone: America/New_York
+geometry:
+  projected_crs: EPSG:5070
+  bbox: [-85.0, 30.0, -78.0, 36.0]
+  overpass_timeout_seconds: 60
+  overpass_max_retries: 3
+ai:
+  enabled: false
+
