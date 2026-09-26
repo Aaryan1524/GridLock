@@ -30,6 +30,10 @@ export function formatNumber(value: number): string {
   return value.toLocaleString("en-US");
 }
 
+export function countOf(value: number, singular: string, plural = `${singular}s`): string {
+  return `${formatNumber(value)} ${value === 1 ? singular : plural}`;
+}
+
 /** A display label from payload metadata, falling back to the raw code (never invented text). */
 export function label(metadata: Metadata, vocabulary: string, code: string | null | undefined): string {
   if (!code) return "—";
