@@ -1,0 +1,44 @@
+"""The GridLock command-line interface."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+from pathlib import Path
+from typing import Sequence
+
+from .settings.loader import ConfigError, load_settings
+
+
+def _default_config_path() -> Path:
+    configured = os.environ.get("GRIDLOCK_CONFIG")
+    if configured:
+        return Path(configured)
+    return Path(__file__).resolve().parents[3] / "config" / "gridlock.yaml"
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(prog="gridlock")
+    parser.add_argument("--config", type=Path, default=_default_config_path())
+    commands = parser.add_subparsers(dest="command", required=True)
+    config_parser = commands.add_parser("config", help="inspect resolved configuration")
+    config_parser.add_argument("action", choices=["show"])
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+    if args.command == "config" and args.action == "show":
+        try:
+            bundle = load_settings(args.config)
+        except ConfigError as error:
+            print(f"Configuration error: {error}")
+            return 2
+        print(json.dumps(bundle.summary(), indent=2, sort_keys=True))
+        return 0
+    return 2
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,14 @@
+id: gpc
+display_name: Georgia Power
+color: "#F9A825"
+states: [GA, SC]
+operator_aliases: []
+included_sponsors: [GPC, SAV]
+sources:
+  - id: gpc_irp_ten_year
+    parser: gpc_irp_ten_year
+    path: 2025 IRP Volume 3 PUBLIC DISCLOSURE.pdf
+    summary_page_start: 177
+    summary_page_end: 190
+    detail_page_start: 214
+    detail_page_end: 425

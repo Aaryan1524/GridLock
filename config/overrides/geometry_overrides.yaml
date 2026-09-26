@@ -1,0 +1,4 @@
+# Human-verified geometry matches belong here. Each entry requires provenance
+# and a reviewer note; no override is included in the initial scaffold.
+overrides: []
+
