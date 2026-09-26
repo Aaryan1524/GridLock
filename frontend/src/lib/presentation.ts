@@ -55,7 +55,7 @@ export const LOCATION_STATUS_LABELS: Record<LocationStatus, string> = {
 export function locationStatus(project: Project): LocationStatus {
   const resolution = project.geometryResolution;
   if (!project.geometry || !resolution) return "unresolved";
-  if (resolution.matches.some((match) => match.status === "override")) return "human_verified";
+  if (resolution.method === "human_verified_override") return "human_verified";
   return resolution.isApproximation ? "approximate" : "resolved";
 }
 
