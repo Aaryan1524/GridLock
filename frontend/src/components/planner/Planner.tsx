@@ -35,6 +35,7 @@ function Workspace({ payload }: { payload: GridlockPayload }) {
             selectedZoneId={zoneId}
             onSelectZone={(id) => navigate({ view: "overview", zone: id })}
             onInvestigate={(id) => navigate({ view: "zones", zone: id })}
+            onOpenQuality={() => navigate({ view: "quality" })}
           />
         )}
         {view === "projects" && (

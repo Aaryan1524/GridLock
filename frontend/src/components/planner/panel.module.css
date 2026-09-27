@@ -226,9 +226,6 @@
   gap: 2px;
 }
 
-.coverage {
-  border-bottom: 0;
-}
 
 /* ---------- Evidence drawer ---------- */
 
@@ -380,11 +377,11 @@
   }
 }
 
-/* ---------- Coordination impact (S2) ---------- */
+/* ---------- Coordination impact (S2): result first, method on request ---------- */
 
 .impactLabel {
   display: inline-block;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   padding: 4px 8px;
   font-family: var(--font-mono);
   font-size: 10.5px;
@@ -403,99 +400,211 @@
 
 .impactFigures {
   display: grid;
-  margin: 16px 0 14px;
-}
-
-/* One figure per row: label and value side by side, the explanation underneath. */
-.impactFigures > div {
-  display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  column-gap: 16px;
-  row-gap: 2px;
-  align-items: baseline;
-  padding: 10px 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0 0 16px;
   border-top: 1px solid var(--line);
 }
 
+.impactFigures > div {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 14px 14px 14px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.impactFigures > div:nth-child(even) {
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+
 .impactFigures dt {
-  font-size: 10px;
-}
-
-.impactFigures dd {
-  margin: 0;
-  grid-column: 2;
-}
-
-.impactFigures dt + dd {
-  grid-row: 1;
-}
-
-.impactFigures dd:global(.display) {
-  font-size: 26px;
-  line-height: 1.05;
-}
-
-.impactPairs {
-  list-style: none;
-  margin: 0 0 12px;
-  padding: 0;
-  display: grid;
-  gap: 4px;
   font-size: 13px;
   color: var(--muted);
 }
 
-.impactWorking {
-  margin: 0 0 12px;
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
+.impactFigures dd {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.05;
 }
 
-.impactWorking summary {
+.panel[data-expanded="true"] .impactFigures {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.panel[data-expanded="true"] .impactFigures > div + div {
+  padding-left: 14px;
+  border-left: 1px solid var(--line);
+}
+
+.impactBasis {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.indicators {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 14px;
+}
+
+.indicator summary {
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--caution);
+  list-style: none;
+}
+
+.indicator summary::-webkit-details-marker {
+  display: none;
+}
+
+.indicator p {
+  margin: 6px 0 4px 16px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.method {
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.method summary,
+.methodology summary {
   cursor: pointer;
 }
 
-.impactWorking ol {
-  margin: 10px 0 0;
-  padding-left: 18px;
-  display: grid;
-  gap: 8px;
-  font-size: 13px;
-}
-
-.impactStepLabel {
-  display: block;
-  font-weight: 500;
-}
-
-.impactAssumptions {
+.chain {
   list-style: none;
-  margin: 0;
+  margin: 14px 0 0;
   padding: 0;
   display: grid;
-  gap: 12px;
+}
+
+.chain li {
+  display: grid;
+  gap: 2px;
+  padding: 8px 0 8px 14px;
+  border-left: 1px solid var(--line-strong);
+  position: relative;
+}
+
+/* A small arrow between links of the chain. */
+.chain li + li::before {
+  content: "↓";
+  position: absolute;
+  left: -5px;
+  top: -9px;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--faint);
+  background: var(--bg);
+}
+
+.chain li:last-child .chainValue {
+  color: var(--accent);
+}
+
+.chainValue {
+  font-family: var(--font-display);
+  font-size: 22px;
+  line-height: 1.1;
+}
+
+.methodology > p {
+  margin-top: 12px;
+}
+
+.assumptions {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.assumptions li {
+  display: grid;
+  gap: 4px;
+  padding: 14px 0;
+  border-top: 1px solid var(--line);
+}
+
+.assumptions li > p {
+  margin: 0;
+}
+
+.assumptionHead {
+  font-size: 14px;
+}
+
+.assumptionValue {
+  font-size: 26px;
+  line-height: 1.1;
+}
+
+.assumptionSource {
   font-size: 13px;
 }
 
-.impactAssumptions li {
-  display: grid;
-  gap: 3px;
-}
-
-.impactAssumptions a {
+.assumptions a {
   color: var(--text);
 }
 
+/* ---------- Drawer states ---------- */
+
+.expandButton {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  padding: 5px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.expandButton:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.headerRow > .eyebrow,
+.headerRow > p {
+  margin: 0;
+}
+
+.moreCta {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.moreCta > p {
+  margin: 0;
+}
+
 @media (max-width: 560px) {
-  .impactFigures > div {
+  .impactFigures,
+  .panel[data-expanded="true"] .impactFigures {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .impactFigures dd {
-    grid-column: 1;
-  }
-
-  .impactFigures dt + dd {
-    grid-row: auto;
+  .impactFigures > div:nth-child(even),
+  .panel[data-expanded="true"] .impactFigures > div + div {
+    padding-left: 0;
+    border-left: 0;
   }
 }
