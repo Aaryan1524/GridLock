@@ -63,7 +63,7 @@ Point at the panel figures and the timeline:
 > coordination is **site logistics**: shared staging yards, deliveries,
 > crews."
 
-## 5. Trust (1:45–2:30) — evidence drawer
+## 5. Trust (1:45–2:15) — evidence drawer
 
 Click the Dominion project in **Top coordination opportunity**.
 
@@ -78,14 +78,33 @@ Click the Dominion project in **Top coordination opportunity**.
 
 Press Escape.
 
-## 6. Ranking with judgment (2:30–2:50) — click zone 2, Thurmond, in the rail
+## 6. Coordination impact (2:15–2:40) — the panel's Coordination impact section
+
+Scroll the zone panel to **Coordination impact**.
+
+> "What could coordinating actually avoid? One shared staging yard —
+> **3 to 20 acres** of temporary footprint — and **1 to 2** duplicate
+> mobilizations. The expected saving is **up to $1,772,304**, out of **up
+> to $3,544,608** of Dominion's published budget in play."
+
+Point at the label and the assumptions:
+
+> "It's labelled illustrative, and every number cites its source: yard
+> sizes from a utility environmental filing, the 5.5% ceiling from MISO's
+> cost guide. Georgia Power's costs are redacted, so GridLock doesn't
+> estimate them."
+
+## 7. Ranking with judgment (2:40–2:52) — click zone 2, Thurmond, in the rail
 
 > "Thurmond is where two projects share an endpoint — both end at
 > Thurmond Substation, **0 km** apart — but their dates are **3,074 days**
 > apart, so it ranks below the timely Savannah zone instead of crowding
 > it out."
 
-## 7. Close (2:50–3:00)
+Its Coordination impact section gives a reason instead of a number: the
+dates are too far apart to share staging or a mobilization.
+
+## 8. Close (2:52–3:00)
 
 > "GridLock turns public plans into verified coordination decisions."
 

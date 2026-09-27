@@ -8,6 +8,7 @@ import { topRelationship } from "@/lib/mapData";
 import { spatialLabel } from "@/lib/presentation";
 
 import { Coverage } from "../shared/Coverage";
+import { CoordinationImpact } from "./CoordinationImpact";
 import styles from "./panel.module.css";
 import { Timeline } from "./Timeline";
 
@@ -49,6 +50,7 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
   const b = top ? projects.get(top.projectB) : undefined;
   const spatial = top ? spatialLabel(metadata, top, projects) : null;
   const tier = top ? label(metadata, "spatial_tiers", top.spatialTier) : "";
+  const impact = (payload.impact ?? []).find((item) => item.zoneId === zone.id);
   const members = zone.projectIds.map((id) => projects.get(id)).filter((project): project is Project => !!project);
 
   return (
@@ -130,6 +132,8 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
           </ul>
         </section>
       )}
+
+      {impact && <CoordinationImpact payload={payload} impact={impact} projects={projects} />}
 
       <section className={styles.section}>
         <p className="eyebrow">Timeline</p>

@@ -9,7 +9,7 @@ from gridlock.georesolution import resolve_projects
 from gridlock.ingestion.documents import ingest_plans
 from gridlock.ingestion.documents.plans import raw_dir
 from gridlock.ingestion.osm import ingest_osm
-from gridlock.models.domain import Payload
+from gridlock.models.domain import ImpactStatus, Payload, ZoneImpact
 from gridlock.overlap import run_overlap
 from gridlock.settings.loader import ConfigBundle
 
@@ -68,6 +68,7 @@ def summarize(payload: Payload) -> list[str]:
         f"automatic resolution rate {metrics.automatic_resolution_rate:.1%} "
         f"= {metrics.resolution.located_automatically} of {metrics.projects_with_named_endpoints} projects that name a site",
     ]
+    impact = {item.zone_id: item for item in payload.impact}
     for zone in payload.zones:
         themes = ", ".join(labels.get("playbook", {}).get(theme, theme) for theme in zone.coordination_themes)
         top = zone.headline
@@ -82,4 +83,23 @@ def summarize(payload: Payload) -> list[str]:
         lines.append("     projects: " + "; ".join(f"{pid} {projects[pid].project_name}" for pid in zone.project_ids[:6])
                      + (f"; +{len(zone.project_ids) - 6} more" if len(zone.project_ids) > 6 else ""))
         lines += [f"     △ {warning}" for warning in zone.warnings]
+        lines.append(f"     impact: {_impact_line(impact.get(zone.id))}")
     return lines
+
+
+def _impact_line(item: ZoneImpact | None) -> str:
+    """One-line S2 summary; the full working is in the payload."""
+    if item is None:
+        return "not computed"
+    if item.status is ImpactStatus.NOT_ESTIMATED:
+        return f"not estimated ({item.reason})"
+    parts = []
+    if item.staging_yards and item.temporary_acres:
+        parts.append(f"{item.staging_yards.high:g} shared yard(s) max, {item.temporary_acres.low:g}–{item.temporary_acres.high:g} acres")
+    if item.mobilizations:
+        parts.append(f"{item.mobilizations.low:g}–{item.mobilizations.high:g} mobilizations")
+    if item.budget_in_play_usd:
+        parts.append(f"budget in play up to ${item.budget_in_play_usd.high:,.0f}")
+    if item.expected_saving_usd:
+        parts.append(f"expected saving up to ${item.expected_saving_usd.high:,.0f}")
+    return "; ".join(parts) + " (illustrative)"

@@ -379,3 +379,123 @@
     opacity: 1;
   }
 }
+
+/* ---------- Coordination impact (S2) ---------- */
+
+.impactLabel {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 4px 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--caution);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+
+.impactReason {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.impactFigures {
+  display: grid;
+  margin: 16px 0 14px;
+}
+
+/* One figure per row: label and value side by side, the explanation underneath. */
+.impactFigures > div {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  column-gap: 16px;
+  row-gap: 2px;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+
+.impactFigures dt {
+  font-size: 10px;
+}
+
+.impactFigures dd {
+  margin: 0;
+  grid-column: 2;
+}
+
+.impactFigures dt + dd {
+  grid-row: 1;
+}
+
+.impactFigures dd:global(.display) {
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.impactPairs {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.impactWorking {
+  margin: 0 0 12px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.impactWorking summary {
+  cursor: pointer;
+}
+
+.impactWorking ol {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.impactStepLabel {
+  display: block;
+  font-weight: 500;
+}
+
+.impactAssumptions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  font-size: 13px;
+}
+
+.impactAssumptions li {
+  display: grid;
+  gap: 3px;
+}
+
+.impactAssumptions a {
+  color: var(--text);
+}
+
+@media (max-width: 560px) {
+  .impactFigures > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .impactFigures dd {
+    grid-column: 1;
+  }
+
+  .impactFigures dt + dd {
+    grid-row: auto;
+  }
+}

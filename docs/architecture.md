@@ -15,7 +15,7 @@ OSM (Overpass) ──► ingest osm   ──► data/cache/osm_power.geojson
                      overlap    ──► data/output/relationships.json
                         │
                         ▼
-      graph → rank → zones → metrics ──► data/output/gridlock.json
+      graph → rank → zones → metrics → impact ──► data/output/gridlock.json
                                          data/output/metrics.json
                         │
                         ▼
@@ -34,7 +34,7 @@ every committed output byte-for-byte.
 | OSM | `gridlock ingest osm [--offline]` | `ingestion/osm` | The cached public power-feature snapshot |
 | Resolve | `gridlock resolve` | `georesolution`, `evidence` | Endpoint matches, geometry ladder, Evidence Quality |
 | Overlap | `gridlock overlap` | `overlap` | Closest points, distance, tier, timeline, playbook |
-| Payload | `gridlock payload` | `graph`, `ranking`, `zones`, `metrics`, `pipeline` | Priority, rank, zones, metrics, final payload |
+| Payload | `gridlock payload` | `graph`, `ranking`, `zones`, `metrics`, `impact`, `pipeline` | Priority, rank, zones, metrics, coordination impact (S2, computed after zones from their output), final payload |
 | All | `gridlock run --offline [--skip-ingest]` | `pipeline` | Every stage in order |
 | Serve | `gridlock serve` | `api` | Nothing; read-only HTTP over the payload |
 

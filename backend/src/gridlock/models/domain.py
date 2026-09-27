@@ -281,6 +281,26 @@ class SourceSnapshot(ContractModel):
     sha256: str | None = None
 
 
+class ImpactAssumption(ContractModel):
+    """An approved estimating assumption, shown beside every impact figure that uses it."""
+
+    id: str = Field(min_length=1)
+    title: str = Field(min_length=1)
+    label: str = Field(min_length=1)
+    low: float | None = None
+    high: float
+    unit: str = Field(min_length=1)
+    # The value as shown to the planner, e.g. "3–20" or "≤5.5%".
+    value: str = Field(min_length=1)
+    basis: str = Field(min_length=1)
+    source_title: str = Field(min_length=1)
+    source_url: str | None = None
+    source_locator: str = Field(min_length=1)
+    caveat: str = Field(min_length=1)
+    approved_by: str = Field(min_length=1)
+    approved_on: date
+
+
 class Metadata(ContractModel):
     schema_version: str = "1.0"
     fixture: bool = False
@@ -293,6 +313,7 @@ class Metadata(ContractModel):
     # Display labels by vocabulary (tiers, relevance, playbook, ...); the UI never hardcodes them.
     labels: dict[str, dict[str, str]] = Field(default_factory=dict)
     sources: list[SourceSnapshot] = Field(default_factory=list)
+    impact_assumptions: list[ImpactAssumption] = Field(default_factory=list)
 
 
 class ResolutionBreakdown(ContractModel):
@@ -368,9 +389,84 @@ class Metrics(ContractModel):
         return self
 
 
+class ImpactStatus(StrEnum):
+    ESTIMATED = "ESTIMATED"
+    NOT_ESTIMATED = "NOT_ESTIMATED"
+
+
+class ImpactRange(ContractModel):
+    """A low–high range; a missing low means "up to" the high value."""
+
+    low: float | None = Field(default=None, ge=0)
+    high: float = Field(ge=0)
+
+
+class ImpactCluster(ContractModel):
+    """Projects linked by coordinable relationships that could share staging or a mobilization."""
+
+    kind: str = Field(min_length=1)
+    project_ids: list[str] = Field(min_length=2)
+    relationship_ids: list[str] = Field(min_length=1)
+    # Projects with a published cost, and the sum of those costs; the rest have none (e.g. redacted).
+    costed_project_ids: list[str] = Field(default_factory=list)
+    uncosted_project_ids: list[str] = Field(default_factory=list)
+    published_cost_usd: float = Field(default=0, ge=0)
+    avoidable_share: float = Field(ge=0, le=1)
+
+
+class ImpactStep(ContractModel):
+    """One line of the working: what was multiplied by what, citing the assumptions used."""
+
+    label: str = Field(min_length=1)
+    working: str = Field(min_length=1)
+    assumption_ids: list[str] = Field(default_factory=list)
+
+
+class ImpactChainStep(ContractModel):
+    """One link of the calculation chain, as displayed: e.g. "Timely relationships · 2"."""
+
+    label: str = Field(min_length=1)
+    value: str = Field(min_length=1)
+    detail: str | None = None
+    assumption_ids: list[str] = Field(default_factory=list)
+
+
+class ImpactIndicator(ContractModel):
+    """A compact uncertainty flag ("2 relationships use approximate geometry") with its full explanation."""
+
+    summary: str = Field(min_length=1)
+    detail: str = Field(min_length=1)
+
+
+class ZoneImpact(ContractModel):
+    """S2: what coordinating a zone's timely pairs might avoid. Ranges and ceilings, never engineering figures."""
+
+    zone_id: str = Field(min_length=1)
+    status: ImpactStatus
+    label: str = Field(min_length=1)
+    # Why nothing was estimated (NOT_ESTIMATED only).
+    reason: str | None = None
+    themes: list[str] = Field(default_factory=list)
+    staging_yards: ImpactRange | None = None
+    temporary_acres: ImpactRange | None = None
+    mobilizations: ImpactRange | None = None
+    budget_in_play_usd: ImpactRange | None = None
+    expected_saving_usd: ImpactRange | None = None
+    clusters: list[ImpactCluster] = Field(default_factory=list)
+    steps: list[ImpactStep] = Field(default_factory=list)
+    notes: list[str] = Field(default_factory=list)
+    # Presentation: the counts behind the estimate, the calculation as a chain, and compact flags.
+    relationship_count: int = Field(default=0, ge=0)
+    candidate_count: int = Field(default=0, ge=0)
+    timely_count: int = Field(default=0, ge=0)
+    chain: list[ImpactChainStep] = Field(default_factory=list)
+    indicators: list[ImpactIndicator] = Field(default_factory=list)
+
+
 class Payload(ContractModel):
     metadata: Metadata
     metrics: Metrics | None = None
     projects: list[Project] = Field(default_factory=list)
     relationships: list[Relationship] = Field(default_factory=list)
     zones: list[Zone] = Field(default_factory=list)
+    impact: list[ZoneImpact] = Field(default_factory=list)

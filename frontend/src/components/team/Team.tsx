@@ -20,19 +20,22 @@ export function Team() {
           <p className={`mono ${styles.empty}`}>Team members will be listed here.</p>
         ) : (
           <ul className={styles.grid}>
-            {TEAM.map((member) => (
+            {TEAM.map((member, index) => (
               <li key={member.name} className={styles.member}>
+                <p className={`mono ${styles.index}`}>Member {String(index + 1).padStart(2, "0")}</p>
                 <h2 className={`display ${styles.name}`}>{member.name}</h2>
-                <p className="mono">{member.role}</p>
-                {member.links && member.links.length > 0 && (
-                  <p className={styles.links}>
-                    {member.links.map((link) => (
-                      <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className="mono">
-                        {link.label} <span aria-hidden>↗</span>
-                      </a>
-                    ))}
-                  </p>
-                )}
+                <div className={styles.meta}>
+                  <p className="mono">{member.role}</p>
+                  {member.links && member.links.length > 0 && (
+                    <p className={styles.links}>
+                      {member.links.map((link) => (
+                        <a key={link.href} href={link.href} target="_blank" rel="noreferrer" className="mono">
+                          {link.label} <span aria-hidden>↗</span>
+                        </a>
+                      ))}
+                    </p>
+                  )}
+                </div>
               </li>
             ))}
           </ul>

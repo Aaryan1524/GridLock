@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from datetime import date
 from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -278,6 +279,64 @@ class PriorityConfig(BaseModel):
     default: Priority
 
 
+class ImpactAssumptionConfig(BaseModel):
+    """One approved estimating assumption. Every value used by the impact estimator must be one of these."""
+
+    id: str = Field(min_length=1)
+    # Short heading shown to the planner, e.g. "Staging yard footprint".
+    title: str = Field(min_length=1)
+    label: str = Field(min_length=1)
+    low: float | None = Field(default=None, ge=0)
+    high: float = Field(ge=0)
+    unit: str = Field(min_length=1)
+    # public_source: taken from the cited document; derived: arithmetic from GridLock's own counts.
+    basis: Literal["public_source", "derived"]
+    source_title: str = Field(min_length=1)
+    source_url: str | None = None
+    source_locator: str = Field(min_length=1)
+    caveat: str = Field(min_length=1)
+    approved_by: str = Field(min_length=1)
+    approved_on: date
+
+    @model_validator(mode="after")
+    def sourced_and_ordered(self) -> "ImpactAssumptionConfig":
+        if self.basis == "public_source" and not self.source_url:
+            raise ValueError(f"impact assumption {self.id} cites a public source but gives no source_url")
+        if self.low is not None and self.low > self.high:
+            raise ValueError(f"impact assumption {self.id}: low {self.low} is above high {self.high}")
+        return self
+
+
+class ImpactAssumptionsConfig(BaseModel):
+    """The approved values, by role (docs/STRETCH_IMPLEMENTATION_PLAN.md, Gate A0)."""
+
+    yard_acres: ImpactAssumptionConfig
+    mobilization_share: ImpactAssumptionConfig
+    avoidable_share: ImpactAssumptionConfig
+    # Published evidence the estimate is checked against; never used in the arithmetic.
+    cross_check: ImpactAssumptionConfig
+
+
+class ImpactConfig(BaseModel):
+    """S2 coordination impact estimator: which pairs count, and the approved assumptions."""
+
+    label: str = Field(min_length=1)
+    # Only relationships the engine already ranks at these priorities are considered.
+    candidate_priorities: tuple[Priority, ...] = Field(min_length=1)
+    # Among those: shared staging needs one of these tiers and a timely relevance...
+    staging_tiers: tuple[SpatialTier, ...] = Field(min_length=1)
+    # ...and shared mobilization needs a timely relevance at any tier.
+    timely_relevance: tuple[TimelineRelevance, ...] = Field(min_length=1)
+    assumptions: ImpactAssumptionsConfig
+
+    @model_validator(mode="after")
+    def shares_are_fractions(self) -> "ImpactConfig":
+        for assumption in (self.assumptions.mobilization_share, self.assumptions.avoidable_share):
+            if assumption.high > 1:
+                raise ValueError(f"impact assumption {assumption.id} is a share and must be at most 1")
+        return self
+
+
 class ApiConfig(BaseModel):
     # Returned by /api/health so a client can tell it reached GridLock and not another local server.
     service_name: str = Field(min_length=1)
@@ -314,6 +373,7 @@ class GridlockConfig(BaseModel):
     overlap: OverlapConfig
     zones: ZonesConfig
     priority: PriorityConfig
+    impact: ImpactConfig
     labels: dict[str, dict[str, str]]
     api: ApiConfig
     oracle: OracleConfig | None = None

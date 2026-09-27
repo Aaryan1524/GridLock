@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from gridlock.graph import build_graph
+from gridlock.impact import assumption_records, estimate_impact
 from gridlock.logs import get_logger
 from gridlock.metrics import compute_metrics
 from gridlock.models.domain import Metadata, Payload, Project, Relationship, SourceSnapshot
@@ -36,6 +37,7 @@ def _metadata(bundle: ConfigBundle, repository_root: Path) -> Metadata:
         utility_names={utility.code: utility.display_name for utility in bundle.utilities},
         labels=labels,
         sources=sources,
+        impact_assumptions=assumption_records(root.impact),
     )
 
 
@@ -44,12 +46,15 @@ def assemble_payload(bundle: ConfigBundle, repository_root: Path, projects: list
     graph = build_graph(projects, ranked)
     zones = build_zones(graph, projects, bundle)
     utility_order = [utility.code for utility in bundle.utilities]
+    metadata = _metadata(bundle, repository_root)
     return Payload(
-        metadata=_metadata(bundle, repository_root),
+        metadata=metadata,
         metrics=compute_metrics(projects, ranked, zones, utility_order),
         projects=sorted(projects, key=lambda project: project.id),
         relationships=ranked,
         zones=zones,
+        # S2: computed after zones from their output; it never changes a zone, relationship or priority.
+        impact=estimate_impact(zones, ranked, projects, bundle.root.impact, metadata.labels, metadata.utility_names),
     )
 
 
