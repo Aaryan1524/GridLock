@@ -12,7 +12,9 @@ from collections.abc import Iterable
 
 from gridlock.models.domain import (
     ImpactAssumption,
+    ImpactChainStep,
     ImpactCluster,
+    ImpactIndicator,
     ImpactRange,
     ImpactStatus,
     ImpactStep,
@@ -109,8 +111,23 @@ def _cluster(kind: str, members: list[str], relationship_ids: list[str], project
     )
 
 
-def _not_estimated(zone: Zone, config: ImpactConfig, reason: str, themes: list[str] | None = None) -> ZoneImpact:
-    return ZoneImpact(zone_id=zone.id, status=ImpactStatus.NOT_ESTIMATED, label=config.label, reason=reason, themes=themes or [])
+def _not_estimated(zone: Zone, config: ImpactConfig, reason: str, counts: tuple[int, int, int], themes: list[str] | None = None) -> ZoneImpact:
+    total, candidates, timely = counts
+    return ZoneImpact(
+        zone_id=zone.id,
+        status=ImpactStatus.NOT_ESTIMATED,
+        label=config.label,
+        reason=reason,
+        themes=themes or [],
+        relationship_count=total,
+        candidate_count=candidates,
+        timely_count=timely,
+    )
+
+
+def _cost_withheld(project: Project) -> bool:
+    """True when the filing shows the cost field but withholds it (e.g. "REDACTED")."""
+    return any("cost" in key.lower() and value.strip().upper() == "REDACTED" for key, value in project.source.raw_fields.items())
 
 
 def estimate_zone_impact(
@@ -119,14 +136,18 @@ def estimate_zone_impact(
     projects: dict[str, Project],
     config: ImpactConfig,
     labels: dict[str, dict[str, str]],
+    utility_names: dict[str, str] | None = None,
 ) -> ZoneImpact:
     """The impact estimate for one zone, or the reason there is none."""
+    names = utility_names or {}
     roles = config.assumptions
     zone_relationships = [relationships[rid] for rid in zone.relationship_ids]
     priority_names = " or ".join(_label(labels, "priority", priority.value).upper() for priority in config.candidate_priorities)
     candidates = [item for item in zone_relationships if item.opportunity_priority in config.candidate_priorities]
     if not candidates:
-        return _not_estimated(zone, config, f"No relationship in this zone ranks {priority_names}, so no coordination impact is estimated.")
+        return _not_estimated(
+            zone, config, f"No relationship in this zone ranks {priority_names}, so no coordination impact is estimated.", (len(zone_relationships), 0, 0)
+        )
 
     timely = [item for item in candidates if item.timeline.relevance in config.timely_relevance]
     if not timely:
@@ -139,6 +160,7 @@ def estimate_zone_impact(
             config,
             f"Its {len(candidates)} {priority_names} relationship{plural} have {dates}, too far apart "
             "to share staging or a mobilization; coordination here is about sequencing.",
+            (len(zone_relationships), len(candidates), 0),
             themes,
         )
 
@@ -226,6 +248,48 @@ def estimate_zone_impact(
             "straight line between endpoints), so their distances are to that geometry, not a surveyed route."
         )
 
+    # Presentation: the same figures as a chain, and the notes as compact flags with their full text.
+    priority_words = "/".join(_label(labels, "priority", priority.value) for priority in config.candidate_priorities)
+    chain = [
+        ImpactChainStep(label="Coordinable relationships", value=f"{len(candidates)} {priority_words}",
+                        detail=f"of {len(zone_relationships)} in this zone"),
+        ImpactChainStep(label="Timely relationships", value=str(len(timely)), detail=f"{relevance_names} timeline relevance"),
+    ]
+    if yards and acres:
+        chain += [
+            ImpactChainStep(label="Shared staging opportunities", value=_span(yards.low, yards.high), detail=f"at {_tier_names(config, labels)}"),
+            ImpactChainStep(label="Reference footprint", value=f"{_span(acres.low, acres.high)} acres",
+                            detail=f"{_span(roles.yard_acres.low, roles.yard_acres.high)} acres per yard", assumption_ids=[roles.yard_acres.id]),
+        ]
+    chain.append(ImpactChainStep(label="Duplicate mobilizations", value=_span(mobilizations.low, mobilizations.high)))
+    if budget and saving:
+        cost_utilities = sorted({projects[pid].utility for pid in costed})
+        chain += [
+            ImpactChainStep(label="Published project cost", value=_money(cost),
+                            detail=f"{', '.join(names.get(code, code) for code in cost_utilities)} · {len(costed)} {_count(len(costed), 'project')}"),
+            ImpactChainStep(label="Budget in play", value=f"≤ {_money(budget.high)}", detail=f"≤{share:.1%} of published cost",
+                            assumption_ids=[roles.mobilization_share.id]),
+            ImpactChainStep(label="Illustrative savings ceiling", value=f"≤ {_money(saving.high)}",
+                            detail=f"≤{cap:.0%} of a shared mobilization", assumption_ids=[roles.mobilization_share.id, roles.avoidable_share.id]),
+        ]
+    indicators = []
+    if approximate:
+        indicators.append(ImpactIndicator(
+            summary=f"{len(approximate)} {_count(len(approximate), 'relationship')} {'uses' if len(approximate) == 1 else 'use'} approximate geometry",
+            detail=notes[-1],
+        ))
+    if uncosted:
+        by_utility: dict[str, list[str]] = {}
+        for pid in uncosted:
+            by_utility.setdefault(projects[pid].utility, []).append(pid)
+        for code, ids in sorted(by_utility.items()):
+            withheld = all(_cost_withheld(projects[pid]) for pid in ids)
+            indicators.append(ImpactIndicator(
+                summary=f"{names.get(code, code)} project costs {'are redacted' if withheld else 'are not published'}",
+                detail=f"{', '.join(ids)}: {'the filing shows the cost as REDACTED' if withheld else 'no cost is published'}, so "
+                "these projects add nothing to the dollar figures.",
+            ))
+
     return ZoneImpact(
         zone_id=zone.id,
         status=ImpactStatus.ESTIMATED,
@@ -239,6 +303,11 @@ def estimate_zone_impact(
         clusters=staging_clusters + mobilization_clusters,
         steps=steps,
         notes=notes,
+        relationship_count=len(zone_relationships),
+        candidate_count=len(candidates),
+        timely_count=len(timely),
+        chain=chain,
+        indicators=indicators,
     )
 
 
@@ -258,8 +327,9 @@ def estimate_impact(
     projects: list[Project],
     config: ImpactConfig,
     labels: dict[str, dict[str, str]],
+    utility_names: dict[str, str] | None = None,
 ) -> list[ZoneImpact]:
     """One estimate (or reason) per zone, in zone order."""
     by_relationship = {item.id: item for item in relationships}
     by_project = {item.id: item for item in projects}
-    return [estimate_zone_impact(zone, by_relationship, by_project, config, labels) for zone in zones]
+    return [estimate_zone_impact(zone, by_relationship, by_project, config, labels, utility_names) for zone in zones]

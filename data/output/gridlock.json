@@ -113,6 +113,7 @@
     "impactAssumptions": [
       {
         "id": "A-1",
+        "title": "Staging yard footprint",
         "label": "Temporary footprint of one staging / laydown yard",
         "low": 3.0,
         "high": 20.0,
@@ -128,6 +129,7 @@
       },
       {
         "id": "A-2",
+        "title": "Project-management ceiling",
         "label": "Project management, including mobilization and demobilization, as a share of project cost",
         "low": null,
         "high": 0.055,
@@ -143,6 +145,7 @@
       },
       {
         "id": "A-3",
+        "title": "Shared mobilization assumption",
         "label": "Share of a cluster's mobilization avoided when its projects share one",
         "low": null,
         "high": 0.5,
@@ -158,6 +161,7 @@
       },
       {
         "id": "A-3x",
+        "title": "External cross-check",
         "label": "Construction savings in PennDOT's pilot bundling 41 county structures",
         "low": 0.05,
         "high": 0.15,
@@ -22681,6 +22685,76 @@
       "notes": [
         "GPC-20067, GPC-20277: no published cost (for example, redacted in the filing); not estimated.",
         "2 of 2 counted pairs use approximate geometry (one endpoint or a straight line between endpoints), so their distances are to that geometry, not a surveyed route."
+      ],
+      "relationshipCount": 33,
+      "candidateCount": 3,
+      "timelyCount": 2,
+      "chain": [
+        {
+          "label": "Coordinable relationships",
+          "value": "3 High/Medium",
+          "detail": "of 33 in this zone",
+          "assumptionIds": []
+        },
+        {
+          "label": "Timely relationships",
+          "value": "2",
+          "detail": "overlapping, strong or meaningful timeline relevance",
+          "assumptionIds": []
+        },
+        {
+          "label": "Shared staging opportunities",
+          "value": "1",
+          "detail": "at site logistics distance or closer",
+          "assumptionIds": []
+        },
+        {
+          "label": "Reference footprint",
+          "value": "3–20 acres",
+          "detail": "3–20 acres per yard",
+          "assumptionIds": [
+            "A-1"
+          ]
+        },
+        {
+          "label": "Duplicate mobilizations",
+          "value": "1–2",
+          "detail": null,
+          "assumptionIds": []
+        },
+        {
+          "label": "Published project cost",
+          "value": "$64,447,423",
+          "detail": "Dominion Energy South Carolina · 2 projects",
+          "assumptionIds": []
+        },
+        {
+          "label": "Budget in play",
+          "value": "≤ $3,544,608",
+          "detail": "≤5.5% of published cost",
+          "assumptionIds": [
+            "A-2"
+          ]
+        },
+        {
+          "label": "Illustrative savings ceiling",
+          "value": "≤ $1,772,304",
+          "detail": "≤50% of a shared mobilization",
+          "assumptionIds": [
+            "A-2",
+            "A-3"
+          ]
+        }
+      ],
+      "indicators": [
+        {
+          "summary": "2 relationships use approximate geometry",
+          "detail": "2 of 2 counted pairs use approximate geometry (one endpoint or a straight line between endpoints), so their distances are to that geometry, not a surveyed route."
+        },
+        {
+          "summary": "Georgia Power project costs are redacted",
+          "detail": "GPC-20067, GPC-20277: the filing shows the cost as REDACTED, so these projects add nothing to the dollar figures."
+        }
       ]
     },
     {
@@ -22699,7 +22773,12 @@
       "expectedSavingUsd": null,
       "clusters": [],
       "steps": [],
-      "notes": []
+      "notes": [],
+      "relationshipCount": 14,
+      "candidateCount": 2,
+      "timelyCount": 0,
+      "chain": [],
+      "indicators": []
     },
     {
       "zoneId": "ZONE-03",
@@ -22714,7 +22793,12 @@
       "expectedSavingUsd": null,
       "clusters": [],
       "steps": [],
-      "notes": []
+      "notes": [],
+      "relationshipCount": 7,
+      "candidateCount": 0,
+      "timelyCount": 0,
+      "chain": [],
+      "indicators": []
     },
     {
       "zoneId": "ZONE-04",
@@ -22729,7 +22813,12 @@
       "expectedSavingUsd": null,
       "clusters": [],
       "steps": [],
-      "notes": []
+      "notes": [],
+      "relationshipCount": 1,
+      "candidateCount": 0,
+      "timelyCount": 0,
+      "chain": [],
+      "indicators": []
     }
   ]
 }

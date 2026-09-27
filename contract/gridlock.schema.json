@@ -447,6 +447,11 @@
           "default": null,
           "title": "Sourceurl"
         },
+        "title": {
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
         "unit": {
           "minLength": 1,
           "title": "Unit",
@@ -460,6 +465,7 @@
       },
       "required": [
         "id",
+        "title",
         "label",
         "low",
         "high",
@@ -474,6 +480,48 @@
         "approvedOn"
       ],
       "title": "ImpactAssumption",
+      "type": "object"
+    },
+    "ImpactChainStep": {
+      "description": "One link of the calculation chain, as displayed: e.g. \"Timely relationships \u00b7 2\".",
+      "properties": {
+        "assumptionIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptionids",
+          "type": "array"
+        },
+        "detail": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Detail"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "value",
+        "detail",
+        "assumptionIds"
+      ],
+      "title": "ImpactChainStep",
       "type": "object"
     },
     "ImpactCluster": {
@@ -537,6 +585,27 @@
         "avoidableShare"
       ],
       "title": "ImpactCluster",
+      "type": "object"
+    },
+    "ImpactIndicator": {
+      "description": "A compact uncertainty flag (\"2 relationships use approximate geometry\") with its full explanation.",
+      "properties": {
+        "detail": {
+          "minLength": 1,
+          "title": "Detail",
+          "type": "string"
+        },
+        "summary": {
+          "minLength": 1,
+          "title": "Summary",
+          "type": "string"
+        }
+      },
+      "required": [
+        "summary",
+        "detail"
+      ],
+      "title": "ImpactIndicator",
       "type": "object"
     },
     "ImpactRange": {
@@ -1602,6 +1671,19 @@
           ],
           "default": null
         },
+        "candidateCount": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Candidatecount",
+          "type": "integer"
+        },
+        "chain": {
+          "items": {
+            "$ref": "#/$defs/ImpactChainStep"
+          },
+          "title": "Chain",
+          "type": "array"
+        },
         "clusters": {
           "items": {
             "$ref": "#/$defs/ImpactCluster"
@@ -1619,6 +1701,13 @@
             }
           ],
           "default": null
+        },
+        "indicators": {
+          "items": {
+            "$ref": "#/$defs/ImpactIndicator"
+          },
+          "title": "Indicators",
+          "type": "array"
         },
         "label": {
           "minLength": 1,
@@ -1654,6 +1743,12 @@
           ],
           "default": null,
           "title": "Reason"
+        },
+        "relationshipCount": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Relationshipcount",
+          "type": "integer"
         },
         "stagingYards": {
           "anyOf": [
@@ -1694,6 +1789,12 @@
           "title": "Themes",
           "type": "array"
         },
+        "timelyCount": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Timelycount",
+          "type": "integer"
+        },
         "zoneId": {
           "minLength": 1,
           "title": "Zoneid",
@@ -1713,7 +1814,12 @@
         "expectedSavingUsd",
         "clusters",
         "steps",
-        "notes"
+        "notes",
+        "relationshipCount",
+        "candidateCount",
+        "timelyCount",
+        "chain",
+        "indicators"
       ],
       "title": "ZoneImpact",
       "type": "object"

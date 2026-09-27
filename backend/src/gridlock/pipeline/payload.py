@@ -54,7 +54,7 @@ def assemble_payload(bundle: ConfigBundle, repository_root: Path, projects: list
         relationships=ranked,
         zones=zones,
         # S2: computed after zones from their output; it never changes a zone, relationship or priority.
-        impact=estimate_impact(zones, ranked, projects, bundle.root.impact, metadata.labels),
+        impact=estimate_impact(zones, ranked, projects, bundle.root.impact, metadata.labels, metadata.utility_names),
     )
 
 

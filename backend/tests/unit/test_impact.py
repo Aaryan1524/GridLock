@@ -40,7 +40,7 @@ CAP = CONFIG.assumptions.avoidable_share.high
 ACRES = CONFIG.assumptions.yard_acres
 
 
-def project(identifier: str, cost: float | None) -> Project:
+def project(identifier: str, cost: float | None, raw_cost: str | None = None) -> Project:
     return Project(
         id=identifier,
         utility=identifier.split("-")[0],
@@ -48,7 +48,7 @@ def project(identifier: str, cost: float | None) -> Project:
         project_type=ProjectType.TRANSMISSION_LINE,
         estimated_cost_usd=cost,
         planned_in_service_date=date(2026, 6, 1),
-        source=SourceRef(document="filing.pdf", project_id_raw=identifier, page=1),
+        source=SourceRef(document="filing.pdf", project_id_raw=identifier, page=1, raw_fields={"estimated_cost": raw_cost} if raw_cost else {}),
     )
 
 
@@ -216,3 +216,27 @@ def test_config_rejects_a_share_above_one_and_an_inverted_range():
         ImpactConfig.model_validate(_impact_config(avoidable_share={"high": 1.5}))
     with pytest.raises(ValidationError, match="above high"):
         ImpactConfig.model_validate(_impact_config(yard_acres={"low": 30, "high": 20}))
+
+
+def test_chain_restates_the_estimate_in_order_with_its_assumptions():
+    result = estimate([pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH)], [project("DESC-1", 20_000_000), project("GPC-1", None)])
+    assert [step.label for step in result.chain] == [
+        "Coordinable relationships", "Timely relationships", "Shared staging opportunities", "Reference footprint",
+        "Duplicate mobilizations", "Published project cost", "Budget in play", "Illustrative savings ceiling",
+    ]
+    assert (result.relationship_count, result.candidate_count, result.timely_count) == (1, 1, 1)
+    assert result.chain[-1].value == f"≤ ${round(20_000_000 * SHARE * CAP):,}"
+    assert result.chain[3].assumption_ids == [CONFIG.assumptions.yard_acres.id]
+
+
+def test_indicators_say_redacted_only_when_the_filing_does():
+    redacted = estimate([pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH)], [project("DESC-1", 1_000_000), project("GPC-1", None, "REDACTED")])
+    unpublished = estimate([pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH)], [project("DESC-1", 1_000_000), project("GPC-1", None)])
+    assert [item.summary for item in redacted.indicators] == ["GPC project costs are redacted"]
+    assert [item.summary for item in unpublished.indicators] == ["GPC project costs are not published"]
+
+
+def test_not_estimated_zones_still_report_their_counts():
+    result = estimate([pair("DESC-1", "GPC-1", CROSSING, WEAK, MEDIUM, gap=3074)], [project("DESC-1", 1), project("GPC-1", None)])
+    assert (result.relationship_count, result.candidate_count, result.timely_count) == (1, 1, 0)
+    assert result.chain == [] and result.indicators == []

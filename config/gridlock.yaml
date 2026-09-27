@@ -218,6 +218,7 @@ impact:
   assumptions:
     yard_acres:
       id: A-1
+      title: Staging yard footprint
       label: Temporary footprint of one staging / laydown yard
       low: 3
       high: 20
@@ -231,6 +232,7 @@ impact:
       approved_on: 2026-09-27
     mobilization_share:
       id: A-2
+      title: Project-management ceiling
       label: Project management, including mobilization and demobilization, as a share of project cost
       high: 0.055
       unit: share of project cost (ceiling)
@@ -243,6 +245,7 @@ impact:
       approved_on: 2026-09-27
     avoidable_share:
       id: A-3
+      title: Shared mobilization assumption
       label: Share of a cluster's mobilization avoided when its projects share one
       high: 0.5
       unit: share of the cluster's mobilization (ceiling)
@@ -254,6 +257,7 @@ impact:
       approved_on: 2026-09-27
     cross_check:
       id: A-3x
+      title: External cross-check
       label: Construction savings in PennDOT's pilot bundling 41 county structures
       low: 0.05
       high: 0.15

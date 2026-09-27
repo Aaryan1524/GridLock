@@ -53,6 +53,7 @@ export interface GeometryResolution {
 }
 export interface ImpactAssumption {
   id: string;
+  title: string;
   label: string;
   low: number | null;
   high: number;
@@ -66,6 +67,12 @@ export interface ImpactAssumption {
   approvedBy: string;
   approvedOn: string;
 }
+export interface ImpactChainStep {
+  label: string;
+  value: string;
+  detail: string | null;
+  assumptionIds: Array<string>;
+}
 export interface ImpactCluster {
   kind: string;
   projectIds: Array<string>;
@@ -74,6 +81,10 @@ export interface ImpactCluster {
   uncostedProjectIds: Array<string>;
   publishedCostUsd: number;
   avoidableShare: number;
+}
+export interface ImpactIndicator {
+  summary: string;
+  detail: string;
 }
 export interface ImpactRange {
   low: number | null;
@@ -230,6 +241,11 @@ export interface ZoneImpact {
   clusters: Array<ImpactCluster>;
   steps: Array<ImpactStep>;
   notes: Array<string>;
+  relationshipCount: number;
+  candidateCount: number;
+  timelyCount: number;
+  chain: Array<ImpactChainStep>;
+  indicators: Array<ImpactIndicator>;
 }
 export interface Payload {
   metadata: Metadata;

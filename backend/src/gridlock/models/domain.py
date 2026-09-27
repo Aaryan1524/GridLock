@@ -285,6 +285,7 @@ class ImpactAssumption(ContractModel):
     """An approved estimating assumption, shown beside every impact figure that uses it."""
 
     id: str = Field(min_length=1)
+    title: str = Field(min_length=1)
     label: str = Field(min_length=1)
     low: float | None = None
     high: float
@@ -421,6 +422,22 @@ class ImpactStep(ContractModel):
     assumption_ids: list[str] = Field(default_factory=list)
 
 
+class ImpactChainStep(ContractModel):
+    """One link of the calculation chain, as displayed: e.g. "Timely relationships · 2"."""
+
+    label: str = Field(min_length=1)
+    value: str = Field(min_length=1)
+    detail: str | None = None
+    assumption_ids: list[str] = Field(default_factory=list)
+
+
+class ImpactIndicator(ContractModel):
+    """A compact uncertainty flag ("2 relationships use approximate geometry") with its full explanation."""
+
+    summary: str = Field(min_length=1)
+    detail: str = Field(min_length=1)
+
+
 class ZoneImpact(ContractModel):
     """S2: what coordinating a zone's timely pairs might avoid. Ranges and ceilings, never engineering figures."""
 
@@ -438,6 +455,12 @@ class ZoneImpact(ContractModel):
     clusters: list[ImpactCluster] = Field(default_factory=list)
     steps: list[ImpactStep] = Field(default_factory=list)
     notes: list[str] = Field(default_factory=list)
+    # Presentation: the counts behind the estimate, the calculation as a chain, and compact flags.
+    relationship_count: int = Field(default=0, ge=0)
+    candidate_count: int = Field(default=0, ge=0)
+    timely_count: int = Field(default=0, ge=0)
+    chain: list[ImpactChainStep] = Field(default_factory=list)
+    indicators: list[ImpactIndicator] = Field(default_factory=list)
 
 
 class Payload(ContractModel):

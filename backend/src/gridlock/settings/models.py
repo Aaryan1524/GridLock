@@ -283,6 +283,8 @@ class ImpactAssumptionConfig(BaseModel):
     """One approved estimating assumption. Every value used by the impact estimator must be one of these."""
 
     id: str = Field(min_length=1)
+    # Short heading shown to the planner, e.g. "Staging yard footprint".
+    title: str = Field(min_length=1)
     label: str = Field(min_length=1)
     low: float | None = Field(default=None, ge=0)
     high: float = Field(ge=0)
