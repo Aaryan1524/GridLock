@@ -1,0 +1,15 @@
+# The API image needs only backend/, config/ and data/output/ (see Dockerfile).
+.git
+.env
+frontend
+docs
+contract
+Sperry-Tech-Challenge
+data/raw
+data/cache
+data/normalized
+data/review
+**/.venv
+**/__pycache__
+**/.pytest_cache
+backend/tests
