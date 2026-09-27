@@ -51,6 +51,39 @@ export interface GeometryResolution {
   matches: Array<EndpointMatch>;
   warnings: Array<string>;
 }
+export interface ImpactAssumption {
+  id: string;
+  label: string;
+  low: number | null;
+  high: number;
+  unit: string;
+  basis: string;
+  sourceTitle: string;
+  sourceUrl: string | null;
+  sourceLocator: string;
+  caveat: string;
+  approvedBy: string;
+  approvedOn: string;
+}
+export interface ImpactCluster {
+  kind: string;
+  projectIds: Array<string>;
+  relationshipIds: Array<string>;
+  costedProjectIds: Array<string>;
+  uncostedProjectIds: Array<string>;
+  publishedCostUsd: number;
+  avoidableShare: number;
+}
+export interface ImpactRange {
+  low: number | null;
+  high: number;
+}
+export type ImpactStatus = "ESTIMATED" | "NOT_ESTIMATED";
+export interface ImpactStep {
+  label: string;
+  working: string;
+  assumptionIds: Array<string>;
+}
 export interface Metadata {
   schemaVersion: string;
   fixture: boolean;
@@ -62,6 +95,7 @@ export interface Metadata {
   utilityNames: Record<string, string>;
   labels: Record<string, Record<string, string>>;
   sources: Array<SourceSnapshot>;
+  impactAssumptions: Array<ImpactAssumption>;
 }
 export interface Metrics {
   projects: number;
@@ -181,12 +215,28 @@ export interface ZoneHeadline {
   timelineRelevance: TimelineRelevance;
   opportunityPriority: Priority;
 }
+export interface ZoneImpact {
+  zoneId: string;
+  status: ImpactStatus;
+  label: string;
+  reason: string | null;
+  themes: Array<string>;
+  stagingYards: ImpactRange | null;
+  temporaryAcres: ImpactRange | null;
+  mobilizations: ImpactRange | null;
+  budgetInPlayUsd: ImpactRange | null;
+  expectedSavingUsd: ImpactRange | null;
+  clusters: Array<ImpactCluster>;
+  steps: Array<ImpactStep>;
+  notes: Array<string>;
+}
 export interface Payload {
   metadata: Metadata;
   metrics: Metrics | null;
   projects: Array<Project>;
   relationships: Array<Relationship>;
   zones: Array<Zone>;
+  impact: Array<ZoneImpact>;
 }
 
 export type GridlockPayload = Payload;

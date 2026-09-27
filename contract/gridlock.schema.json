@@ -376,6 +376,229 @@
       "title": "GeometryResolution",
       "type": "object"
     },
+    "ImpactAssumption": {
+      "description": "An approved estimating assumption, shown beside every impact figure that uses it.",
+      "properties": {
+        "approvedBy": {
+          "minLength": 1,
+          "title": "Approvedby",
+          "type": "string"
+        },
+        "approvedOn": {
+          "format": "date",
+          "title": "Approvedon",
+          "type": "string"
+        },
+        "basis": {
+          "minLength": 1,
+          "title": "Basis",
+          "type": "string"
+        },
+        "caveat": {
+          "minLength": 1,
+          "title": "Caveat",
+          "type": "string"
+        },
+        "high": {
+          "title": "High",
+          "type": "number"
+        },
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "low": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Low"
+        },
+        "sourceLocator": {
+          "minLength": 1,
+          "title": "Sourcelocator",
+          "type": "string"
+        },
+        "sourceTitle": {
+          "minLength": 1,
+          "title": "Sourcetitle",
+          "type": "string"
+        },
+        "sourceUrl": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Sourceurl"
+        },
+        "unit": {
+          "minLength": 1,
+          "title": "Unit",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "low",
+        "high",
+        "unit",
+        "basis",
+        "sourceTitle",
+        "sourceUrl",
+        "sourceLocator",
+        "caveat",
+        "approvedBy",
+        "approvedOn"
+      ],
+      "title": "ImpactAssumption",
+      "type": "object"
+    },
+    "ImpactCluster": {
+      "description": "Projects linked by coordinable relationships that could share staging or a mobilization.",
+      "properties": {
+        "avoidableShare": {
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Avoidableshare",
+          "type": "number"
+        },
+        "costedProjectIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Costedprojectids",
+          "type": "array"
+        },
+        "kind": {
+          "minLength": 1,
+          "title": "Kind",
+          "type": "string"
+        },
+        "projectIds": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "title": "Projectids",
+          "type": "array"
+        },
+        "publishedCostUsd": {
+          "default": 0,
+          "minimum": 0,
+          "title": "Publishedcostusd",
+          "type": "number"
+        },
+        "relationshipIds": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Relationshipids",
+          "type": "array"
+        },
+        "uncostedProjectIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Uncostedprojectids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "projectIds",
+        "relationshipIds",
+        "costedProjectIds",
+        "uncostedProjectIds",
+        "publishedCostUsd",
+        "avoidableShare"
+      ],
+      "title": "ImpactCluster",
+      "type": "object"
+    },
+    "ImpactRange": {
+      "description": "A low\u2013high range; a missing low means \"up to\" the high value.",
+      "properties": {
+        "high": {
+          "minimum": 0,
+          "title": "High",
+          "type": "number"
+        },
+        "low": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Low"
+        }
+      },
+      "required": [
+        "low",
+        "high"
+      ],
+      "title": "ImpactRange",
+      "type": "object"
+    },
+    "ImpactStatus": {
+      "enum": [
+        "ESTIMATED",
+        "NOT_ESTIMATED"
+      ],
+      "title": "ImpactStatus",
+      "type": "string"
+    },
+    "ImpactStep": {
+      "description": "One line of the working: what was multiplied by what, citing the assumptions used.",
+      "properties": {
+        "assumptionIds": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Assumptionids",
+          "type": "array"
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "working": {
+          "minLength": 1,
+          "title": "Working",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "working",
+        "assumptionIds"
+      ],
+      "title": "ImpactStep",
+      "type": "object"
+    },
     "Metadata": {
       "properties": {
         "distanceUnit": {
@@ -387,6 +610,13 @@
           "default": false,
           "title": "Fixture",
           "type": "boolean"
+        },
+        "impactAssumptions": {
+          "items": {
+            "$ref": "#/$defs/ImpactAssumption"
+          },
+          "title": "Impactassumptions",
+          "type": "array"
         },
         "labels": {
           "additionalProperties": {
@@ -454,7 +684,8 @@
         "utilityColors",
         "utilityNames",
         "labels",
-        "sources"
+        "sources",
+        "impactAssumptions"
       ],
       "title": "Metadata",
       "type": "object"
@@ -1350,9 +1581,146 @@
       ],
       "title": "ZoneHeadline",
       "type": "object"
+    },
+    "ZoneImpact": {
+      "description": "S2: what coordinating a zone's timely pairs might avoid. Ranges and ceilings, never engineering figures.",
+      "properties": {
+        "budgetInPlayUsd": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImpactRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "clusters": {
+          "items": {
+            "$ref": "#/$defs/ImpactCluster"
+          },
+          "title": "Clusters",
+          "type": "array"
+        },
+        "expectedSavingUsd": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImpactRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "label": {
+          "minLength": 1,
+          "title": "Label",
+          "type": "string"
+        },
+        "mobilizations": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImpactRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Notes",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Reason"
+        },
+        "stagingYards": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImpactRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "status": {
+          "$ref": "#/$defs/ImpactStatus"
+        },
+        "steps": {
+          "items": {
+            "$ref": "#/$defs/ImpactStep"
+          },
+          "title": "Steps",
+          "type": "array"
+        },
+        "temporaryAcres": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ImpactRange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "themes": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Themes",
+          "type": "array"
+        },
+        "zoneId": {
+          "minLength": 1,
+          "title": "Zoneid",
+          "type": "string"
+        }
+      },
+      "required": [
+        "zoneId",
+        "status",
+        "label",
+        "reason",
+        "themes",
+        "stagingYards",
+        "temporaryAcres",
+        "mobilizations",
+        "budgetInPlayUsd",
+        "expectedSavingUsd",
+        "clusters",
+        "steps",
+        "notes"
+      ],
+      "title": "ZoneImpact",
+      "type": "object"
     }
   },
   "properties": {
+    "impact": {
+      "items": {
+        "$ref": "#/$defs/ZoneImpact"
+      },
+      "title": "Impact",
+      "type": "array"
+    },
     "metadata": {
       "$ref": "#/$defs/Metadata"
     },
@@ -1394,7 +1762,8 @@
     "metrics",
     "projects",
     "relationships",
-    "zones"
+    "zones",
+    "impact"
   ],
   "title": "Payload",
   "type": "object"

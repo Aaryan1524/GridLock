@@ -207,6 +207,64 @@ priority:
     - {priority: MEDIUM, tiers: [SITE_LOGISTICS]}
     - {priority: MEDIUM, tiers: [CREWS_EQUIPMENT], relevance: [OVERLAPPING, STRONG]}
   default: LOW
+# S2 coordination impact estimator (docs/STRETCH_IMPLEMENTATION_PLAN.md). Ranges only, every value
+# below approved at Gate A0; nothing here changes overlap, zones or priority.
+impact:
+  label: "Illustrative planning estimate: not engineering-grade"
+  # Only pairs the engine already ranks HIGH or MEDIUM; LOW background pairs never inflate the estimate.
+  candidate_priorities: [HIGH, MEDIUM]
+  staging_tiers: [CROSSING, SHARED_CORRIDOR, SITE_LOGISTICS]
+  timely_relevance: [OVERLAPPING, STRONG, MEANINGFUL]
+  assumptions:
+    yard_acres:
+      id: A-1
+      label: Temporary footprint of one staging / laydown yard
+      low: 3
+      high: 20
+      unit: acres per yard
+      basis: public_source
+      source_title: "Southern California Edison, West of Devers Upgrade Project, Proponent's Environmental Assessment (Oct 2013), section 3.2"
+      source_url: https://ia.cpuc.ca.gov/environment/info/aspen/westofdevers/pea/3.0_project_description_part3.pdf
+      source_locator: 'p. 3-71: "Typically, each yard would be 3 to 20 acres in size"; Table 3.2-A lists 10 yards of 2.8-30.0 acres'
+      caveat: A California 220 kV project; the document's stated typical range, not a Southeast-specific value.
+      approved_by: Aaryan
+      approved_on: 2026-09-27
+    mobilization_share:
+      id: A-2
+      label: Project management, including mobilization and demobilization, as a share of project cost
+      high: 0.055
+      unit: share of project cost (ceiling)
+      basis: public_source
+      source_title: "MISO, Transmission Cost Estimation Guide for MTEP19 (Apr 16, 2019)"
+      source_url: https://nocapx2020.info/wp-content/uploads/2019/07/Transmission-Cost-Estimation-Guide-for-MTEP-2019337433.pdf
+      source_locator: 'p. 31: "5.5% of project cost estimate: Project management (including mobilization and demobilization)"'
+      caveat: Covers all project management, not mobilization alone, so it is only a ceiling. MISO's 20% contingency and 7.5% AFUDC are not applied.
+      approved_by: Aaryan
+      approved_on: 2026-09-27
+    avoidable_share:
+      id: A-3
+      label: Share of a cluster's mobilization avoided when its projects share one
+      high: 0.5
+      unit: share of the cluster's mobilization (ceiling)
+      basis: derived
+      source_title: GridLock arithmetic
+      source_locator: "k projects sharing one mobilization avoid (k-1)/k of their separate mobilizations; capped at 1/2 (two projects: one of two avoided)"
+      caveat: Assumes the shared mobilization's cost is split evenly. No public source isolates cross-utility shared-mobilization savings.
+      approved_by: Aaryan
+      approved_on: 2026-09-27
+    cross_check:
+      id: A-3x
+      label: Construction savings reported when agencies bundle nearby projects
+      low: 0.05
+      high: 0.15
+      unit: share of construction cost (reference only, not used in the arithmetic)
+      basis: public_source
+      source_title: "FHWA, Every Day Counts (EDC-5) Project Bundling fact sheet"
+      source_url: https://www.fhwa.dot.gov/innovation/everydaycounts/edc_5/docs/project-bundling-factsheet.pdf
+      source_locator: 'PennDOT pilot, 41 structures for $25 million: "a 5-15 percent savings on construction"'
+      caveat: Bundling also saves through one contract, standard designs and bulk purchasing, which separate utilities coordinating logistics would not get.
+      approved_by: Aaryan
+      approved_on: 2026-09-27
 labels:
   spatial_tiers:
     CROSSING: Touching or crossing

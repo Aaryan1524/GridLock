@@ -109,6 +109,64 @@
         "retrievedAt": "2026-09-26T11:11:22.338829+00:00",
         "sha256": "3b2b3dac5e25ae6940bcccb5fde8ef8beb004328340111f159f25fc29b959c55"
       }
+    ],
+    "impactAssumptions": [
+      {
+        "id": "A-1",
+        "label": "Temporary footprint of one staging / laydown yard",
+        "low": 3.0,
+        "high": 20.0,
+        "unit": "acres per yard",
+        "basis": "public_source",
+        "sourceTitle": "Southern California Edison, West of Devers Upgrade Project, Proponent's Environmental Assessment (Oct 2013), section 3.2",
+        "sourceUrl": "https://ia.cpuc.ca.gov/environment/info/aspen/westofdevers/pea/3.0_project_description_part3.pdf",
+        "sourceLocator": "p. 3-71: \"Typically, each yard would be 3 to 20 acres in size\"; Table 3.2-A lists 10 yards of 2.8-30.0 acres",
+        "caveat": "A California 220 kV project; the document's stated typical range, not a Southeast-specific value.",
+        "approvedBy": "Aaryan",
+        "approvedOn": "2026-09-27"
+      },
+      {
+        "id": "A-2",
+        "label": "Project management, including mobilization and demobilization, as a share of project cost",
+        "low": null,
+        "high": 0.055,
+        "unit": "share of project cost (ceiling)",
+        "basis": "public_source",
+        "sourceTitle": "MISO, Transmission Cost Estimation Guide for MTEP19 (Apr 16, 2019)",
+        "sourceUrl": "https://nocapx2020.info/wp-content/uploads/2019/07/Transmission-Cost-Estimation-Guide-for-MTEP-2019337433.pdf",
+        "sourceLocator": "p. 31: \"5.5% of project cost estimate: Project management (including mobilization and demobilization)\"",
+        "caveat": "Covers all project management, not mobilization alone, so it is only a ceiling. MISO's 20% contingency and 7.5% AFUDC are not applied.",
+        "approvedBy": "Aaryan",
+        "approvedOn": "2026-09-27"
+      },
+      {
+        "id": "A-3",
+        "label": "Share of a cluster's mobilization avoided when its projects share one",
+        "low": null,
+        "high": 0.5,
+        "unit": "share of the cluster's mobilization (ceiling)",
+        "basis": "derived",
+        "sourceTitle": "GridLock arithmetic",
+        "sourceUrl": null,
+        "sourceLocator": "k projects sharing one mobilization avoid (k-1)/k of their separate mobilizations; capped at 1/2 (two projects: one of two avoided)",
+        "caveat": "Assumes the shared mobilization's cost is split evenly. No public source isolates cross-utility shared-mobilization savings.",
+        "approvedBy": "Aaryan",
+        "approvedOn": "2026-09-27"
+      },
+      {
+        "id": "A-3x",
+        "label": "Construction savings reported when agencies bundle nearby projects",
+        "low": 0.05,
+        "high": 0.15,
+        "unit": "share of construction cost (reference only, not used in the arithmetic)",
+        "basis": "public_source",
+        "sourceTitle": "FHWA, Every Day Counts (EDC-5) Project Bundling fact sheet",
+        "sourceUrl": "https://www.fhwa.dot.gov/innovation/everydaycounts/edc_5/docs/project-bundling-factsheet.pdf",
+        "sourceLocator": "PennDOT pilot, 41 structures for $25 million: \"a 5-15 percent savings on construction\"",
+        "caveat": "Bundling also saves through one contract, standard designs and bulk purchasing, which separate utilities coordinating logistics would not get.",
+        "approvedBy": "Aaryan",
+        "approvedOn": "2026-09-27"
+      }
     ]
   },
   "metrics": {
@@ -22478,6 +22536,195 @@
         "In-service dates span 3063 days (2026-08-12 to 2034-12-31), beyond the 730-day guideline; coordinate in stages",
         "1 of 1 relationships use approximate geometry"
       ]
+    }
+  ],
+  "impact": [
+    {
+      "zoneId": "ZONE-01",
+      "status": "ESTIMATED",
+      "label": "Illustrative planning estimate: not engineering-grade",
+      "reason": null,
+      "themes": [
+        "staging_yards",
+        "deliveries",
+        "site_logistics",
+        "crews",
+        "contractors",
+        "heavy_equipment"
+      ],
+      "stagingYards": {
+        "low": 1.0,
+        "high": 1.0
+      },
+      "temporaryAcres": {
+        "low": 3.0,
+        "high": 20.0
+      },
+      "mobilizations": {
+        "low": 1.0,
+        "high": 2.0
+      },
+      "budgetInPlayUsd": {
+        "low": null,
+        "high": 3544608.0
+      },
+      "expectedSavingUsd": {
+        "low": null,
+        "high": 1772304.0
+      },
+      "clusters": [
+        {
+          "kind": "staging",
+          "projectIds": [
+            "DESC-06367-D-G",
+            "GPC-20277"
+          ],
+          "relationshipIds": [
+            "REL-DESC-06367-D-G-GPC-20277"
+          ],
+          "costedProjectIds": [
+            "DESC-06367-D-G"
+          ],
+          "uncostedProjectIds": [
+            "GPC-20277"
+          ],
+          "publishedCostUsd": 23787423.0,
+          "avoidableShare": 0.5
+        },
+        {
+          "kind": "mobilization",
+          "projectIds": [
+            "DESC-06367-D-G",
+            "GPC-20277"
+          ],
+          "relationshipIds": [
+            "REL-DESC-06367-D-G-GPC-20277"
+          ],
+          "costedProjectIds": [
+            "DESC-06367-D-G"
+          ],
+          "uncostedProjectIds": [
+            "GPC-20277"
+          ],
+          "publishedCostUsd": 23787423.0,
+          "avoidableShare": 0.5
+        },
+        {
+          "kind": "mobilization",
+          "projectIds": [
+            "DESC-6808-S",
+            "GPC-20067"
+          ],
+          "relationshipIds": [
+            "REL-DESC-6808-S-GPC-20067"
+          ],
+          "costedProjectIds": [
+            "DESC-6808-S"
+          ],
+          "uncostedProjectIds": [
+            "GPC-20067"
+          ],
+          "publishedCostUsd": 40660000.0,
+          "avoidableShare": 0.5
+        }
+      ],
+      "steps": [
+        {
+          "label": "Coordinable pairs",
+          "working": "3 of 33 relationships rank HIGH or MEDIUM; 2 of those have overlapping, strong or meaningful timeline relevance.",
+          "assumptionIds": []
+        },
+        {
+          "label": "Shared staging yards",
+          "working": "1 cluster at site logistics distance or closer: DESC-06367-D-G × GPC-20277 → 1 yard potentially shared.",
+          "assumptionIds": []
+        },
+        {
+          "label": "Temporary footprint",
+          "working": "1 yard × 3–20 acres per yard = 3–20 acres.",
+          "assumptionIds": [
+            "A-1"
+          ]
+        },
+        {
+          "label": "Duplicate mobilizations",
+          "working": "2 clusters with timely dates: DESC-06367-D-G × GPC-20277; DESC-6808-S × GPC-20067 → 1–2 mobilizations potentially avoided.",
+          "assumptionIds": []
+        },
+        {
+          "label": "Budget in play (a ceiling, not a saving)",
+          "working": "$64,447,423 published cost (DESC-06367-D-G, DESC-6808-S) × ≤5.5% = up to $3,544,608.",
+          "assumptionIds": [
+            "A-2"
+          ]
+        },
+        {
+          "label": "Expected saving",
+          "working": "DESC-06367-D-G × GPC-20277: $23,787,423 × ≤5.5% × ≤50%; DESC-6808-S × GPC-20067: $40,660,000 × ≤5.5% × ≤50% = up to $1,772,304 (≤2.75% of published cost).",
+          "assumptionIds": [
+            "A-2",
+            "A-3"
+          ]
+        },
+        {
+          "label": "Cross-check",
+          "working": "Agencies that bundle nearby projects report 5–15% construction savings; this estimate stays below the lowest of those because separate utilities share logistics only.",
+          "assumptionIds": [
+            "A-3x"
+          ]
+        }
+      ],
+      "notes": [
+        "GPC-20067, GPC-20277: no published cost (for example, redacted in the filing); not estimated."
+      ]
+    },
+    {
+      "zoneId": "ZONE-02",
+      "status": "NOT_ESTIMATED",
+      "label": "Illustrative planning estimate: not engineering-grade",
+      "reason": "Its 2 HIGH or MEDIUM relationships (touching or crossing) have in-service dates 3,074 days apart, too far apart to share staging or a mobilization; coordination here is about sequencing.",
+      "themes": [
+        "crossing_structures",
+        "outage_sequencing"
+      ],
+      "stagingYards": null,
+      "temporaryAcres": null,
+      "mobilizations": null,
+      "budgetInPlayUsd": null,
+      "expectedSavingUsd": null,
+      "clusters": [],
+      "steps": [],
+      "notes": []
+    },
+    {
+      "zoneId": "ZONE-03",
+      "status": "NOT_ESTIMATED",
+      "label": "Illustrative planning estimate: not engineering-grade",
+      "reason": "No relationship in this zone ranks HIGH or MEDIUM, so no coordination impact is estimated.",
+      "themes": [],
+      "stagingYards": null,
+      "temporaryAcres": null,
+      "mobilizations": null,
+      "budgetInPlayUsd": null,
+      "expectedSavingUsd": null,
+      "clusters": [],
+      "steps": [],
+      "notes": []
+    },
+    {
+      "zoneId": "ZONE-04",
+      "status": "NOT_ESTIMATED",
+      "label": "Illustrative planning estimate: not engineering-grade",
+      "reason": "No relationship in this zone ranks HIGH or MEDIUM, so no coordination impact is estimated.",
+      "themes": [],
+      "stagingYards": null,
+      "temporaryAcres": null,
+      "mobilizations": null,
+      "budgetInPlayUsd": null,
+      "expectedSavingUsd": null,
+      "clusters": [],
+      "steps": [],
+      "notes": []
     }
   ]
 }

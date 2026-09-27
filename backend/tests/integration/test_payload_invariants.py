@@ -209,3 +209,31 @@ def test_cors_origins_env_override(monkeypatch: pytest.MonkeyPatch) -> None:
     assert cors_origins(("http://localhost:3000",)) == ["http://localhost:3000"]
     monkeypatch.setenv("GRIDLOCK_API_CORS_ORIGINS", "http://localhost:3020, http://example.test ")
     assert cors_origins(("http://localhost:3000",)) == ["http://localhost:3020", "http://example.test"]
+
+
+# ---------- S2 coordination impact (docs/STRETCH_IMPLEMENTATION_PLAN.md, Phase A) ----------
+
+
+def test_impact_covers_every_zone_in_order(payload: Payload) -> None:
+    assert [item.zone_id for item in payload.impact] == [zone.id for zone in payload.zones]
+    assert {item.id for item in payload.metadata.impact_assumptions} == {"A-1", "A-2", "A-3", "A-3x"}
+
+
+def test_top_zone_impact_matches_the_approved_estimate(payload: Payload) -> None:
+    top = payload.impact[0]
+    assert top.status.value == "ESTIMATED"
+    assert (top.staging_yards.low, top.staging_yards.high) == (1, 1)
+    assert (top.temporary_acres.low, top.temporary_acres.high) == (3, 20)
+    assert (top.mobilizations.low, top.mobilizations.high) == (1, 2)
+    assert top.budget_in_play_usd.high == 3_544_608 and top.budget_in_play_usd.low is None
+    assert top.expected_saving_usd.high == 1_772_304 and top.expected_saving_usd.low is None
+    counted = {pid for cluster in top.clusters for pid in cluster.costed_project_ids}
+    utilities = {project.id: project.utility for project in payload.projects}
+    assert counted and all(project.estimated_cost_usd is not None for project in payload.projects if project.id in counted)
+    assert all(utilities[pid] == "DESC" for pid in counted)  # Georgia Power's costs are redacted, never estimated
+
+
+def test_zones_without_timely_high_or_medium_pairs_give_reasons(payload: Payload) -> None:
+    for item in payload.impact[1:]:
+        assert item.status.value == "NOT_ESTIMATED" and item.reason
+        assert item.expected_saving_usd is None and item.budget_in_play_usd is None
