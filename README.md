@@ -56,6 +56,12 @@ cp .env.example .env
   then how close the dates are, then density. Thurmond touches at 0 km
   but its dates are 3,074 days apart, so it ranks below the timely
   Savannah River zone (4.89 km, 152 days) instead of crowding it out.
+- **It estimates impact without inventing numbers.** For the top zone,
+  coordinating could avoid one staging yard (3–20 acres) and 1–2
+  duplicate mobilizations, with an expected saving of up to $1,772,304
+  out of up to $3,544,608 of Dominion's published budget in play. Every
+  figure shows its working and cites an approved public source, and
+  Georgia Power's redacted costs are never estimated.
 - **Evidence and priority are kept apart.** A 100-point Evidence Quality
   score says how well each location is supported, with ✓/△ reasons. It
   never changes a zone's priority, so a weakly evidenced crossing is
@@ -163,6 +169,16 @@ shared as a link.
       Census state outlines within seconds. Geometry, distances and zones
       are unaffected.
     </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <img src="docs/assets/coordination-impact.png" alt="Coordination impact for Jasper – McIntosh: 3–20 acres of shared staging, 1–2 duplicate mobilizations, expected saving up to $1,772,304 of up to $3,544,608 budget in play, with the pairs, notes and cited assumptions"><br>
+      <b>Coordination impact</b>: what coordinating could avoid, as
+      ranges and ceilings. It shows the working, names projects without a
+      published cost, discloses approximate geometry, and cites each
+      assumption's source and approval.
+    </td>
+    <td width="50%"></td>
   </tr>
 </table>
 

@@ -176,6 +176,14 @@ def test_every_dollar_step_cites_its_assumptions():
     assert cited["Cross-check"] == [roles.cross_check.id]
 
 
+def test_counted_pairs_on_approximate_geometry_are_disclosed():
+    approximate = pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH).model_copy(update={"approximate": True})
+    result = estimate([approximate], [project("DESC-1", 1_000_000), project("GPC-1", None)])
+    assert any("1 of 1 counted pair use approximate geometry" in note for note in result.notes)
+    exact = estimate([pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH)], [project("DESC-1", 1_000_000), project("GPC-1", None)])
+    assert not any("approximate geometry" in note for note in exact.notes)
+
+
 def test_estimates_do_not_modify_their_inputs():
     relationships = [pair("DESC-1", "GPC-1", SITE, MEANINGFUL, HIGH)]
     projects = [project("DESC-1", 5_000_000), project("GPC-1", None)]

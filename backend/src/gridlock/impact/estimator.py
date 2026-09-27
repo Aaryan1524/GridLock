@@ -210,14 +210,21 @@ def estimate_zone_impact(
         cross = roles.cross_check
         steps.append(ImpactStep(
             label="Cross-check",
-            working=f"Agencies that bundle nearby projects report {_span(cross.low * 100 if cross.low is not None else None, cross.high * 100)}% "
-            f"construction savings; this estimate stays below the lowest of those because separate utilities share logistics only.",
+            working=f"{cross.label}: {_span(cross.low * 100 if cross.low is not None else None, cross.high * 100)}% "
+            "(one bundling pilot, cited only for comparison). This estimate stays below even its low end, because separate "
+            "utilities coordinating share logistics only, not one contract.",
             assumption_ids=[cross.id],
         ))
     else:
         notes.append("No project in these clusters has a published cost, so no dollar figure is estimated.")
     if uncosted:
         notes.append(f"{', '.join(uncosted)}: no published cost (for example, redacted in the filing); not estimated.")
+    approximate = [item for item in timely if item.approximate]
+    if approximate:
+        notes.append(
+            f"{len(approximate)} of {len(timely)} counted {_count(len(timely), 'pair')} use approximate geometry (one endpoint or a "
+            "straight line between endpoints), so their distances are to that geometry, not a surveyed route."
+        )
 
     return ZoneImpact(
         zone_id=zone.id,

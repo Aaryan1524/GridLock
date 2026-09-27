@@ -158,7 +158,7 @@
       },
       {
         "id": "A-3x",
-        "label": "Construction savings reported when agencies bundle nearby projects",
+        "label": "Construction savings in PennDOT's pilot bundling 41 county structures",
         "low": 0.05,
         "high": 0.15,
         "unit": "share of construction cost (reference only, not used in the arithmetic)",
@@ -22672,14 +22672,15 @@
         },
         {
           "label": "Cross-check",
-          "working": "Agencies that bundle nearby projects report 5–15% construction savings; this estimate stays below the lowest of those because separate utilities share logistics only.",
+          "working": "Construction savings in PennDOT's pilot bundling 41 county structures: 5–15% (one bundling pilot, cited only for comparison). This estimate stays below even its low end, because separate utilities coordinating share logistics only, not one contract.",
           "assumptionIds": [
             "A-3x"
           ]
         }
       ],
       "notes": [
-        "GPC-20067, GPC-20277: no published cost (for example, redacted in the filing); not estimated."
+        "GPC-20067, GPC-20277: no published cost (for example, redacted in the filing); not estimated.",
+        "2 of 2 counted pairs use approximate geometry (one endpoint or a straight line between endpoints), so their distances are to that geometry, not a surveyed route."
       ]
     },
     {

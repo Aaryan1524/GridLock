@@ -254,7 +254,7 @@ impact:
       approved_on: 2026-09-27
     cross_check:
       id: A-3x
-      label: Construction savings reported when agencies bundle nearby projects
+      label: Construction savings in PennDOT's pilot bundling 41 county structures
       low: 0.05
       high: 0.15
       unit: share of construction cost (reference only, not used in the arithmetic)
