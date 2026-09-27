@@ -26,6 +26,7 @@ validated on load: a bad value stops the run with a message naming it.
 | `overlap` | Prefilter slack, output precision, coordination playbooks and their labels |
 | `zones` | Geographic and timeline guards, `timeline_guard: warn \| split`, project cap, ID prefix, naming |
 | `priority` | Ordered Opportunity Priority rules (tiers, relevance, `max_gap_days`) and default |
+| `impact` | S2 coordination impact: the fixed label, which pairs count (`candidate_priorities`, `staging_tiers`, `timely_relevance`) and the approved `assumptions` (`yard_acres`, `mobilization_share`, `avoidable_share`, `cross_check`), each with value range, unit, basis, source title, URL, locator, caveat and approval. Loading fails if a public-source assumption has no URL or any assumption is unapproved. |
 | `labels` | Every display label the frontend shows, by vocabulary |
 | `api` | Service name returned by `/api/health`, host, port, CORS origins, payload file |
 | `oracle` | The sponsor workbook, its sheets, and the mapping from its IDs to ours |

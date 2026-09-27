@@ -289,6 +289,8 @@ class ImpactAssumption(ContractModel):
     low: float | None = None
     high: float
     unit: str = Field(min_length=1)
+    # The value as shown to the planner, e.g. "3–20" or "≤5.5%".
+    value: str = Field(min_length=1)
     basis: str = Field(min_length=1)
     source_title: str = Field(min_length=1)
     source_url: str | None = None

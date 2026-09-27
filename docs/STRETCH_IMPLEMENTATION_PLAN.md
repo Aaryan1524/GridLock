@@ -1,6 +1,14 @@
 # GridLock: final hackathon stretch implementation plan
 
-Status: **proposal, awaiting approval.** No stretch code exists yet.
+Status: **G0 approved. Gate A0 approved 2026-09-27; Phase A in progress** on `stretch/s2-impact-estimator`.
+
+Gate A0 decisions (by Aaryan):
+- **A-1:** 3–20 acres per yard.
+- **A-2:** ≤5.5% ceiling.
+- **A-3:** expected saving = budget in play × ≤50%. With *k* projects sharing, (*k*−1)/*k* is avoided, capped at ½. FHWA's 5–15% bundling savings are a cross-check only.
+- **A-4/A-5:** HIGH/MEDIUM pairs only; 1 to *k*−1 per cluster.
+
+Zone 1 result: 1 yard (3–20 acres), 1–2 mobilizations, up to $3,544,608 budget in play, expected saving up to $1,772,304.
 
 Baseline: `origin/main` at `4d01fcd`. This includes V1, the planner sections, both themes, the shared navbar, `/team` and the page entrance (PRs #13–#16).
 

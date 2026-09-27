@@ -28,10 +28,19 @@ MOBILIZATION = "mobilization"
 
 
 def assumption_records(config: ImpactConfig) -> list[ImpactAssumption]:
-    """The approved assumptions, as they are shown to the planner."""
+    """The approved assumptions, as they are shown to the planner (shares as percentages)."""
     roles = config.assumptions
+    shares = {roles.mobilization_share.id, roles.avoidable_share.id, roles.cross_check.id}
+
+    def value(item: ImpactAssumptionConfig) -> str:
+        scale, suffix = (100, "%") if item.id in shares else (1, "")
+        high = _number(round(item.high * scale, 4))
+        if item.low is None:
+            return f"≤{high}{suffix}"
+        return f"{_number(round(item.low * scale, 4))}–{high}{suffix}"
+
     return [
-        ImpactAssumption.model_validate(item.model_dump())
+        ImpactAssumption.model_validate({**item.model_dump(), "value": value(item)})
         for item in (roles.yard_acres, roles.mobilization_share, roles.avoidable_share, roles.cross_check)
     ]
 
@@ -121,7 +130,6 @@ def estimate_zone_impact(
 
     timely = [item for item in candidates if item.timeline.relevance in config.timely_relevance]
     if not timely:
-        tiers = sorted({_label(labels, "spatial_tiers", item.spatial_tier.value).lower() for item in candidates})
         gaps = sorted({item.timeline.gap_days for item in candidates if item.timeline.gap_days is not None})
         dates = f"in-service dates {', '.join(f'{gap:,}' for gap in gaps)} days apart" if gaps else "unknown dates"
         themes = list(dict.fromkeys(theme for item in candidates for theme in item.coordination_playbook))
@@ -129,7 +137,7 @@ def estimate_zone_impact(
         return _not_estimated(
             zone,
             config,
-            f"Its {len(candidates)} {priority_names} relationship{plural} ({', '.join(tiers)}) have {dates}, too far apart "
+            f"Its {len(candidates)} {priority_names} relationship{plural} have {dates}, too far apart "
             "to share staging or a mobilization; coordination here is about sequencing.",
             themes,
         )

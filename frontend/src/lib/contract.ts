@@ -57,6 +57,7 @@ export interface ImpactAssumption {
   low: number | null;
   high: number;
   unit: string;
+  value: string;
   basis: string;
   sourceTitle: string;
   sourceUrl: string | null;

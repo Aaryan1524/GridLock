@@ -109,3 +109,28 @@ source data. When a result looks surprising, check here first.
     MapLibre worker is served from `public/vendor`.
 26. **Priority tones and labels come from the payload.** The frontend holds
     no thresholds, rules, tier meanings or utility names.
+
+## Coordination impact (S2)
+
+Approved at Gate A0 of `docs/STRETCH_IMPLEMENTATION_PLAN.md`; the values
+and sources live in `config/gridlock.yaml` under `impact:`.
+
+27. **Only pairs the engine ranks HIGH or MEDIUM count.** The estimate
+    builds on the existing Opportunity Priority instead of re-judging all
+    pairs, so LOW background pairs never inflate it. Counting every timely
+    pair would have added two LOW crew-range pairs in zone 1 (1–4
+    mobilizations, up to $4,156,040).
+28. **Sharing needs timely dates.** Staging needs site-logistics distance or
+    closer and overlapping, strong or meaningful timing; a mobilization
+    needs the timing at any distance. Pairs years apart (Thurmond, 3,074
+    days) are sequencing, so they get a reason, never a zero.
+29. **A cluster of k projects avoids 1 to k−1 duplicates.** The low end
+    assumes only one cluster coordinates.
+30. **Money is a ceiling, from published costs only.** The budget in play
+    is published cost × MISO's 5.5% project-management share (which
+    includes mobilization, so it can only be a ceiling). The expected
+    saving is that × (k−1)/k, capped at one half. No public source
+    isolates cross-utility shared-mobilization savings, so the share is
+    arithmetic, and FHWA's 5–15% bundling savings are shown only as a
+    cross-check the estimate stays below. Georgia Power's costs are
+    redacted and never estimated.

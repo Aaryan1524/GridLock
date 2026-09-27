@@ -230,6 +230,24 @@ export function QualityView({ payload }: { payload: GridlockPayload }) {
                 ))}
               </li>
             ))}
+            {(metadata.impactAssumptions ?? []).map((item) => (
+              <li key={item.id}>
+                <span className="mono">impact assumption {item.id}</span>
+                <span>
+                  {item.value} {item.unit} · {item.label}
+                </span>
+                <span className={styles.sourceNote}>
+                  {item.sourceUrl ? (
+                    <a href={item.sourceUrl} target="_blank" rel="noreferrer">
+                      {item.sourceTitle} ↗
+                    </a>
+                  ) : (
+                    item.sourceTitle
+                  )}{" "}
+                  · {item.sourceLocator}. {item.caveat} Approved by {item.approvedBy}, {item.approvedOn}.
+                </span>
+              </li>
+            ))}
           </ul>
         </div>
       </section>

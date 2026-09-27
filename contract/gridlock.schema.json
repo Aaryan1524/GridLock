@@ -451,6 +451,11 @@
           "minLength": 1,
           "title": "Unit",
           "type": "string"
+        },
+        "value": {
+          "minLength": 1,
+          "title": "Value",
+          "type": "string"
         }
       },
       "required": [
@@ -459,6 +464,7 @@
         "low",
         "high",
         "unit",
+        "value",
         "basis",
         "sourceTitle",
         "sourceUrl",
