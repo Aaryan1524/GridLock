@@ -13,4 +13,7 @@ export interface TeamMember {
   links?: { label: string; href: string }[];
 }
 
-export const TEAM: TeamMember[] = [];
+export const TEAM: TeamMember[] = [
+  { name: "Aaditya Gajula", role: "Team Member" },
+  { name: "Aaryan Gajula", role: "Team Member" },
+];
