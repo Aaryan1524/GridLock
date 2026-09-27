@@ -17,7 +17,7 @@
 <br>
 
 <div align="center">
-  <img src="docs/assets/overview.png" width="800" alt="GridLock planner Overview: all four coordination zones on one map of Georgia and South Carolina, the top zone Jasper – McIntosh selected with its 4.89 km closest approach and 152-day date gap, and the analysis figures along the bottom">
+  <img src="docs/assets/overview.png" width="800" alt="GridLock planner Overview: all four coordination zones on one map of Georgia and South Carolina, the top zone Jasper – McIntosh selected with its 4.89 km closest approach and 152-day date gap, and the headline figures above the map">
 </div>
 
 <br>
@@ -129,10 +129,11 @@ shared as a link.
 <table>
   <tr>
     <td width="50%">
-      <img src="docs/assets/overview.png" alt="Overview: all four zones on one map, the selected zone's details on the right, analysis figures along the bottom"><br>
+      <img src="docs/assets/overview.png" alt="Overview: all four zones on one map, the selected zone's details on the right, network analysis below the map"><br>
       <b>Overview</b>: every coordination zone on one regional map.
       Select a zone to slide its details out, then use <i>Investigate
-      zone →</i> to open it. The figures always show their denominators.
+      zone →</i> to open it. Scroll down for the network analysis: where
+      relationships concentrate, priority, coverage, closeness and timing.
     </td>
     <td width="50%">
       <img src="docs/assets/zones-thurmond.png" alt="Zones view of Thurmond: 0 km, Shared endpoint — Thurmond Substation, 3,074 days apart, medium priority"><br>
@@ -382,7 +383,7 @@ lines on stderr.
 | Address | Shows |
 |---|---|
 | `/` | The landing page with the headline figures and the top finding |
-| `/planner` | Overview: every zone on one map, figures along the bottom |
+| `/planner` | Overview: every zone on one map, then the network analysis as you scroll |
 | `/planner?view=zones&zone=ZONE-01` | One zone: map, connector, why it was flagged, timeline, members |
 | `/planner?view=projects` | Every project, searchable and filterable |
 | `/planner?view=quality` | Coverage, geometry methods, Evidence Quality and provenance |

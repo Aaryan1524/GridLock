@@ -88,6 +88,11 @@
   grid-template-columns: 300px minmax(0, 1fr) 0;
 }
 
+/* Expanded drawer: about half the workspace; the map narrows rather than disappearing. */
+.workspace[data-details="expanded"] {
+  grid-template-columns: 300px minmax(0, 1fr) 50%;
+}
+
 .workspace[data-details="closed"] .panel {
   visibility: hidden;
   border-left: 0;
@@ -263,7 +268,8 @@
   }
 
   .workspace,
-  .workspace[data-details="closed"] {
+  .workspace[data-details="closed"],
+  .workspace[data-details="expanded"] {
     grid-template-columns: minmax(0, 1fr);
   }
 

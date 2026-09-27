@@ -1,0 +1,453 @@
+/* Overview: a sticky regional map (the stage) with the network analysis scrolling up over it.
+   Plain document scrolling and position: sticky; no scroll-jacking or snapping. */
+
+.overview {
+  /* How much of the analysis header shows below the map when the planner opens. */
+  --analysis-peek: 228px;
+  height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+}
+
+/* ---------- Stage: the map ---------- */
+
+.stage {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+  isolation: isolate;
+  /* Keep the analysis header (title, lede, arrow) in view on open, so the dashboard below is not missed. */
+  height: calc(100% - var(--analysis-peek));
+  min-height: 360px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.stageHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px 32px;
+  flex-wrap: wrap;
+  padding: 16px var(--gutter);
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.headline {
+  margin: 0;
+  font-size: clamp(22px, 2.2vw, 30px);
+  line-height: 1.1;
+}
+
+.headline em {
+  color: var(--muted);
+}
+
+.headMeta {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+}
+
+.compression {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1;
+}
+
+.scrollCue {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.scrollCue:hover {
+  color: var(--text);
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  min-height: 0;
+  transition: grid-template-columns 200ms ease;
+}
+
+.body[data-details="closed"] {
+  grid-template-columns: minmax(0, 1fr) 0;
+}
+
+.body[data-details="closed"] .side {
+  visibility: hidden;
+  border-left: 0;
+}
+
+.map {
+  position: relative;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--bg-sunken);
+}
+
+.side {
+  border-left: 1px solid var(--line);
+  overflow-y: auto;
+  min-height: 0;
+  background: var(--bg);
+}
+
+.sideSection {
+  border-bottom: 1px solid var(--line);
+}
+
+.zoneSummary {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+  padding: 18px var(--gutter) 20px;
+}
+
+.zoneSummary > * {
+  margin: 0;
+}
+
+.summaryName {
+  font-size: 32px;
+  line-height: 1.02;
+}
+
+.summaryMeta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.summaryFigures {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  width: 100%;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+
+.summaryFigures > div + div {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
+}
+
+.summaryFigures dt {
+  font-size: 9.5px;
+  margin-bottom: 4px;
+}
+
+.summaryFigures dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.1;
+}
+
+/* ---------- Analysis: scrolls over the stage ---------- */
+
+.analysis {
+  position: relative;
+  z-index: 1;
+  background: var(--bg);
+  border-top: 1px solid var(--line-strong);
+}
+
+.analysisHead {
+  display: grid;
+  gap: 8px;
+  padding: 24px var(--gutter) 12px;
+  min-height: var(--analysis-peek);
+  align-content: start;
+}
+
+/* A minimal down arrow under the header: there is a dashboard below. */
+.moreArrow {
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  margin-top: 4px;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  cursor: pointer;
+  animation: nudge 2.4s ease-in-out infinite;
+}
+
+.moreArrow:hover {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+.moreArrow svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@keyframes nudge {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(4px); }
+}
+
+.analysisHead > * {
+  margin: 0;
+}
+
+.analysisTitle {
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.02;
+}
+
+.analysisLede {
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.panel {
+  padding: 24px var(--gutter) 28px;
+  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.grid > .panel:nth-child(odd) {
+  border-right: 1px solid var(--line);
+}
+
+.panelWide {
+  grid-column: 1 / -1;
+  border-right: 0 !important;
+}
+
+.panel > * {
+  margin: 0;
+}
+
+.panelTitle {
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.panelNote {
+  font-size: 13px;
+  color: var(--muted);
+  max-width: 64ch;
+}
+
+/* Horizontal bar rows: label, bar, count. */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(150px, 240px) minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  font-size: 13px;
+}
+
+.rowLabel {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  min-width: 0;
+}
+
+.rowLabel button {
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.rowLabel button:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.track {
+  display: block;
+  height: 8px;
+  background: var(--bg-raised);
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--text);
+}
+
+.fill[data-priority="HIGH"] {
+  background: var(--accent);
+}
+
+.fill[data-priority="MEDIUM"] {
+  background: var(--amber);
+}
+
+.fill[data-priority="LOW"],
+.fill[data-tone="muted"] {
+  background: var(--neutral);
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Segmented bar: one strip, each segment sized by its share, with a legend underneath. */
+.segments {
+  display: flex;
+  height: 14px;
+  gap: 2px;
+}
+
+.segment {
+  display: block;
+  height: 100%;
+  background: var(--text);
+}
+
+.segment[data-priority="HIGH"] {
+  background: var(--accent);
+}
+
+.segment[data-priority="MEDIUM"] {
+  background: var(--amber);
+}
+
+.segment[data-priority="LOW"],
+.segment[data-tone="muted"] {
+  background: var(--neutral);
+}
+
+.segment[data-tone="faint"] {
+  background: var(--bg-raised);
+  outline: 1px dashed var(--line-strong);
+  outline-offset: -1px;
+}
+
+.legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font-size: 13px;
+}
+
+.legend li {
+  display: grid;
+  gap: 2px;
+}
+
+.legendValue {
+  font-family: var(--font-display);
+  font-size: 30px;
+  line-height: 1;
+}
+
+.link {
+  font: inherit;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  justify-self: start;
+}
+
+.link:hover {
+  color: var(--text);
+}
+
+/* ---------- Narrow screens: the map stops being sticky and everything stacks ---------- */
+
+@media (max-width: 1180px) {
+  .stage {
+    position: static;
+    height: auto;
+    min-height: 0;
+  }
+
+  .body,
+  .body[data-details="closed"] {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .body[data-details="closed"] .side {
+    visibility: visible;
+  }
+
+  .map {
+    height: 60vh;
+    min-height: 360px;
+  }
+
+  .side {
+    border-left: 0;
+    overflow: visible;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .grid > .panel:nth-child(odd) {
+    border-right: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .row .track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}

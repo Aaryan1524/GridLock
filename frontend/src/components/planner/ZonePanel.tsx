@@ -7,8 +7,7 @@ import { countOf, formatDays, formatDistance, label, utilityColor, utilityName }
 import { topRelationship } from "@/lib/mapData";
 import { spatialLabel } from "@/lib/presentation";
 
-import { Coverage } from "../shared/Coverage";
-import { CoordinationImpact } from "./CoordinationImpact";
+import { CoordinationImpact, ImpactMethodology } from "./CoordinationImpact";
 import styles from "./panel.module.css";
 import { Timeline } from "./Timeline";
 
@@ -16,6 +15,9 @@ interface Props {
   payload: GridlockPayload;
   zone: Zone;
   onInspect: (projectId: string) => void;
+  // Compact: where and why. Expanded (about half the workspace): impact, timeline, evidence, methodology.
+  expanded: boolean;
+  onExpandedChange: (expanded: boolean) => void;
 }
 
 function ProjectLine({ project, payload, onInspect }: { project: Project; payload: GridlockPayload; onInspect: (id: string) => void }) {
@@ -34,6 +36,9 @@ function ProjectLine({ project, payload, onInspect }: { project: Project; payloa
           {resolution?.isApproximation ? " · approximate" : ""} · evidence {label(metadata, "evidence_levels", project.evidence?.level)}
           {project.evidence ? ` ${project.evidence.score}/100` : ""}
         </span>
+        <span className="mono-plain faint">
+          Source: {project.source.document}, p. {project.source.page} · {project.source.projectIdRaw}
+        </span>
       </span>
       <button type="button" className="button ghost small" onClick={() => onInspect(project.id)}>
         Evidence
@@ -42,7 +47,7 @@ function ProjectLine({ project, payload, onInspect }: { project: Project; payloa
   );
 }
 
-export function ZonePanel({ payload, zone, onInspect }: Props) {
+export function ZonePanel({ payload, zone, onInspect, expanded, onExpandedChange }: Props) {
   const { metadata } = payload;
   const projects = new Map(payload.projects.map((project) => [project.id, project]));
   const top = topRelationship(payload, zone);
@@ -54,11 +59,16 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
   const members = zone.projectIds.map((id) => projects.get(id)).filter((project): project is Project => !!project);
 
   return (
-    <div className={styles.panel}>
+    <div className={styles.panel} data-expanded={expanded}>
       <section className={styles.section}>
-        <p className="eyebrow">
-          Zone {zone.rank} of {payload.zones.length} · {zone.utilities.map((code) => utilityName(metadata, code)).join(" × ")}
-        </p>
+        <div className={styles.headerRow}>
+          <p className="eyebrow">
+            Zone {zone.rank} of {payload.zones.length} · {zone.utilities.map((code) => utilityName(metadata, code)).join(" × ")}
+          </p>
+          <button type="button" className={styles.expandButton} aria-expanded={expanded} onClick={() => onExpandedChange(!expanded)}>
+            {expanded ? "Collapse ⤡" : "Details ⤢"}
+          </button>
+        </div>
         <h2 className={`display ${styles.zoneTitle}`}>{zone.name}</h2>
         <div className={styles.titleMeta}>
           <span className="tag" data-priority={zone.opportunityPriority}>
@@ -133,38 +143,46 @@ export function ZonePanel({ payload, zone, onInspect }: Props) {
         </section>
       )}
 
-      {impact && <CoordinationImpact payload={payload} impact={impact} projects={projects} />}
-
-      <section className={styles.section}>
-        <p className="eyebrow">Timeline</p>
-        <Timeline metadata={metadata} projects={members} top={top} onInspect={onInspect} />
-      </section>
-
-      {zone.warnings.length > 0 && (
-        <section className={styles.section}>
-          <p className="eyebrow">Caveats</p>
-          <ul className={styles.caveats}>
-            {zone.warnings.map((warning) => (
-              <li key={warning}>△ {warning}</li>
-            ))}
-          </ul>
+      {!expanded && (
+        <section className={`${styles.section} ${styles.moreCta}`}>
+          <p className="mono-plain">Coordination impact · timeline · evidence and sources · methodology</p>
+          <button type="button" className="button ghost small" onClick={() => onExpandedChange(true)}>
+            Open full analysis <span aria-hidden>→</span>
+          </button>
         </section>
       )}
 
-      <section className={styles.section}>
-        <p className="eyebrow">Projects in this zone</p>
-        <ul className={styles.projectList}>
-          {members.map((project) => (
-            <ProjectLine key={project.id} project={project} payload={payload} onInspect={onInspect} />
-          ))}
-        </ul>
-      </section>
+      {expanded && impact && <CoordinationImpact payload={payload} impact={impact} projects={projects} />}
 
-      {payload.metrics && (
-        <section className={`${styles.section} ${styles.coverage}`}>
-          <p className="eyebrow">Coverage</p>
-          <Coverage metadata={metadata} metrics={payload.metrics} />
-        </section>
+      {expanded && (
+        <>
+          <section className={styles.section}>
+            <p className="eyebrow">Timeline</p>
+            <Timeline metadata={metadata} projects={members} top={top} onInspect={onInspect} />
+          </section>
+
+          {zone.warnings.length > 0 && (
+            <section className={styles.section}>
+              <p className="eyebrow">Caveats</p>
+              <ul className={styles.caveats}>
+                {zone.warnings.map((warning) => (
+                  <li key={warning}>△ {warning}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+
+          <section className={styles.section}>
+            <p className="eyebrow">Projects in this zone</p>
+            <ul className={styles.projectList}>
+              {members.map((project) => (
+                <ProjectLine key={project.id} project={project} payload={payload} onInspect={onInspect} />
+              ))}
+            </ul>
+          </section>
+
+          <ImpactMethodology payload={payload} />
+        </>
       )}
     </div>
   );

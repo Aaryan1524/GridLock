@@ -36,7 +36,7 @@ faint line or dot, and the four coordination zones outlined on top.
 
 ## 3. Compression (0:40–1:00) — Overview figures
 
-Point at the figures along the bottom of the Overview.
+Point at the headline above the map, then scroll (or click the ↓ arrow) to the network analysis: where the relationships concentrate, priority, coverage, how close and how timely.
 
 > "Across **182** public projects, GridLock finds **55** cross-utility
 > relationships and compresses them into **4** coordination zones —
@@ -80,7 +80,7 @@ Press Escape.
 
 ## 6. Coordination impact (2:15–2:40) — the panel's Coordination impact section
 
-Scroll the zone panel to **Coordination impact**.
+Click **Details ⤢** in the zone panel to expand it to half the screen; **Coordination impact** leads with four figures. Open **How this was calculated** for the chain, and **Methodology & assumptions** for the sources.
 
 > "What could coordinating actually avoid? One shared staging yard —
 > **3 to 20 acres** of temporary footprint — and **1 to 2** duplicate
